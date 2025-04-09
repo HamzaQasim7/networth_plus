@@ -1,0 +1,143 @@
+import 'package:finance_tracker/core/utils/validators.dart';
+import 'package:finance_tracker/presentation/views/auth/signup_view.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/shared_dynamic_icon.dart';
+import '../../../viewmodels/auth_viewmodel.dart';
+
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
+
+  @override
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  bool _isEmailSent = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleResetPassword() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      final viewModel = context.read<AuthViewModel>();
+      
+      viewModel.setResetEmail(_emailController.text);
+      final success = await viewModel.sendPasswordResetEmail();
+      
+      if (success && mounted) {
+        setState(() {
+          _isEmailSent = true;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Password reset email sent. Please check your inbox.'),
+          ),
+        );
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(viewModel.errorMessage)),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = context.watch<AuthViewModel>();
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5F5F5),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SharedDynamicIcon(
+                  'assets/icons/finance_app_logo.png',
+                  height: 100,
+                ),
+                const SizedBox(height: 30),
+                Text(
+                  'Forget Password?',
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Please enter your email address',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 30),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    hintText: 'Email address',
+                    prefixIcon: Icon(Icons.email_outlined),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Please enter your email';
+                    }
+                    if (!Validators.isValidEmail(value!)) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 150),
+                if (_isEmailSent)
+                  Text(
+                    'Reset link has been sent to your email',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Colors.green,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                const SizedBox(height: 20),
+                CustomButton(
+                  onPressed: viewModel.isLoading 
+                    ? (){} 
+                    : _handleResetPassword,
+                  child: viewModel.isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text(
+                        'Send Reset Link',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                ),
+                const SizedBox(height: 20),
+                if (_isEmailSent)
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Back to Login'),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
