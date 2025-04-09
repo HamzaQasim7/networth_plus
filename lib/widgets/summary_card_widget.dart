@@ -1,4 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+
 import '../core/constants/theme_constants.dart';
 
 class SummaryCardWidget extends StatelessWidget {
@@ -14,7 +16,7 @@ class SummaryCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
       decoration: BoxDecoration(
@@ -25,23 +27,28 @@ class SummaryCardWidget extends StatelessWidget {
         ),
       ),
       child: Column(
+        spacing: 4,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: isDarkMode 
-                      ? ThemeConstants.textSecondaryDark 
+                  color: isDarkMode
+                      ? ThemeConstants.textSecondaryDark
                       : ThemeConstants.textSecondaryLight,
                 ),
           ),
-          const SizedBox(height: 4),
-          Text(
+          AutoSizeText(
             amount,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: textColor,
                   fontWeight: FontWeight.w600,
                 ),
+            minFontSize: 10,
+            maxFontSize:
+                Theme.of(context).textTheme.titleMedium?.fontSize ?? 16,
           ),
         ],
       ),

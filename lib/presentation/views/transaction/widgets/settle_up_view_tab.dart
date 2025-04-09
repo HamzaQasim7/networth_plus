@@ -1,8 +1,10 @@
+import 'package:finance_tracker/core/constants/console.dart';
 import 'package:finance_tracker/data/models/settlement_model.dart';
 import 'package:finance_tracker/viewmodels/settlement_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../widgets/custom_text_field.dart';
 import '../../../../core/utils/motion_toast.dart';
@@ -16,15 +18,35 @@ class SettleUpViewTab extends StatefulWidget {
 }
 
 class _SettleUpViewTabState extends State<SettleUpViewTab> {
+  bool _isInitialLoad = true;
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadInitialData();
+    });
+  }
+
+  Future<void> _loadInitialData() async {
+    final viewModel = context.read<SettlementViewModel>();
+    if (_isInitialLoad && !viewModel.isLoading) {
+      await viewModel.reLoadSettlement();
+      _isInitialLoad = false;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final viewModel = context.watch<SettlementViewModel>();
+    
+    // Only show error if it's new
     if (viewModel.error != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ToastUtils.showErrorToast(
@@ -143,12 +165,17 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
               const Gap(24),
               CustomTextField(
                   controller: nameController,
+                  keyboardType: TextInputType.text,
                   labelText: 'Person Name',
                   icon: Icons.person_outline),
               const Gap(16),
               CustomTextField(
                 controller: amountController,
-                keyboardType: TextInputType.number,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                ],
                 labelText: "Amount",
                 icon: Icons.currency_rupee,
               ),
@@ -183,23 +210,41 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
               const Gap(24),
               ElevatedButton(
                 onPressed: () async {
-                  if (nameController.text.isNotEmpty &&
-                      amountController.text.isNotEmpty) {
-                    final success = await viewModel.addSettlement(
-                      title: nameController.text,
-                      amount: double.parse(amountController.text),
-                      isOwed: isYouOwe,
-                      participants: [],
+                  if (nameController.text.isEmpty) {
+                    ToastUtils.showErrorToast(
+                      context,
+                      title: 'Invalid Input',
+                      description: 'Please enter a name',
                     );
+                    return;
+                  }
 
-                    if (success && context.mounted) {
-                      ToastUtils.showSuccessToast(
-                        context,
-                        title: 'Success',
-                        description: 'Settlement added successfully',
-                      );
-                      Navigator.pop(context);
-                    }
+                  final amountText = amountController.text.replaceAll(',', '.');
+                  final amount = double.tryParse(amountText);
+
+                  if (amount == null || amount <= 0) {
+                    ToastUtils.showErrorToast(
+                      context,
+                      title: 'Invalid Amount',
+                      description: 'Please enter a valid number',
+                    );
+                    return;
+                  }
+
+                  final success = await viewModel.addSettlement(
+                    title: nameController.text,
+                    amount: amount,
+                    isOwed: isYouOwe,
+                    participants: [],
+                  );
+
+                  if (success && context.mounted) {
+                    ToastUtils.showSuccessToast(
+                      context,
+                      title: 'Success',
+                      description: 'Settlement added successfully',
+                    );
+                    Navigator.pop(context);
                   }
                 },
                 style: ElevatedButton.styleFrom(

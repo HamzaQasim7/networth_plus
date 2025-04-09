@@ -43,7 +43,16 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SessionManager(prefs: prefs)),
         ChangeNotifierProvider(create: (_) => TransactionViewModel()),
         ChangeNotifierProvider(create: (_) => BudgetProvider()),
-        ChangeNotifierProvider(create: (_) => SettlementViewModel()),
+        ChangeNotifierProxyProvider<AuthViewModel, SettlementViewModel>(
+      create: (context) => SettlementViewModel(
+        authViewModel: Provider.of<AuthViewModel>(context, listen: false),
+      ),
+      update: (context, authViewModel, settlementViewModel) => 
+          SettlementViewModel(
+            authViewModel: authViewModel,
+           
+          ),
+    ),
         ChangeNotifierProxyProvider<AuthViewModel, AccountCardViewModel>(
           create: (context) => AccountCardViewModel(
             authViewModel: context.read<AuthViewModel>(),

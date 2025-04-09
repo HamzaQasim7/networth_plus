@@ -45,6 +45,8 @@ dependencies:
   motion_toast: ^2.12.1
 
   animated_search_bar: ^2.8.0
+  rxdart:
+  auto_size_text:
 
   table_calendar: ^3.0.9
   icons_plus: ^5.0.0

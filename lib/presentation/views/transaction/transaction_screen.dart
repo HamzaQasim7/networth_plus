@@ -386,7 +386,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
             title: transaction['title'],
             description: transaction['description'],
             amount: transaction['amount'],
-            isExpense: true,
+            isExpense: false,
           ),
         );
       },

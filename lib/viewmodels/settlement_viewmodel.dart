@@ -1,49 +1,64 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import '../data/repositories/settlement_repository.dart';
 import '../data/models/settlement_model.dart';
 import '../core/constants/console.dart';
+import 'package:provider/provider.dart';
+import '../viewmodels/auth_viewmodel.dart';
+import 'package:rxdart/rxdart.dart';
 
 class SettlementViewModel extends ChangeNotifier {
   final SettlementRepository _repository;
+  final AuthViewModel _authViewModel;
   List<SettlementModel> _settlements = [];
   bool _isLoading = false;
   String? _error;
-  String? _currentUserId;
+  StreamSubscription<List<SettlementModel>>? _settlementsSubscription;
+  bool _disposed = false;
 
-  SettlementViewModel({SettlementRepository? repository})
-      : _repository = repository ?? SettlementRepository();
+  SettlementViewModel({
+    SettlementRepository? repository,
+    required AuthViewModel authViewModel,
+  })  : _repository = repository ?? SettlementRepository(),
+        _authViewModel = authViewModel;
 
   List<SettlementModel> get settlements => _settlements;
   bool get isLoading => _isLoading;
   String? get error => _error;
 
-  void setUserId(String userId) {
-    _currentUserId = userId;
-    _loadSettlements();
+  @override
+  void dispose() {
+    _settlementsSubscription?.cancel();
+    _disposed = true;
+    super.dispose();
   }
 
   Future<void> _loadSettlements() async {
-    if (_currentUserId == null) return;
+    final userId = _authViewModel.currentUser?.id;
+    if (userId == null || _disposed) return;
 
     try {
       _isLoading = true;
-      notifyListeners();
+      if (!_disposed) notifyListeners();
 
-      _repository.getSettlements(_currentUserId!).listen(
-        (settlements) {
-          _settlements = settlements;
-          _isLoading = false;
-          notifyListeners();
-        },
-        onError: (error) {
-          console('Error in settlements stream: $error', 
-                 type: DebugType.error);
-          _error = error.toString();
-          _isLoading = false;
-          notifyListeners();
-        }
-      );
+      _settlementsSubscription?.cancel();
+
+      _settlementsSubscription =
+          _repository.getSettlements(userId).listen((settlements) {
+        if (_disposed) return;
+        _settlements = settlements;
+        _isLoading = false;
+        notifyListeners();
+      }, onError: (error) {
+        if (_disposed) return;
+        console('Error in settlements stream: $error', type: DebugType.error);
+        _error = error.toString();
+        _isLoading = false;
+        notifyListeners();
+      });
     } catch (e) {
+      if (_disposed) return;
       console('Error loading settlements: $e', type: DebugType.error);
       _error = 'Failed to load settlements. Please try again.';
       _isLoading = false;
@@ -57,7 +72,13 @@ class SettlementViewModel extends ChangeNotifier {
     required bool isOwed,
     required List<String> participants,
   }) async {
-    if (_currentUserId == null) return false;
+    if (_disposed) return false;
+    final userId = _authViewModel.currentUser?.id;
+    if (userId == null) {
+      _error = 'User not authenticated';
+      notifyListeners();
+      return false;
+    }
 
     try {
       _isLoading = true;
@@ -65,7 +86,7 @@ class SettlementViewModel extends ChangeNotifier {
 
       final newSettlement = SettlementModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
-        userId: _currentUserId!,
+        userId: userId,
         title: title,
         amount: amount,
         isOwed: isOwed,
@@ -78,7 +99,7 @@ class SettlementViewModel extends ChangeNotifier {
 
       await _repository.addSettlement(newSettlement);
       console('Successfully added settlement: ${newSettlement.id}',
-             type: DebugType.info);
+          type: DebugType.info);
       return true;
     } catch (e) {
       console('Error adding settlement: $e', type: DebugType.error);
@@ -123,4 +144,10 @@ class SettlementViewModel extends ChangeNotifier {
     _error = null;
     notifyListeners();
   }
-} 
+
+  Future<void> reLoadSettlement() async {
+    if (!_isLoading && !_disposed) {
+      await _loadSettlements();
+    }
+  }
+}

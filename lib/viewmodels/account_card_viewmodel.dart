@@ -4,7 +4,7 @@ import '../data/models/account_card_model.dart';
 import '../data/repositories/account_card_repository.dart';
 import '../core/constants/console.dart';
 import '../viewmodels/auth_viewmodel.dart';
-
+import 'dart:async';
 class AccountCardViewModel extends ChangeNotifier {
   final AccountCardRepository _repository;
   final AuthViewModel _authViewModel;
@@ -12,6 +12,8 @@ class AccountCardViewModel extends ChangeNotifier {
   AccountCardModel? _selectedAccountCard;
   bool _isLoading = false;
   String? _error;
+  bool _disposed = false;
+  StreamSubscription<List<AccountCardModel>>? _cardsSubscription;
 
   AccountCardViewModel({
     AccountCardRepository? repository,
@@ -32,31 +34,39 @@ class AccountCardViewModel extends ChangeNotifier {
   String? get currentUserId => _authViewModel.currentUser?.id;
 
   // Load account cards for the current user
-  void _loadAccountCards() {
+  Future<void> _loadAccountCards() async {
     final userId = currentUserId;
-    if (userId == null) {
-      _error = 'User ID is required';
+    if (userId == null || _disposed) return;
+
+    try {
+      _isLoading = true;
+      if (!_disposed) notifyListeners();
+
+      // Cancel previous subscription
+      _cardsSubscription?.cancel();
+      
+      _cardsSubscription = _repository.getAccountCards(userId).listen(
+        (cards) {
+          if (_disposed) return;
+          _accountCards = cards;
+          _isLoading = false;
+          notifyListeners();
+        },
+        onError: (error) {
+          if (_disposed) return;
+          console('Error in account cards stream: $error', type: DebugType.error);
+          _error = error.toString();
+          _isLoading = false;
+          notifyListeners();
+        }
+      );
+    } catch (e) {
+      if (_disposed) return;
+      console('Error loading account cards: $e', type: DebugType.error);
+      _error = 'Failed to load cards. Please try again.';
+      _isLoading = false;
       notifyListeners();
-      return;
     }
-
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
-    _repository.getAccountCards(userId).listen(
-      (cards) {
-        _accountCards = cards;
-        _isLoading = false;
-        notifyListeners();
-      },
-      onError: (error) {
-        console('Error loading account cards: $error', type: DebugType.error);
-        _error = 'Failed to load account cards: ${error.toString()}';
-        _isLoading = false;
-        notifyListeners();
-      },
-    );
   }
 
   // Create a new account card
@@ -78,6 +88,8 @@ class AccountCardViewModel extends ChangeNotifier {
       notifyListeners();
       return false;
     }
+
+    if (_disposed) return false;
 
     try {
       _isLoading = true;
@@ -115,6 +127,8 @@ class AccountCardViewModel extends ChangeNotifier {
 
   // Update an existing account card
   Future<bool> updateAccountCard(AccountCardModel accountCard) async {
+    if (_disposed) return false;
+
     try {
       _isLoading = true;
       _error = null;
@@ -135,6 +149,8 @@ class AccountCardViewModel extends ChangeNotifier {
 
   // Delete an account card
   Future<bool> deleteAccountCard(String id) async {
+    if (_disposed) return false;
+
     try {
       _isLoading = true;
       _error = null;
@@ -190,5 +206,12 @@ class AccountCardViewModel extends ChangeNotifier {
   void reloadAccountCards() {
     console('DEBUG: Reloading account cards', type: DebugType.info);
     _loadAccountCards();
+  }
+
+  @override
+  void dispose() {
+    _cardsSubscription?.cancel();
+    _disposed = true;
+    super.dispose();
   }
 }
