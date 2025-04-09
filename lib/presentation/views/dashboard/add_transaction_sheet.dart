@@ -19,8 +19,8 @@ import '../cards/add_card_sheet.dart';
 
 class AddTransactionSheet extends StatefulWidget {
   final bool isEditing;
-  final Map<String, dynamic>? transaction;
-  final Function(Map<String, dynamic>)? onSave;
+  final TransactionModel? transaction;
+  final Future<void> Function(TransactionModel)? onSave;
 
   const AddTransactionSheet({
     super.key,
@@ -106,12 +106,12 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   void _initializeEditingMode() {
     final transaction = widget.transaction!;
     setState(() {
-      isIncome = !transaction['isExpense'];
-      selectedCategory = transaction['title'];
-      _amountController.text = transaction['amount'].toString();
-      _descriptionController.text = transaction['description'] ?? '';
-      selectedDate = transaction['date'];
-      selectedPaymentMethod = transaction['paymentMethod'];
+      isIncome = transaction.type==TransactionType.income;
+      selectedCategory = transaction.category;
+      _amountController.text = transaction.amount.toString();
+      _descriptionController.text = transaction.description ?? '';
+      selectedDate = transaction.date;
+      selectedPaymentMethod = transaction.paymentMethod;
       _initializeDateTime();
     });
     _updateAvailableBudget(selectedCategory);
@@ -596,7 +596,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
       console('Handle button Testing', type: DebugType.info);
       try {
         final transaction = TransactionModel(
-          id: widget.isEditing ? widget.transaction!['id'] : const Uuid().v4(),
+          id: widget.isEditing ? widget.transaction!.id : const Uuid().v4(),
           userId: viewModel.currentUserId ?? '',
           amount: double.tryParse(_amountController.text) ?? 0.0,
           type: isIncome ? TransactionType.income : TransactionType.expense,

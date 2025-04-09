@@ -12,6 +12,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:collection/collection.dart';
 import 'package:provider/provider.dart';
 import '../../../viewmodels/transaction_viewmodel.dart';
+import 'widgets/transactions_tab.dart';
 import '../../../widgets/transaction_item.dart';
 import '../../../core/constants/theme_constants.dart';
 
@@ -352,44 +353,16 @@ class _TransactionScreenState extends State<TransactionScreen> {
               }).toList(),
             ),
           ),
-
           // Content
           Expanded(
             child: _selectedTabIndex == 0
-                ? _buildTransactionsView()
+                ? const TransactionsTab()
                 : _selectedTabIndex == 1
                     ? _buildReportView()
                     : const SettleUpViewTab(),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildTransactionsView() {
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      itemCount: _transactions.length,
-      separatorBuilder: (context, index) => Divider(
-        height: 0.1,
-        color: Theme.of(context).brightness == Brightness.dark
-            ? Colors.grey[800]
-            : Colors.grey[200],
-      ),
-      itemBuilder: (context, index) {
-        final transaction = _transactions[index];
-        return InkWell(
-          onTap: () => _showTransactionDetails(transaction),
-          child: TransactionItem(
-            date: transaction['date'],
-            categoryIcon: transaction['icon'],
-            title: transaction['title'],
-            description: transaction['description'],
-            amount: transaction['amount'],
-            isExpense: false,
-          ),
-        );
-      },
     );
   }
 
@@ -452,144 +425,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
     );
   }
 
-  void _showTransactionDetails(Map<String, dynamic> transaction) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Transaction Details',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            _buildDetailRow('Category', transaction['title']),
-            _buildDetailRow('Amount', '₹${transaction['amount']}'),
-            _buildDetailRow(
-                'Date', DateFormat('MMM d, yyyy').format(transaction['date'])),
-            _buildDetailRow('Description', transaction['description']),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _editTransaction(transaction);
-                  },
-                  icon: const Icon(Icons.edit),
-                  label: const Text('Edit'),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _deleteTransaction(_transactions.indexOf(transaction));
-                  },
-                  icon: const Icon(Icons.delete),
-                  label: const Text('Delete'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDetailRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 100,
-            child: Text(
-              label,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).textTheme.bodySmall?.color,
-                  ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _handleFilterSelection(FilterOption option) {
     // Implement filter logic based on the selected option
-  }
-
-  void _editTransaction(Map<String, dynamic> transaction) {
-    final index = _transactions.indexOf(transaction);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AddTransactionSheet(
-          isEditing: true,
-          transaction: transaction,
-          onSave: (editedTransaction) {
-            setState(() {
-              _transactions[index] = editedTransaction;
-            });
-          },
-        ),
-      ),
-    );
-  }
-
-  void _deleteTransaction(int index) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: const Text('Delete Transaction'),
-        content:
-            const Text('Are you sure you want to delete this transaction?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                _transactions.removeAt(index);
-              });
-              Navigator.pop(context);
-            },
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
-    );
   }
 
   double get totalIncome => _transactions

@@ -7,17 +7,17 @@ class TransactionModel {
   final String userId;
   final double amount;
   final TransactionType type;
-  final String category;  // Changed from TransactionCategory enum to String
+  final String category; // Changed from TransactionCategory enum to String
   final String description;
   final DateTime date;
-  final String? attachmentUrl;  // For receipts or related documents
-  final bool isRecurring;       // For recurring transactions
-  final String? recurringId;    // To group recurring transactions
-  final DateTime createdAt;     // When the transaction was created
-  final DateTime updatedAt;     // When the transaction was last modified
-  final String paymentMethod;              // Added
-  final String? recurringFrequency;        // Added
-  final List<Map<String, dynamic>>? splitWith;  // Added
+  final String? attachmentUrl; // For receipts or related documents
+  final bool isRecurring; // For recurring transactions
+  final String? recurringId; // To group recurring transactions
+  final DateTime createdAt; // When the transaction was created
+  final DateTime updatedAt; // When the transaction was last modified
+  final String paymentMethod; // Added
+  final String? recurringFrequency; // Added
+  final List<Map<String, dynamic>>? splitWith; // Added
 
   TransactionModel({
     required this.id,
@@ -27,17 +27,16 @@ class TransactionModel {
     required this.category,
     required this.description,
     required this.date,
-    required this.paymentMethod,           // Added
+    required this.paymentMethod, // Added
     this.attachmentUrl,
     this.isRecurring = false,
     this.recurringId,
-    this.recurringFrequency,              // Added
-    this.splitWith,                       // Added
+    this.recurringFrequency, // Added
+    this.splitWith, // Added
     DateTime? createdAt,
     DateTime? updatedAt,
-  }) : 
-    this.createdAt = createdAt ?? DateTime.now(),
-    this.updatedAt = updatedAt ?? DateTime.now();
+  })  : this.createdAt = createdAt ?? DateTime.now(),
+        this.updatedAt = updatedAt ?? DateTime.now();
 
   // Validate if the category exists in the CategoryList
   static bool isValidCategory(String category) {
@@ -55,16 +54,17 @@ class TransactionModel {
       category: json['category'] as String,
       description: json['description'] as String,
       date: DateTime.parse(json['date'] as String),
-      paymentMethod: json['paymentMethod'] as String,    // Added
+      paymentMethod: json['paymentMethod'] as String, // Added
       attachmentUrl: json['attachmentUrl'] as String?,
       isRecurring: json['isRecurring'] as bool,
       recurringId: json['recurringId'] as String?,
-      recurringFrequency: json['recurringFrequency'] as String?,  // Added
-      splitWith: (json['splitWith'] as List<dynamic>?)?.cast<Map<String, dynamic>>(),  // Added
-      createdAt: json['createdAt'] != null 
+      recurringFrequency: json['recurringFrequency'] as String?, // Added
+      splitWith: (json['splitWith'] as List<dynamic>?)
+          ?.cast<Map<String, dynamic>>(), // Added
+      createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'] as String)
           : null,
-      updatedAt: json['updatedAt'] != null 
+      updatedAt: json['updatedAt'] != null
           ? DateTime.parse(json['updatedAt'] as String)
           : null,
     );
@@ -79,12 +79,12 @@ class TransactionModel {
       'category': category,
       'description': description,
       'date': date.toIso8601String(),
-      'paymentMethod': paymentMethod,              // Added
+      'paymentMethod': paymentMethod, // Added
       'attachmentUrl': attachmentUrl,
       'isRecurring': isRecurring,
       'recurringId': recurringId,
-      'recurringFrequency': recurringFrequency,    // Added
-      'splitWith': splitWith,                      // Added
+      'recurringFrequency': recurringFrequency, // Added
+      'splitWith': splitWith, // Added
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
@@ -99,12 +99,13 @@ class TransactionModel {
     String? category,
     String? description,
     DateTime? date,
-    String? paymentMethod,                     // Added
+    String? paymentMethod, // Added
     String? attachmentUrl,
     bool? isRecurring,
     String? recurringId,
-    String? recurringFrequency,                // Added
-    List<Map<String, dynamic>>? splitWith,     // Added
+    String? recurringFrequency, // Added
+    List<Map<String, dynamic>>? splitWith, // Added
+    String? relatedSettlement, // Add this
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -116,14 +117,15 @@ class TransactionModel {
       category: category ?? this.category,
       description: description ?? this.description,
       date: date ?? this.date,
-      paymentMethod: paymentMethod ?? this.paymentMethod,  // Added
+      paymentMethod: paymentMethod ?? this.paymentMethod, // Added
       attachmentUrl: attachmentUrl ?? this.attachmentUrl,
       isRecurring: isRecurring ?? this.isRecurring,
       recurringId: recurringId ?? this.recurringId,
-      recurringFrequency: recurringFrequency ?? this.recurringFrequency,  // Added
-      splitWith: splitWith ?? this.splitWith,              // Added
+      recurringFrequency:
+          recurringFrequency ?? this.recurringFrequency, // Added
+      splitWith: splitWith ?? this.splitWith, // Added
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
-} 
+}
