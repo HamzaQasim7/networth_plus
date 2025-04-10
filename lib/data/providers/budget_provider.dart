@@ -18,8 +18,8 @@ class BudgetProvider extends ChangeNotifier {
       _isLoading = true;
       notifyListeners();
 
-      _budgets = await _repository.getBudgets(userId);
-      
+      // _budgets = await _repository.getBudgets(userId);
+
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -31,7 +31,7 @@ class BudgetProvider extends ChangeNotifier {
 
   Future<void> createBudget(BudgetModel budget) async {
     try {
-      await _repository.createBudget(budget);
+      // await _repository.createBudget(budget);
       _budgets.add(budget);
       notifyListeners();
     } catch (e) {
@@ -62,7 +62,9 @@ class BudgetProvider extends ChangeNotifier {
     }
   }
 
-  double get totalBudget => _budgets.fold(0, (sum, budget) => sum + budget.amount);
-  double get totalSpent => _budgets.fold(0, (sum, budget) => sum + budget.spent);
+  double get totalBudget =>
+      _budgets.fold(0, (sum, budget) => sum + budget.amount);
+  double get totalSpent =>
+      _budgets.fold(0, (sum, budget) => sum + budget.spent);
   double get remainingBudget => totalBudget - totalSpent;
-} 
+}
