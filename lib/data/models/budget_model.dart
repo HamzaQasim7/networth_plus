@@ -92,6 +92,7 @@ class BudgetModel {
     List<String>? collaborators,
     List<String>? alerts,
     bool? isActive,
+    DateTime? updatedAt,
   }) {
     return BudgetModel(
       id: id,
@@ -108,7 +109,7 @@ class BudgetModel {
       alerts: alerts ?? this.alerts,
       isActive: isActive ?? this.isActive,
       createdAt: createdAt,
-      updatedAt: DateTime.now(),
+      updatedAt: updatedAt ?? DateTime.now(),
     );
   }
 } 

@@ -1,5 +1,6 @@
 import 'package:finance_tracker/core/constants/categories_list.dart';
 import 'package:finance_tracker/core/utils/motion_toast.dart';
+import 'package:finance_tracker/data/models/budget_model.dart';
 import 'package:finance_tracker/presentation/views/budget/widgets/budget_components.dart';
 import 'package:finance_tracker/widgets/custom_loader.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +12,13 @@ import 'package:intl/intl.dart';
 class AddBudgetSheet extends StatefulWidget {
   final String categoryName;
   final IconData categoryIcon;
+  final BudgetModel? existingBudget;
 
   const AddBudgetSheet({
     super.key,
     required this.categoryName,
     required this.categoryIcon,
+    this.existingBudget,
   });
 
   @override
@@ -50,9 +53,22 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
   @override
   void initState() {
     super.initState();
-    // Initialize with the provided category if available
-    _category = widget.categoryName;
-    _categoryIcon = widget.categoryIcon;
+    final budget = widget.existingBudget;
+    
+    if (budget != null) {
+      _category = budget.category;
+      _categoryIcon = _getIconForCategory(budget.category);
+      _budgetAmount = budget.amount;
+      _period = budget.periodType;
+      _isRecurring = budget.isRecurring;
+      _collaborators.addAll(budget.collaborators);
+      _alerts.addAll(budget.alerts);
+      _startDate = budget.startDate;
+      _endDate = budget.endDate;
+    } else {
+      _category = widget.categoryName;
+      _categoryIcon = widget.categoryIcon;
+    }
   }
 
   @override
@@ -412,26 +428,52 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
 
   void _saveBudget() async {
     if (_formKey.currentState?.validate() ?? false) {
+      final viewModel = Provider.of<BudgetViewModel>(context, listen: false);
+      
       if (viewModel.isLoading) {
         const CustomLoadingOverlay();
       }
-      final success = await viewModel.createBudget(
+
+      final budget = widget.existingBudget?.copyWith(
         category: _category,
         amount: _budgetAmount,
         startDate: _startDate,
         endDate: _endDate,
         periodType: _period,
-        customPeriod:
-            _period == 'Custom' ? _getCustomPeriodDescription() : null,
+        customPeriod: _period == 'Custom' ? _getCustomPeriodDescription() : null,
         isRecurring: _isRecurring,
         collaborators: _collaborators,
         alerts: _alerts,
+        isActive: true,
+        updatedAt: DateTime.now(),
+      ) ?? BudgetModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        userId: viewModel.authViewModel.currentUser!.id,
+        category: _category,
+        amount: _budgetAmount,
+        startDate: _startDate,
+        endDate: _endDate,
+        periodType: _period,
+        customPeriod: _period == 'Custom' ? _getCustomPeriodDescription() : null,
+        isRecurring: _isRecurring,
+        collaborators: _collaborators,
+        alerts: _alerts,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        isActive: true,
       );
+
+      final success = widget.existingBudget != null 
+          ? await viewModel.updateBudget(budget)
+          : await viewModel.createBudget(budget);
 
       if (success && mounted) {
         Navigator.pop(context);
         ToastUtils.showSuccessToast(context,
-            title: 'Success', description: 'Successfully created budget');
+            title: 'Success', 
+            description: widget.existingBudget != null 
+                ? 'Budget updated successfully'
+                : 'Budget created successfully');
       }
     }
   }
@@ -700,5 +742,12 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
         }
       },
     );
+  }
+
+  IconData _getIconForCategory(String category) {
+    return CategoryList.categories.firstWhere(
+      (c) => c['title'] == category,
+      orElse: () => {'icon': Icons.category},
+    )['icon'] as IconData;
   }
 }
