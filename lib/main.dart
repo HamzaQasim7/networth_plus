@@ -1,6 +1,6 @@
 import 'package:finance_tracker/data/providers/budget_provider.dart';
-import 'package:finance_tracker/data/providers/transaction_provider.dart';
 import 'package:finance_tracker/viewmodels/account_card_viewmodel.dart';
+import 'package:finance_tracker/viewmodels/asset_liability_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/auth_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/budget_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/settlement_viewmodel.dart';
@@ -11,10 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/constants/theme_constants.dart';
+import 'core/routes/routes.dart';
 import 'core/services/session_manager.dart';
 import 'firebase_options.dart';
 import 'presentation/views/session_wrapper.dart';
-import 'core/routes/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,23 +43,32 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => SessionManager(prefs: prefs)),
         ChangeNotifierProvider(create: (_) => TransactionViewModel()),
+        ChangeNotifierProxyProvider<AuthViewModel, AssetLiabilityViewModel>(
+          create: (context) => AssetLiabilityViewModel(
+            authViewModel: context.read<AuthViewModel>(),
+          ),
+          update: (context, auth, previous) => AssetLiabilityViewModel(
+            authViewModel: auth,
+            repository: previous?.repository,
+          ),
+        ),
         ChangeNotifierProvider(create: (_) => BudgetProvider()),
         ChangeNotifierProxyProvider<AuthViewModel, BudgetViewModel>(
-      create: (context) => BudgetViewModel(
-        authViewModel: context.read<AuthViewModel>(),
-      ),
-      update: (context, authVM, budgetVM) => budgetVM ?? BudgetViewModel(authViewModel: authVM),
-    ),
-        ChangeNotifierProxyProvider<AuthViewModel, SettlementViewModel>(
-      create: (context) => SettlementViewModel(
-        authViewModel: Provider.of<AuthViewModel>(context, listen: false),
-      ),
-      update: (context, authViewModel, settlementViewModel) => 
-          SettlementViewModel(
-            authViewModel: authViewModel,
-           
+          create: (context) => BudgetViewModel(
+            authViewModel: context.read<AuthViewModel>(),
           ),
-    ),
+          update: (context, authVM, budgetVM) =>
+              budgetVM ?? BudgetViewModel(authViewModel: authVM),
+        ),
+        ChangeNotifierProxyProvider<AuthViewModel, SettlementViewModel>(
+          create: (context) => SettlementViewModel(
+            authViewModel: Provider.of<AuthViewModel>(context, listen: false),
+          ),
+          update: (context, authViewModel, settlementViewModel) =>
+              SettlementViewModel(
+            authViewModel: authViewModel,
+          ),
+        ),
         ChangeNotifierProxyProvider<AuthViewModel, AccountCardViewModel>(
           create: (context) => AccountCardViewModel(
             authViewModel: context.read<AuthViewModel>(),

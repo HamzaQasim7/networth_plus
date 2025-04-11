@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class AppConstants {
   static const String appName = 'Finance Tracker';
   static const String appVersion = '1.0.0';
@@ -14,22 +12,32 @@ class AppConstants {
   // Error Messages
   static const String genericError = 'Something went wrong. Please try again.';
   static const String networkError = 'Please check your internet connection.';
-  static final List<Map<String, dynamic>> cards = [
-    {
-      'type': 'Bank Account',
-      'name': 'Primary Savings',
-      'number': '**** 1234',
-      'balance': 50000.00,
-      'color': Colors.blue,
-      'icon': Icons.account_balance,
-    },
-    {
-      'type': 'Credit Card',
-      'name': 'Rewards Card',
-      'number': '**** 5678',
-      'balance': 25000.00,
-      'color': Colors.purple,
-      'icon': Icons.credit_card,
-    },
+  static final List<String> assetsList = [
+    'Cash',
+    'Bank',
+    'Real Estate',
+    'Trading Balance',
+    'Stocks',
+    'Mutual Funds',
+    'Bonds',
+    'ETFs',
+    'CryptoCurrencies',
+    'Retirement Accounts',
+    'Business',
+    'Intellectual Properties',
+    'Receivables',
+    'Others'
+  ];
+  static final List<String> liabilityList = [
+    'Credit Card',
+    'Personal Loan',
+    'Home Loan',
+    'Car Loan',
+    'Student Loan',
+    'Business Loan',
+    'Bank Overdraft',
+    'Unpaid Taxes',
+    'Payable',
+    'Others'
   ];
 }

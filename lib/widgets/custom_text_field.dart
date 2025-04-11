@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../core/constants/theme_constants.dart';
+
 class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String? hintText;
   final String? labelText;
+  final String? helperText;
+  final String? suffixText;
+  final String? prefixText;
   final IconData? icon;
   final Widget? suffixIcon;
   final bool obscureText;
+  final bool readOnly;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onFieldSubmitted;
+  final void Function()? onTap;
   final bool enabled;
   final int maxLines;
   final int? maxLength;
@@ -27,9 +34,11 @@ class CustomTextField extends StatelessWidget {
     this.controller,
     this.hintText,
     this.labelText,
+    this.prefixText,
     this.icon,
     this.suffixIcon,
     this.obscureText = false,
+    this.readOnly = false,
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.done,
     this.validator,
@@ -43,10 +52,14 @@ class CustomTextField extends StatelessWidget {
     this.focusNode,
     this.onFieldSubmitted,
     this.inputFormatters,
+    this.helperText,
+    this.suffixText,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
@@ -54,6 +67,8 @@ class CustomTextField extends StatelessWidget {
       textInputAction: textInputAction,
       validator: validator,
       onChanged: onChanged,
+      readOnly: readOnly,
+      onTap: onTap,
       onFieldSubmitted: onFieldSubmitted,
       enabled: enabled,
       maxLines: maxLines,
@@ -61,9 +76,22 @@ class CustomTextField extends StatelessWidget {
       textCapitalization: textCapitalization,
       inputFormatters: inputFormatters,
       focusNode: focusNode,
+      style: TextStyle(
+        color: isDarkMode
+            ? ThemeConstants.textPrimaryDark
+            : ThemeConstants.textPrimaryLight,
+      ),
       decoration: InputDecoration(
+        labelStyle: TextStyle(
+          color: isDarkMode
+              ? ThemeConstants.textSecondaryDark
+              : ThemeConstants.textSecondaryLight,
+        ),
         hintText: hintText,
         labelText: labelText,
+        suffixText: suffixText,
+        helperText: helperText,
+        prefixText: prefixText,
         prefixIcon: icon != null ? Icon(icon) : null,
         suffixIcon: suffixIcon,
         contentPadding: contentPadding ??

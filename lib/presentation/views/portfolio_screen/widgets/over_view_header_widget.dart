@@ -2,60 +2,66 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/constants/theme_constants.dart';
+import '../../../../viewmodels/asset_liability_viewmodel.dart';
 
 class OverviewHeader extends StatelessWidget {
   const OverviewHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Consumer<AssetLiabilityViewModel>(
+      builder: (context, viewModel, child) {
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+        final healthStatus = viewModel.financialHealthStatus;
+        final healthColor = viewModel.healthColor;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: isDarkMode
-                    ? Colors.green.shade900.withOpacity(0.3)
-                    : Colors.green.shade50,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    'Financial health: ',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: isDarkMode
-                              ? ThemeConstants.textSecondaryDark
-                              : ThemeConstants.textSecondaryLight,
-                        ),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: healthColor.withOpacity(isDarkMode ? 0.3 : 0.1),
+                    borderRadius: BorderRadius.circular(5),
                   ),
-                  Text(
-                    'Good',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Financial health: ',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: isDarkMode
+                                  ? ThemeConstants.textSecondaryDark
+                                  : ThemeConstants.textSecondaryLight,
+                            ),
+                      ),
+                      Text(
+                        healthStatus,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: healthColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
+              ],
+            ),
+            IconButton(
+              onPressed: () => _showReportDialog(context),
+              icon: Icon(
+                Icons.analytics_outlined,
+                color: isDarkMode ? Colors.white70 : Colors.black87,
               ),
+              tooltip: 'View Reports',
             ),
           ],
-        ),
-        IconButton(
-          onPressed: () => _showReportDialog(context),
-          icon: Icon(
-            Icons.analytics_outlined,
-            color: isDarkMode ? Colors.white70 : Colors.black87,
-          ),
-          tooltip: 'View Reports',
-        ),
-      ],
+        );
+      },
     );
   }
 

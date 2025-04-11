@@ -54,27 +54,3 @@ class _BudgetScreenState extends State<BudgetScreen> {
     );
   }
 }
-/*
-BudgetCategorySection(
-            title: 'Categories without Budget',
-            children: [
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const ClampingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            itemCount: _nonBudgetedCategories.length,
-            separatorBuilder: (context, index) =>
-                Divider(height: 0.1, color: Colors.grey.shade200),
-            itemBuilder: (context, index) {
-              final category = _nonBudgetedCategories[index];
-              return NonBudgetItem(
-                name: category['name'],
-                icon: category['icon'],
-                    onPress: () => _showSetBudgetDialog(
-                        category['name'], category['icon']),
-              );
-            },
-          ),
-        ],
-      ),
- */

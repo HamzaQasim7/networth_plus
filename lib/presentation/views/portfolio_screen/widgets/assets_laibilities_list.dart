@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../../../../viewmodels/asset_liability_viewmodel.dart';
 import '../../../../core/constants/theme_constants.dart';
 
 class AssetLiabilitiesList extends StatelessWidget {
@@ -7,56 +8,75 @@ class AssetLiabilitiesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Consumer<AssetLiabilityViewModel>(
+      builder: (context, viewModel, child) {
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+        final topAssets = viewModel.assets.take(3).toList();
+        final topLiabilities = viewModel.liabilities.take(3).toList();
 
-    return Padding(
-      padding: const EdgeInsets.only(left: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Top Assets:',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: isDarkMode
-                      ? ThemeConstants.textPrimaryDark
-                      : ThemeConstants.textPrimaryLight,
-                ),
+        return Padding(
+          padding: const EdgeInsets.only(left: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSectionTitle('Top Assets:', topAssets, isDarkMode),
+              const SizedBox(height: 8),
+              ..._buildListItems(topAssets),
+              const SizedBox(height: 16),
+              _buildSectionTitle(
+                  'Top Liabilities:', topLiabilities, isDarkMode),
+              const SizedBox(height: 8),
+              ..._buildListItems(topLiabilities),
+            ],
           ),
-          const SizedBox(height: 8),
-          _buildListItem('• Home'),
-          _buildListItem('• Car'),
-          const SizedBox(height: 16),
-          Text(
-            'Top Liabilities:',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: isDarkMode
-                      ? ThemeConstants.textPrimaryDark
-                      : ThemeConstants.textPrimaryLight,
-                ),
-          ),
-          const SizedBox(height: 8),
-          _buildListItem('• Home Loan'),
-          _buildListItem('• Car Loan'),
-        ],
+        );
+      },
+    );
+  }
+
+  Widget _buildSectionTitle(String text, List items, bool isDarkMode) {
+    return Text(
+      items.isEmpty ? '$text None' : text,
+      style: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: isDarkMode
+            ? ThemeConstants.textPrimaryDark
+            : ThemeConstants.textPrimaryLight,
       ),
     );
   }
 
-  Widget _buildListItem(String text) {
-    return Builder(builder: (context) {
-      final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 4),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 14,
-            color:
-                isDarkMode ? ThemeConstants.textSecondaryDark : Colors.black87,
-          ),
-        ),
-      );
-    });
+  List<Widget> _buildListItems(List<dynamic> items) {
+    return items
+        .map((item) => Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Row(
+                children: [
+                  Text('• ',
+                      style: TextStyle(
+                        color: item.isAsset ? Colors.green : Colors.red,
+                      )),
+                  Expanded(
+                    child: Text(
+                      item.name,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: item.isAsset ? Colors.green : Colors.red,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Text(
+                    '₹${item.amount.toStringAsFixed(2)}',
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: item.isAsset ? Colors.green : Colors.red,
+                    ),
+                  ),
+                ],
+              ),
+            ))
+        .toList();
   }
 }

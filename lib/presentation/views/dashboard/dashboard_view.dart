@@ -2,6 +2,7 @@ import 'package:finance_tracker/core/constants/theme_constants.dart';
 import 'package:finance_tracker/presentation/views/dashboard/widgets/activity_search_screen.dart';
 import 'package:finance_tracker/presentation/views/portfolio_screen/portfolio_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/settings_view.dart';
+import 'package:finance_tracker/widgets/app_header_text.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,7 @@ import '../home/home_screen.dart';
 import '../notifications/notifications_screen.dart';
 import '../portfolio_screen/widgets/add_asset_liability_sheet.dart';
 import '../transaction/transaction_screen.dart';
+import '../../../../viewmodels/asset_liability_viewmodel.dart';
 
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
@@ -204,7 +206,8 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
               builder: (context) => AlertDialog(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
-                title: const Text('What would you like to add?'),
+                title: const AppHeaderText(
+                    text: 'What would you like to add?', fontSize: 18),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -219,13 +222,10 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
                           isScrollControlled: true,
                           useSafeArea: true,
                           backgroundColor: Colors.transparent,
-                          builder: (context) => Padding(
-                            padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom,
-                            ),
-                            child: const AddAssetLiabilitySheet(isAsset: true),
-                          ),
-                        );
+                          builder: (context) => const AddAssetLiabilitySheet(isAsset: true),
+                        ).then((_) {
+                          Provider.of<AssetLiabilityViewModel>(context, listen: false).reloadItems();
+                        });
                       },
                     ),
                     ListTile(
@@ -239,13 +239,10 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
                           isScrollControlled: true,
                           useSafeArea: true,
                           backgroundColor: Colors.transparent,
-                          builder: (context) => Padding(
-                            padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom,
-                            ),
-                            child: const AddAssetLiabilitySheet(isAsset: false),
-                          ),
-                        );
+                          builder: (context) => const AddAssetLiabilitySheet(isAsset: false),
+                        ).then((_) {
+                          Provider.of<AssetLiabilityViewModel>(context, listen: false).reloadItems();
+                        });
                       },
                     ),
                   ],

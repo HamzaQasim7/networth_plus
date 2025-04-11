@@ -1,9 +1,12 @@
 import 'package:finance_tracker/presentation/views/portfolio_screen/widgets/assets_laibilities_list.dart';
 import 'package:finance_tracker/presentation/views/portfolio_screen/widgets/over_view_header_widget.dart';
+import 'package:finance_tracker/widgets/app_header_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 import '../../../../core/constants/theme_constants.dart';
+import 'assets_liability_cart.dart';
 import 'net_worth_display_widget.dart';
 
 class OverviewCard extends StatelessWidget {
@@ -22,62 +25,20 @@ class OverviewCard extends StatelessWidget {
           color: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200,
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+      child: const Padding(
+        padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'Overview',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: isDarkMode
-                        ? ThemeConstants.textPrimaryDark
-                        : ThemeConstants.textPrimaryLight,
-                  ),
+            AppHeaderText(
+              text: 'Overview',
+              fontSize: 20,
             ),
-            const OverviewHeader(),
-            const SizedBox(height: 8),
-            const NetWorthDisplay(),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                // Pie Chart
-                Expanded(
-                  flex: 2,
-                  child: SizedBox(
-                    height: 150,
-                    child: PieChart(
-                      PieChartData(
-                        sections: [
-                          PieChartSectionData(
-                            value: 70,
-                            color: ThemeConstants.primaryColor.withOpacity(0.7),
-                            title: '',
-                            radius: 40,
-                          ),
-                          PieChartSectionData(
-                            value: 30,
-                            color: isDarkMode
-                                ? Colors.grey.shade700
-                                : Colors.grey.shade200,
-                            title: '',
-                            radius: 40,
-                          ),
-                        ],
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 30,
-                      ),
-                    ),
-                  ),
-                ),
-                // Assets and Liabilities List
-                const Expanded(
-                  flex: 3,
-                  child: AssetLiabilitiesList(),
-                ),
-              ],
-            ),
+            OverviewHeader(),
+            Gap(8),
+            NetWorthDisplay(),
+            Gap(16),
+            AssetsLiabilityCart(),
           ],
         ),
       ),
