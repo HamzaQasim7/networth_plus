@@ -57,14 +57,18 @@ class TransactionViewModel extends ChangeNotifier {
       _setLoading(true);
       _error = null;
       
+      _startDate = startDate ?? _startDate;
+      _endDate = endDate ?? _endDate;
+      
       _transactions = await _repository.getTransactions(
         userId: currentUserId!,
-        startDate: startDate,
-        endDate: endDate,
+        startDate: _startDate,
+        endDate: _endDate,
         type: type,
         paymentMethod: paymentMethod,
       );
       
+      _calculateTotals(transactions);
       notifyListeners();
     } catch (e) {
       _error = e.toString();

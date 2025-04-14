@@ -535,10 +535,8 @@ class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
     if (_formKey.currentState?.validate() ?? false) {
       if (!mounted) return;
 
-      final viewModel = Provider.of<AssetLiabilityViewModel>(
-        context,
-        listen: false
-      );
+      final viewModel =
+          Provider.of<AssetLiabilityViewModel>(context, listen: false);
 
       final newItem = AssetLiabilityModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(),

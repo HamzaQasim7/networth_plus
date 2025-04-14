@@ -27,6 +27,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
 
   final List<String> _tabs = ['Transactions', 'Report', 'Settle Up'];
 
+  DateTimeRange _selectedDateRange = DateTimeRange(
+    start: DateTime.now().subtract(const Duration(days: 30)),
+    end: DateTime.now(),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,26 +52,33 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   },
                 ),
                 InkWell(
-                  onTap: () => _showMonthPicker(),
+                  onTap: () async {
+                    final newRange = await showDateRangePicker(
+                      context: context,
+                      initialDateRange: _selectedDateRange,
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2100),
+                    );
+                    if (newRange != null) {
+                      setState(() {
+                        _selectedDateRange = newRange;
+                      });
+                      // Reload transactions for all tabs
+                      context.read<TransactionViewModel>().loadTransactions(
+                            startDate: _selectedDateRange.start,
+                            endDate: _selectedDateRange.end,
+                          );
+                    }
+                  },
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? ThemeConstants.surfaceDark
-                          : Colors.grey[100],
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.grey[700]!
-                            : Colors.grey[300]!,
-                      ),
-                    ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          DateFormat('MMMM, yyyy').format(_focusedDay),
+                          '${DateFormat('MMM dd').format(_selectedDateRange.start)} - '
+                          '${DateFormat('MMM dd').format(_selectedDateRange.end)}',
                           style:
                               Theme.of(context).textTheme.titleLarge!.copyWith(
                                     fontSize: 16,
@@ -115,7 +127,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                   color: isDarkMode
                                       ? ThemeConstants.textPrimaryDark
                                       : null),
-                              const SizedBox(width: 8),
+                              const Gap(8),
                               Text('By Category',
                                   style:
                                       Theme.of(context).textTheme.bodyMedium),
@@ -267,20 +279,5 @@ class _TransactionScreenState extends State<TransactionScreen> {
 
   void _handleFilterSelection(FilterOption option) {
     // Implement filter logic based on the selected option
-  }
-  void _showMonthPicker() async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _focusedDay,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-      initialDatePickerMode: DatePickerMode.year,
-    );
-
-    if (picked != null) {
-      setState(() {
-        _focusedDay = DateTime(picked.year, picked.month);
-      });
-    }
   }
 }
