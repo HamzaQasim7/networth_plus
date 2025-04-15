@@ -68,11 +68,11 @@ android {
 
     configurations.all {
         resolutionStrategy {
-            force "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
-            force "org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22"
-            force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22"
-            force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22"
-            // 🔥 Remove all of these 👇
+            // 🔥 Remove all of these 👇. These lines are forcing Kotlin 2.1.0 which is causing the issue.
+            // force "org.jetbrains.kotlin:kotlin-stdlib:2.1.0"
+            // force "org.jetbrains.kotlin:kotlin-stdlib-common:2.1.0"
+            // force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.0"
+            // force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0"
             // force 'com.google.firebase:firebase-analytics:21.5.0'
             // force 'com.google.firebase:firebase-analytics-ktx:21.5.0'
             // force 'com.google.firebase:firebase-common:20.4.2'
@@ -85,11 +85,11 @@ android {
 
 dependencies {
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.0"
 
     implementation platform('com.google.firebase:firebase-bom:32.7.0')
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.android.gms:play-services-auth'
-
+    implementation 'com.google.android.gms:play-services-ads:23.6.0'
     implementation 'androidx.multidex:multidex:2.0.1'
 }

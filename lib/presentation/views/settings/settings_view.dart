@@ -3,14 +3,40 @@ import 'package:finance_tracker/core/services/session_manager.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/notification_toggle.dart';
 import 'package:finance_tracker/viewmodels/auth_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/theme_provider.dart';
+import 'package:finance_tracker/widgets/banner_ad_widget.dart';
 import 'package:finance_tracker/widgets/shared_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../viewmodels/ad_service_viewmodel.dart';
 import 'widgets/settings_tile.dart';
 
-class SettingsView extends StatelessWidget {
+class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
+
+  @override
+  State<SettingsView> createState() => _SettingsViewState();
+}
+
+class _SettingsViewState extends State<SettingsView> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<AdViewModel>(context, listen: false).loadInterstitialAd();
+  }
+
+  void _showAdIfLoaded() {
+    final adViewModel = Provider.of<AdViewModel>(context, listen: false);
+
+    if (adViewModel.isInterstitialAdLoaded) {
+      adViewModel.interstitialAd!.show();
+      adViewModel.loadInterstitialAd(); // Optionally reload for next time
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Ad not ready yet")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -279,7 +305,7 @@ class SettingsView extends StatelessWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: OutlinedButton.icon(
-                        onPressed: () {},
+                        onPressed: () => _showAdIfLoaded(),
                         icon: const Icon(Icons.play_circle_outline),
                         label: const Text('Watch Ad'),
                         style: OutlinedButton.styleFrom(

@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:finance_tracker/data/providers/budget_provider.dart';
 import 'package:finance_tracker/viewmodels/account_card_viewmodel.dart';
+import 'package:finance_tracker/viewmodels/ad_service_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/asset_liability_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/auth_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/budget_viewmodel.dart';
@@ -8,6 +11,7 @@ import 'package:finance_tracker/viewmodels/theme_provider.dart';
 import 'package:finance_tracker/viewmodels/transaction_viewmodel.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/constants/theme_constants.dart';
@@ -18,6 +22,7 @@ import 'presentation/views/session_wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await MobileAds.instance.initialize();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -38,6 +43,11 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<SessionManager>(
           create: (_) => SessionManager(prefs: prefs),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AdViewModel()
+            ..loadBannerAd()
+            ..loadInterstitialAd(),
         ),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
