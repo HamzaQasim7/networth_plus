@@ -262,5 +262,13 @@ class TransactionViewModel extends ChangeNotifier {
     _error = null;
     notifyListeners();
   }
+
+  double getTotalByType(TransactionType type, DateTime start, DateTime end) {
+    return _transactions
+        .where((t) => t.type == type && 
+                      t.date.isAfter(start) && 
+                      t.date.isBefore(end))
+        .fold(0.0, (sum, t) => sum + t.amount);
+  }
 }
 

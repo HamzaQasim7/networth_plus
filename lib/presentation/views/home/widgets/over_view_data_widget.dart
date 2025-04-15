@@ -1,7 +1,12 @@
+import 'package:finance_tracker/data/models/transaction_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/constants/theme_constants.dart';
+import '../../../../viewmodels/transaction_viewmodel.dart';
 import '../../../../widgets/donut_card_widget.dart';
+import '../../../../core/utils/helpers.dart';
 import '../home_screen.dart';
 
 class DataOverViewCard extends StatelessWidget {
@@ -9,8 +14,17 @@ class DataOverViewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<TransactionViewModel>();
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     
+    // Get last 30 days totals
+    final endDate = DateTime.now();
+    final startDate = endDate.subtract(const Duration(days: 30));
+    
+    final income = vm.getTotalByType(TransactionType.income, startDate, endDate);
+    final expense = vm.getTotalByType(TransactionType.expense, startDate, endDate);
+    final savings = income - expense;
+
     return Container(
       decoration: BoxDecoration(
         color: isDarkMode ? ThemeConstants.cardDark : Colors.white,
@@ -50,33 +64,38 @@ class DataOverViewCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            const Row(
+            Row(
               children: [
                 SizedBox(
                   height: 100,
                   width: 100,
-                  child: DonutChartWidget(),
+                  child: DonutChartWidget(
+                    income: income,
+                    expense: expense,
+                  ),
                 ),
-                SizedBox(width: 24),
+                const SizedBox(width: 24),
                 Expanded(
                   child: Column(
                     children: [
                       _SummaryItem(
                         label: 'Income',
-                        amount: '₹1,500.00',
-                        textColor: ThemeConstants.primaryColor,
+                        amount: Helpers.formatCurrency(income),
+                        textColor: ThemeConstants.positiveColor,
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       _SummaryItem(
                         label: 'Expense',
-                        amount: '₹100.00',
+                        amount: Helpers.formatCurrency(expense),
                         textColor: ThemeConstants.negativeColor,
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       _SummaryItem(
                         label: 'Savings',
-                        amount: '₹1,400.00',
-                        textColor: ThemeConstants.primaryColor,
+                        amount: Helpers.formatCurrency(savings),
+                        textColor: savings >= 0 
+                            ? ThemeConstants.positiveColor 
+                            : ThemeConstants.negativeColor,
                       ),
                     ],
                   ),

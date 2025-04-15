@@ -222,9 +222,12 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
                           isScrollControlled: true,
                           useSafeArea: true,
                           backgroundColor: Colors.transparent,
-                          builder: (context) => const AddAssetLiabilitySheet(isAsset: true),
+                          builder: (context) =>
+                              const AddAssetLiabilitySheet(isAsset: true),
                         ).then((_) {
-                          Provider.of<AssetLiabilityViewModel>(context, listen: false).reloadItems();
+                          Provider.of<AssetLiabilityViewModel>(context,
+                                  listen: false)
+                              .reloadItems();
                         });
                       },
                     ),
@@ -239,9 +242,12 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
                           isScrollControlled: true,
                           useSafeArea: true,
                           backgroundColor: Colors.transparent,
-                          builder: (context) => const AddAssetLiabilitySheet(isAsset: false),
+                          builder: (context) =>
+                              const AddAssetLiabilitySheet(isAsset: false),
                         ).then((_) {
-                          Provider.of<AssetLiabilityViewModel>(context, listen: false).reloadItems();
+                          Provider.of<AssetLiabilityViewModel>(context,
+                                  listen: false)
+                              .reloadItems();
                         });
                       },
                     ),
@@ -263,7 +269,7 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         elevation: 0,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 7),
         height: 65,
         shape: const CircularNotchedRectangle(),
         notchMargin: 8,

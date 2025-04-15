@@ -11,12 +11,6 @@ import 'package:provider/provider.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  Future<void> _handleLogout(BuildContext context) async {
-    final sessionManager = context.read<SessionManager>();
-    await sessionManager.clearSession();
-    // No need to navigate manually, SessionWrapper will handle it
-  }
-
   @override
   Widget build(BuildContext context) {
     return const SafeArea(
@@ -28,7 +22,7 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               NetValueRowWidget(),
-              AnalyticsRow(value: 0.7),
+              AnalyticsRow(),
               AccountCardsWidget(),
               BalanceCard(),
               UpcomingPaymentsCard(),

@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/constants/theme_constants.dart';
+import '../../../../viewmodels/asset_liability_viewmodel.dart';
+import '../../../../core/utils/helpers.dart';
 
 class UpcomingPaymentsCard extends StatelessWidget {
   const UpcomingPaymentsCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<AssetLiabilityViewModel>();
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     
+    // Get upcoming payments from liabilities
+    final upcomingPayments = vm.liabilities
+        .where((l) => l.isActive && l.paymentSchedule != null)
+        .map((l) => _PaymentItemData(
+              date: l.nextPaymentDate,
+              title: l.type,
+              amount: l.monthlyPayment,
+              type: l.type,
+            ))
+        .take(3)
+        .toList();
+
     return Container(
       decoration: BoxDecoration(
         color: isDarkMode ? ThemeConstants.cardDark : Colors.white,
@@ -48,34 +65,40 @@ class UpcomingPaymentsCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            const _PaymentItem(
-              date: '28 Feb 2025',
-              title: 'Credit Card',
-              amount: '₹1,000',
-              subtitle: 'Credit Card',
-              textColor: ThemeConstants.negativeColor,
-            ),
-            const SizedBox(height: 12),
-            const _PaymentItem(
-              date: '28 Feb 2025',
-              title: 'Car Loan EMI',
-              amount: '₹5,000',
-              subtitle: 'Car Loan EMI',
-              textColor: ThemeConstants.primaryColor,
-            ),
-            const SizedBox(height: 12),
-            const _PaymentItem(
-              date: '28 Feb 2025',
-              title: 'Home Loan EMI',
-              amount: '₹8,455',
-              subtitle: 'Home Loan EMI',
-              textColor: ThemeConstants.primaryColor,
-            ),
+            if (upcomingPayments.isEmpty)
+              const Text('No upcoming payments')
+            else
+              ...upcomingPayments.map((payment) => Column(
+                children: [
+                  _PaymentItem(
+                    date: DateFormat('dd MMM y').format(payment.date),
+                    title: payment.title,
+                    amount: Helpers.formatCurrency(payment.amount),
+                    subtitle: payment.type,
+                    textColor: ThemeConstants.negativeColor,
+                  ),
+                  const SizedBox(height: 12),
+                ],
+              )),
           ],
         ),
       ),
     );
   }
+}
+
+class _PaymentItemData {
+  final DateTime date;
+  final String title;
+  final double amount;
+  final String type;
+
+  _PaymentItemData({
+    required this.date,
+    required this.title,
+    required this.amount,
+    required this.type,
+  });
 }
 
 class _PaymentItem extends StatelessWidget {

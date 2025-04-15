@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../../../core/constants/theme_constants.dart';
+import '../../../../viewmodels/asset_liability_viewmodel.dart';
 
 class ProgressIndicatorWidget extends StatelessWidget {
-  const ProgressIndicatorWidget({
-    super.key,
-    required this.value,
-  });
+  const ProgressIndicatorWidget({super.key});
 
-  final double value;
+  double _calculateYearlyGrowth(List<NetWorthHistory> history) {
+    if (history.length < 2) return 0.0;
+    final current = history.last.amount;
+    final previous = history.first.amount;
+    if (previous == 0) return 0.0;
+    return ((current - previous) / previous.abs()) * 100;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<AssetLiabilityViewModel>();
+    final growth = _calculateYearlyGrowth(vm.netWorthHistory);
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final backgroundColor = isDarkMode 
         ? Colors.white.withOpacity(0.15) 
         : Colors.white.withOpacity(0.2);
-    
-    // Calculate yearly growth percentage (example calculation)
-    final yearlyGrowthPercentage = 24.5; // This should come from your actual data
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -32,7 +37,7 @@ class ProgressIndicatorWidget extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          '${yearlyGrowthPercentage.toStringAsFixed(1)}%',
+          '${growth.toStringAsFixed(1)}%',
           style: const TextStyle(
             color: Colors.white,
             fontSize: 32,
@@ -51,9 +56,11 @@ class ProgressIndicatorWidget extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: LinearProgressIndicator(
-            value: yearlyGrowthPercentage / 100, // Convert percentage to decimal
+            value: growth.abs() / 100,
             backgroundColor: backgroundColor,
-            valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+            valueColor: AlwaysStoppedAnimation<Color>(
+              growth >= 0 ? Colors.greenAccent : Colors.redAccent,
+            ),
             minHeight: 8,
           ),
         ),

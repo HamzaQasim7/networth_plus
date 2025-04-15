@@ -292,7 +292,7 @@ class _SettingsViewState extends State<SettingsView> {
                   children: [
                     Expanded(
                       child: ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () => _showDonationDialog(context),
                         icon: const Icon(Icons.favorite_outline),
                         label: const Text('Donate'),
                         style: ElevatedButton.styleFrom(
@@ -538,6 +538,31 @@ class _SettingsViewState extends State<SettingsView> {
               ),
             ],
           ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDonationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Scan to Donate'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              'assets/images/test_qrcode.png',
+              width: 250,
+              height: 250,
+            ),
+          ],
         ),
         actions: [
           TextButton(

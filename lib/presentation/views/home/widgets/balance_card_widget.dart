@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/constants/theme_constants.dart';
+import '../../../../viewmodels/asset_liability_viewmodel.dart';
+import '../../../../core/utils/helpers.dart';
 
 class BalanceCard extends StatelessWidget {
   const BalanceCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<AssetLiabilityViewModel>();
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     
+    // Get cash and bank balances from assets
+    final cashBalance = vm.assets
+        .where((a) => a.type == 'Cash')
+        .fold(0.0, (sum, item) => sum + item.amount);
+        
+    final bankBalance = vm.assets
+        .where((a) => a.type == 'Bank')
+        .fold(0.0, (sum, item) => sum + item.amount);
+
     return Container(
       decoration: BoxDecoration(
         color: isDarkMode ? ThemeConstants.cardDark : Colors.white,
@@ -25,7 +38,7 @@ class BalanceCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                 Text(
+                Text(
                   'Available balance',
                   style: TextStyle(
                     fontSize: 16,
@@ -48,17 +61,17 @@ class BalanceCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _BalanceItem(
                   title: 'Cash',
-                  amount: '₹5,600.70',
+                  amount: Helpers.formatCurrency(cashBalance),
                   textColor: ThemeConstants.primaryColor,
                 ),
                 _BalanceItem(
                   title: 'Bank',
-                  amount: '₹1,25,000.50',
+                  amount: Helpers.formatCurrency(bankBalance),
                   textColor: ThemeConstants.primaryColor,
                 ),
               ],
