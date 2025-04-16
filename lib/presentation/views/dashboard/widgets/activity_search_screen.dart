@@ -1,12 +1,11 @@
 import 'package:finance_tracker/core/constants/theme_constants.dart';
+import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:finance_tracker/data/models/asset_liability_model.dart';
 import 'package:finance_tracker/data/models/transaction_model.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../viewmodels/dashboard_viewmodel.dart';
 import '../../../../viewmodels/transaction_viewmodel.dart';
 import '../../../../viewmodels/budget_viewmodel.dart';
 import '../../../../viewmodels/asset_liability_viewmodel.dart';
@@ -198,8 +197,8 @@ class _ActivitySearchScreenState extends State<ActivitySearchScreen> {
 
       case 'budget':
         return Text(
-          'Budget: ₹${item['amount'].toStringAsFixed(2)}\n'
-          'Spent: ₹${item['spent'].toStringAsFixed(2)}',
+          'Budget: ${Helpers.storeCurrency(context)}${item['amount'].toStringAsFixed(2)}\n'
+          'Spent: ${Helpers.storeCurrency(context)}${item['spent'].toStringAsFixed(2)}',
           style: TextStyle(color: Colors.grey[600]),
         );
 
@@ -227,11 +226,11 @@ class _ActivitySearchScreenState extends State<ActivitySearchScreen> {
       children: [
         if (item['type'] == 'budget')
           Text(
-            'Remaining: ₹${item['remaining'].toStringAsFixed(2)}',
+            'Remaining: ${Helpers.storeCurrency(context)}${item['remaining'].toStringAsFixed(2)}',
             style: textStyle.copyWith(fontSize: 12),
           ),
         Text(
-          '₹${item['amount'].toStringAsFixed(2)}',
+          '${Helpers.storeCurrency(context)}${item['amount'].toStringAsFixed(2)}',
           style: textStyle,
         ),
       ],
