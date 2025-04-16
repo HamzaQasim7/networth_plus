@@ -2,6 +2,8 @@ import 'package:finance_tracker/core/routes/routes.dart';
 import 'package:finance_tracker/core/services/session_manager.dart';
 import 'package:finance_tracker/core/utils/motion_toast.dart';
 import 'package:finance_tracker/presentation/views/on_boardings/currency_picker_screen.dart';
+import 'package:finance_tracker/presentation/views/settings/widgets/budget_vs_actual_screen.dart';
+import 'package:finance_tracker/presentation/views/settings/widgets/download_report_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/future_projections_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/income_expense_analysis_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/notification_toggle.dart';
@@ -103,13 +105,27 @@ class _SettingsViewState extends State<SettingsView> {
                     title: 'Budget vs Actual',
                     subtitle: 'Track budget performance',
                     leading: _buildIconContainer(context, Icons.compare_arrows),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const BudgetVsActualScreen(),
+                        ),
+                      );
+                    },
                   ),
                   SettingsTile(
                     title: 'Download Reports',
                     subtitle: 'Export financial reports',
                     leading: _buildIconContainer(context, Icons.download),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const DownloadReportsScreen(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

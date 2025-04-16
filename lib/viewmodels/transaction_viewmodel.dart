@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../data/repositories/transaction_repository.dart';
 import '../data/models/transaction_model.dart';
+import 'package:collection/collection.dart';
 
 class TransactionViewModel extends ChangeNotifier {
   final TransactionRepository _repository;
@@ -269,6 +270,77 @@ class TransactionViewModel extends ChangeNotifier {
                       t.date.isAfter(start) && 
                       t.date.isBefore(end))
         .fold(0.0, (sum, t) => sum + t.amount);
+  }
+
+  double getTotalByTypeAndCategory(
+    TransactionType type,
+    String category,
+    DateTime startDate,
+    DateTime endDate,
+  ) {
+    return transactions
+        .where((t) =>
+            t.type == type &&
+            t.category == category &&
+            t.date.isAfter(startDate) &&
+            t.date.isBefore(endDate))
+        .fold(0.0, (sum, t) => sum + t.amount);
+  }
+
+  List<TransactionModel> getTransactionsInRange(DateTime startDate, DateTime endDate) {
+    return transactions.where((transaction) {
+      // Convert dates to start/end of day to ensure inclusive range
+      final start = DateTime(startDate.year, startDate.month, startDate.day);
+      final end = DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59);
+      
+      return transaction.date.isAfter(start.subtract(const Duration(seconds: 1))) && 
+             transaction.date.isBefore(end.add(const Duration(seconds: 1)));
+    }).toList()
+      ..sort((a, b) => b.date.compareTo(a.date)); // Sort by date descending
+  }
+
+  // Helper method to get transactions by type in a date range
+  List<TransactionModel> getTransactionsByTypeInRange(
+    TransactionType type,
+    DateTime startDate,
+    DateTime endDate,
+  ) {
+    return getTransactionsInRange(startDate, endDate)
+        .where((t) => t.type == type)
+        .toList();
+  }
+
+  // Helper method to get total amount by type in a date range
+  double getTotalByTypeInRange(
+    TransactionType type,
+    DateTime startDate,
+    DateTime endDate,
+  ) {
+    return getTransactionsByTypeInRange(type, startDate, endDate)
+        .fold(0.0, (sum, transaction) => sum + transaction.amount);
+  }
+
+  // Helper method to get transactions grouped by category in a date range
+  Map<String, List<TransactionModel>> getTransactionsByCategoryInRange(
+    DateTime startDate,
+    DateTime endDate,
+  ) {
+    final transactionsInRange = getTransactionsInRange(startDate, endDate);
+    return groupBy(transactionsInRange, (TransactionModel t) => t.category);
+  }
+
+  // Helper method to get total amount by category in a date range
+  Map<String, double> getTotalByCategoryInRange(
+    DateTime startDate,
+    DateTime endDate,
+  ) {
+    final groupedTransactions = getTransactionsByCategoryInRange(startDate, endDate);
+    return groupedTransactions.map(
+      (category, transactions) => MapEntry(
+        category,
+        transactions.fold(0.0, (sum, t) => sum + t.amount),
+      ),
+    );
   }
 }
 

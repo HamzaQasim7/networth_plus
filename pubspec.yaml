@@ -52,6 +52,10 @@ dependencies:
   google_sign_in: ^5.4.3
 #  Google ab mob for displaying ads
   google_mobile_ads: ^5.0.0
+  path_provider: ^2.1.1
+  permission_handler: ^11.0.1
+  csv: ^5.1.1
+  share_plus: ^7.2.1
 
 dev_dependencies:
   flutter_test:

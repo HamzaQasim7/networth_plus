@@ -49,5 +49,45 @@
 		<false/>
 		<key>GADApplicationIdentifier</key>
         <string>ca-app-pub-3940256099942544~3347511713</string> <!-- Test App ID -->
+		<key>UIFileSharingEnabled</key>
+		<true/>
+		<key>LSSupportsOpeningDocumentsInPlace</key>
+		<true/>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>This app needs access to save financial reports to your device.</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>This app needs access to save financial reports to your device.</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>mailto</string>
+			<string>message</string>
+			<string>whatsapp</string>
+			<string>telegram</string>
+		</array>
+		<key>UTExportedTypeDeclarations</key>
+		<array>
+			<dict>
+				<key>UTTypeIdentifier</key>
+				<string>com.yourapp.csv</string>
+				<key>UTTypeDescription</key>
+				<string>CSV File</string>
+				<key>UTTypeConformsTo</key>
+				<array>
+					<string>public.data</string>
+					<string>public.content</string>
+				</array>
+				<key>UTTypeTagSpecification</key>
+				<dict>
+					<key>public.filename-extension</key>
+					<array>
+						<string>csv</string>
+					</array>
+					<key>public.mime-type</key>
+					<array>
+						<string>text/csv</string>
+					</array>
+				</dict>
+			</dict>
+		</array>
 	</dict>
 </plist>
