@@ -2,6 +2,7 @@ import 'package:finance_tracker/core/routes/routes.dart';
 import 'package:finance_tracker/core/services/session_manager.dart';
 import 'package:finance_tracker/core/utils/motion_toast.dart';
 import 'package:finance_tracker/presentation/views/on_boardings/currency_picker_screen.dart';
+import 'package:finance_tracker/presentation/views/settings/widgets/future_projections_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/notification_toggle.dart';
 import 'package:finance_tracker/viewmodels/auth_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/theme_provider.dart';
@@ -61,7 +62,14 @@ class _SettingsViewState extends State<SettingsView> {
                     title: 'Future Projections',
                     subtitle: 'View financial forecasts and trends',
                     leading: _buildIconContainer(context, Icons.trending_up),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FutureProjectionsScreen(),
+                        ),
+                      );
+                    },
                   ),
                   SettingsTile(
                     title: 'Past Performance',

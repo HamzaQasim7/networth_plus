@@ -9,6 +9,7 @@ import 'package:finance_tracker/viewmodels/budget_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/settlement_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/theme_provider.dart';
 import 'package:finance_tracker/viewmodels/transaction_viewmodel.dart';
+import 'package:finance_tracker/viewmodels/projection_viewmodel.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -85,6 +86,11 @@ class MyApp extends StatelessWidget {
           ),
           update: (context, auth, previous) => AccountCardViewModel(
             authViewModel: auth,
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProjectionViewModel(
+            transactionVM: context.read<TransactionViewModel>(),
           ),
         ),
       ],
