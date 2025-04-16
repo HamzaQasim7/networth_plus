@@ -3,7 +3,9 @@ import 'package:finance_tracker/core/services/session_manager.dart';
 import 'package:finance_tracker/core/utils/motion_toast.dart';
 import 'package:finance_tracker/presentation/views/on_boardings/currency_picker_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/future_projections_screen.dart';
+import 'package:finance_tracker/presentation/views/settings/widgets/income_expense_analysis_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/notification_toggle.dart';
+import 'package:finance_tracker/presentation/views/settings/widgets/past_performance_screen.dart';
 import 'package:finance_tracker/viewmodels/auth_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/theme_provider.dart';
 import 'package:finance_tracker/widgets/shared_app_bar.dart';
@@ -75,13 +77,27 @@ class _SettingsViewState extends State<SettingsView> {
                     title: 'Past Performance',
                     subtitle: 'Historical financial analysis',
                     leading: _buildIconContainer(context, Icons.history),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PastPerformanceScreen(),
+                        ),
+                      );
+                    },
                   ),
                   SettingsTile(
                     title: 'Income & Expense Analysis',
                     subtitle: 'Compare income, expenses and savings',
                     leading: _buildIconContainer(context, Icons.analytics),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const IncomeExpenseAnalysisScreen(),
+                        ),
+                      );
+                    },
                   ),
                   SettingsTile(
                     title: 'Budget vs Actual',
@@ -102,12 +118,17 @@ class _SettingsViewState extends State<SettingsView> {
                 children: [
                   SettingsTile(
                     title: 'Currency',
-                    subtitle: Provider.of<SessionManager>(context).selectedCurrency ?? 'Set your preferred currency',
-                    leading: _buildIconContainer(context, Icons.currency_exchange),
+                    subtitle:
+                        Provider.of<SessionManager>(context).selectedCurrency ??
+                            'Set your preferred currency',
+                    leading:
+                        _buildIconContainer(context, Icons.currency_exchange),
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const CurrencyPickerScreen(isFromSettings: true)),
+                        MaterialPageRoute(
+                            builder: (context) => const CurrencyPickerScreen(
+                                isFromSettings: true)),
                       );
                     },
                   ),
