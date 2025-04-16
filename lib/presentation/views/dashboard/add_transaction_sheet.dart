@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../core/constants/console.dart';
+import '../../../core/utils/helpers.dart';
 import '../../../core/utils/motion_toast.dart';
 import '../../../viewmodels/account_card_viewmodel.dart';
 import '../../../widgets/custom_loader.dart';
@@ -106,7 +107,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   void _initializeEditingMode() {
     final transaction = widget.transaction!;
     setState(() {
-      isIncome = transaction.type==TransactionType.income;
+      isIncome = transaction.type == TransactionType.income;
       selectedCategory = transaction.category;
       _amountController.text = transaction.amount.toString();
       _descriptionController.text = transaction.description ?? '';
@@ -369,7 +370,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
           Padding(
             padding: const EdgeInsets.only(left: 12),
             child: Text(
-              'Available Balance: ₹${viewModel.availableBalance.toStringAsFixed(2)}',
+              'Available Balance: ${Helpers.storeCurrency(context)}${viewModel.availableBalance.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context)
                         .textTheme

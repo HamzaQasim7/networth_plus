@@ -1,4 +1,5 @@
 import 'package:finance_tracker/core/constants/app_constants.dart';
+import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:finance_tracker/core/utils/motion_toast.dart';
 import 'package:finance_tracker/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
@@ -302,7 +303,7 @@ class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
         const Gap(16),
         CustomTextField(
           keyboardType: TextInputType.number,
-          prefixText: '₹ ',
+          prefixText: Helpers.storeCurrency(context),
           labelText: widget.isAsset ? 'Asset Value' : 'Liability Amount',
           helperText:
               widget.isAsset ? 'Current market value' : 'Outstanding amount',

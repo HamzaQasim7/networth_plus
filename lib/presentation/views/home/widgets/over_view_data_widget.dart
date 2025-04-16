@@ -1,28 +1,48 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:finance_tracker/data/models/transaction_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
-
 import '../../../../core/constants/theme_constants.dart';
 import '../../../../viewmodels/transaction_viewmodel.dart';
 import '../../../../widgets/donut_card_widget.dart';
 import '../../../../core/utils/helpers.dart';
-import '../home_screen.dart';
 
-class DataOverViewCard extends StatelessWidget {
+class DataOverViewCard extends StatefulWidget {
   const DataOverViewCard({super.key});
+
+  @override
+  State<DataOverViewCard> createState() => _DataOverViewCardState();
+}
+
+class _DataOverViewCardState extends State<DataOverViewCard> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadTransactions();
+    });
+  }
+
+  void _loadTransactions() {
+    final viewModel = context.read<TransactionViewModel>();
+    if (!viewModel.isLoading) {
+      viewModel.loadTransactions();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<TransactionViewModel>();
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
+
     // Get last 30 days totals
     final endDate = DateTime.now();
     final startDate = endDate.subtract(const Duration(days: 30));
-    
-    final income = vm.getTotalByType(TransactionType.income, startDate, endDate);
-    final expense = vm.getTotalByType(TransactionType.expense, startDate, endDate);
+
+    final income =
+        vm.getTotalByType(TransactionType.income, startDate, endDate);
+    final expense =
+        vm.getTotalByType(TransactionType.expense, startDate, endDate);
     final savings = income - expense;
 
     return Container(
@@ -46,21 +66,21 @@ class DataOverViewCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: isDarkMode 
-                        ? ThemeConstants.textPrimaryDark 
+                    color: isDarkMode
+                        ? ThemeConstants.textPrimaryDark
                         : ThemeConstants.textPrimaryLight,
                   ),
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.more_horiz, 
-                    size: 20,
-                    color: isDarkMode 
-                        ? ThemeConstants.textPrimaryDark 
-                        : ThemeConstants.textPrimaryLight,
-                  ),
-                  onPressed: () {},
-                ),
+                // IconButton(
+                //   icon: Icon(
+                //     Icons.more_horiz,
+                //     size: 20,
+                //     color: isDarkMode
+                //         ? ThemeConstants.textPrimaryDark
+                //         : ThemeConstants.textPrimaryLight,
+                //   ),
+                //   onPressed: () {},
+                // ),
               ],
             ),
             const SizedBox(height: 16),
@@ -80,21 +100,21 @@ class DataOverViewCard extends StatelessWidget {
                     children: [
                       _SummaryItem(
                         label: 'Income',
-                        amount: Helpers.formatCurrency(income),
+                        amount: '$income',
                         textColor: ThemeConstants.positiveColor,
                       ),
                       const SizedBox(height: 8),
                       _SummaryItem(
                         label: 'Expense',
-                        amount: Helpers.formatCurrency(expense),
+                        amount: '$expense',
                         textColor: ThemeConstants.negativeColor,
                       ),
                       const SizedBox(height: 8),
                       _SummaryItem(
                         label: 'Savings',
-                        amount: Helpers.formatCurrency(savings),
-                        textColor: savings >= 0 
-                            ? ThemeConstants.positiveColor 
+                        amount: '$savings',
+                        textColor: savings >= 0
+                            ? ThemeConstants.positiveColor
                             : ThemeConstants.negativeColor,
                       ),
                     ],
@@ -123,7 +143,7 @@ class _SummaryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -131,15 +151,19 @@ class _SummaryItem extends StatelessWidget {
           label,
           style: TextStyle(
             fontSize: 14,
-            color: isDarkMode 
-                ? ThemeConstants.textPrimaryDark 
+            color: isDarkMode
+                ? ThemeConstants.textPrimaryDark
                 : ThemeConstants.textPrimaryLight,
           ),
         ),
-        Text(
-          amount,
+        AutoSizeText(
+          '${Helpers.storeCurrency(context)}$amount',
+          maxLines: 1,
+          minFontSize: 10,
+          maxFontSize: 14,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 12,
             fontWeight: FontWeight.w600,
             color: textColor,
           ),

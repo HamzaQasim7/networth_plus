@@ -8,7 +8,12 @@ import 'package:provider/provider.dart';
 import '../../../core/routes/routes.dart';
 
 class CurrencyPickerScreen extends StatefulWidget {
-  const CurrencyPickerScreen({super.key});
+  final bool isFromSettings;
+
+  const CurrencyPickerScreen({
+    super.key,
+    this.isFromSettings = false,
+  });
 
   @override
   State<CurrencyPickerScreen> createState() => _CurrencyPickerScreenState();
@@ -17,14 +22,49 @@ class CurrencyPickerScreen extends StatefulWidget {
 class _CurrencyPickerScreenState extends State<CurrencyPickerScreen> {
   Currency? selectedCurrency;
 
-  void _selectCurrency(BuildContext context, String currency) async {
+  @override
+  void initState() {
+    super.initState();
+    // Load current currency if exists
+    final currentCurrencyCode = context.read<SessionManager>().selectedCurrency;
+    if (currentCurrencyCode != null) {
+      // Use CurrencyService from the currency_picker package
+      final currencies = CurrencyService().findByCode(currentCurrencyCode);
+      if (currencies != null) {
+        setState(() {
+          selectedCurrency = currencies;
+        });
+      }
+    }
+  }
+
+  void _selectCurrency(BuildContext context, Currency currency) async {
     final sessionManager = context.read<SessionManager>();
-    await sessionManager.setSelectedCurrency(currency);
+    await sessionManager.setSelectedCurrency(currency.code);
+
+    if (mounted) {
+      setState(() {
+        selectedCurrency = currency;
+      });
+
+      if (widget.isFromSettings) {
+        // If coming from settings, just go back
+        Navigator.pop(context);
+      } else {
+        // If from onboarding, go to dashboard
+        Navigator.pushReplacementNamed(context, Routes.dashboard);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: widget.isFromSettings
+          ? AppBar(
+              title: const Text('Change Currency'),
+            )
+          : null,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -32,33 +72,66 @@ class _CurrencyPickerScreenState extends State<CurrencyPickerScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Gap(40),
-              Text(
-                'Select Your Currency',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-              ),
-              const Gap(16),
-              Text(
-                'Choose your preferred currency to get started. '
-                'This will be used for all your financial transactions and reports.',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withOpacity(0.7),
-                    ),
-              ),
+              if (!widget.isFromSettings) ...[
+                const Gap(40),
+                Text(
+                  'Select Your Currency',
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                ),
+                const Gap(16),
+                Text(
+                  'Choose your preferred currency to get started. '
+                  'This will be used for all your financial transactions and reports.',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.7),
+                      ),
+                ),
+              ],
               const Gap(24),
               if (selectedCurrency != null) ...[
                 const SizedBox(height: 24),
-                Text(
-                  'Selected Currency: ${selectedCurrency!.code}',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color:
+                        Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        selectedCurrency?.flag ?? '',
+                        style: const TextStyle(fontSize: 24),
                       ),
+                      const SizedBox(width: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            selectedCurrency!.code,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          Text(
+                            selectedCurrency!.name,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
               const Spacer(),
@@ -82,10 +155,7 @@ class _CurrencyPickerScreenState extends State<CurrencyPickerScreen> {
                                 Theme.of(context).scaffoldBackgroundColor,
                           ),
                           onSelect: (Currency currency) {
-                            setState(() {
-                              selectedCurrency = currency;
-                            });
-                            _selectCurrency(context, currency.code);
+                            _selectCurrency(context, currency);
                           },
                         );
                       },
@@ -101,7 +171,7 @@ class _CurrencyPickerScreenState extends State<CurrencyPickerScreen> {
                         ),
                       ),
                     ),
-                    if (selectedCurrency != null) ...[
+                    if (!widget.isFromSettings && selectedCurrency != null) ...[
                       const Gap(16),
                       SizedBox(
                         width: double.infinity,

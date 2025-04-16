@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/models/collaborator.dart';
+import '../../../../core/utils/helpers.dart';
 
 class BudgetItem extends StatelessWidget {
   const BudgetItem({
@@ -112,7 +113,8 @@ class BudgetItem extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: '₹${limit.toStringAsFixed(2)}',
+                              text:
+                                  '${Helpers.storeCurrency(context)}${limit.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -133,7 +135,8 @@ class BudgetItem extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: '₹${spent.toStringAsFixed(2)}',
+                              text:
+                                  '${Helpers.storeCurrency(context)}${spent.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.orange,
@@ -155,7 +158,8 @@ class BudgetItem extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: '₹${remaining.toStringAsFixed(2)}',
+                              text:
+                                  '${Helpers.storeCurrency(context)}${remaining.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.green,

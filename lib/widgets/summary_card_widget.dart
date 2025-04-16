@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:flutter/material.dart';
-
 import '../core/constants/theme_constants.dart';
 
 class SummaryCardWidget extends StatelessWidget {
@@ -39,7 +39,7 @@ class SummaryCardWidget extends StatelessWidget {
                 ),
           ),
           AutoSizeText(
-            amount,
+            '${Helpers.storeCurrency(context)}$amount',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(

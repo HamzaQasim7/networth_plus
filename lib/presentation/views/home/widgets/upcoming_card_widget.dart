@@ -13,7 +13,7 @@ class UpcomingPaymentsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<AssetLiabilityViewModel>();
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
+
     // Get upcoming payments from liabilities
     final upcomingPayments = vm.liabilities
         .where((l) => l.isActive && l.paymentSchedule != null)
@@ -47,20 +47,10 @@ class UpcomingPaymentsCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: isDarkMode 
-                        ? ThemeConstants.textPrimaryDark 
+                    color: isDarkMode
+                        ? ThemeConstants.textPrimaryDark
                         : ThemeConstants.textPrimaryLight,
                   ),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.arrow_forward, 
-                    size: 20,
-                    color: isDarkMode 
-                        ? ThemeConstants.textPrimaryDark 
-                        : ThemeConstants.textPrimaryLight,
-                  ),
-                  onPressed: () {},
                 ),
               ],
             ),
@@ -69,17 +59,18 @@ class UpcomingPaymentsCard extends StatelessWidget {
               const Text('No upcoming payments')
             else
               ...upcomingPayments.map((payment) => Column(
-                children: [
-                  _PaymentItem(
-                    date: DateFormat('dd MMM y').format(payment.date),
-                    title: payment.title,
-                    amount: Helpers.formatCurrency(payment.amount),
-                    subtitle: payment.type,
-                    textColor: ThemeConstants.negativeColor,
-                  ),
-                  const SizedBox(height: 12),
-                ],
-              )),
+                    children: [
+                      _PaymentItem(
+                        date: DateFormat('dd MMM y').format(payment.date),
+                        title: payment.title,
+                        amount:
+                            '${Helpers.storeCurrency(context)}${payment.amount}',
+                        subtitle: payment.type,
+                        textColor: ThemeConstants.negativeColor,
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+                  )),
           ],
         ),
       ),
@@ -119,7 +110,7 @@ class _PaymentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -131,8 +122,8 @@ class _PaymentItem extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: isDarkMode 
-                    ? ThemeConstants.textPrimaryDark 
+                color: isDarkMode
+                    ? ThemeConstants.textPrimaryDark
                     : ThemeConstants.textPrimaryLight,
               ),
             ),
@@ -140,8 +131,8 @@ class _PaymentItem extends StatelessWidget {
             Text(
               subtitle,
               style: TextStyle(
-                color: isDarkMode 
-                    ? ThemeConstants.textSecondaryDark 
+                color: isDarkMode
+                    ? ThemeConstants.textSecondaryDark
                     : ThemeConstants.textSecondaryLight,
                 fontSize: 12,
               ),

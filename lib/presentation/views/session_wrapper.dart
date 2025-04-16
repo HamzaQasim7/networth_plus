@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'on_boardings/landing_screens.dart';
 import 'on_boardings/currency_picker_screen.dart';
 import 'auth/login_view.dart';
-import 'home/home_screen.dart';
 
 class SessionWrapper extends StatelessWidget {
   const SessionWrapper({super.key});

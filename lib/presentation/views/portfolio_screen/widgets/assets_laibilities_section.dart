@@ -1,3 +1,4 @@
+import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +10,8 @@ class AssetsLiabilitiesSection extends StatefulWidget {
   const AssetsLiabilitiesSection({super.key});
 
   @override
-  AssetsLiabilitiesSectionState createState() => AssetsLiabilitiesSectionState();
+  AssetsLiabilitiesSectionState createState() =>
+      AssetsLiabilitiesSectionState();
 }
 
 class AssetsLiabilitiesSectionState extends State<AssetsLiabilitiesSection> {
@@ -23,10 +25,8 @@ class AssetsLiabilitiesSectionState extends State<AssetsLiabilitiesSection> {
     super.initState();
     // Initialize data loading
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final viewModel = Provider.of<AssetLiabilityViewModel>(
-        context, 
-        listen: false
-      );
+      final viewModel =
+          Provider.of<AssetLiabilityViewModel>(context, listen: false);
       if (viewModel.items.isEmpty) {
         viewModel.loadAssetLiabilities();
       }
@@ -67,7 +67,9 @@ class AssetsLiabilitiesSectionState extends State<AssetsLiabilitiesSection> {
             ),
             const SizedBox(height: 16),
             // List content
-            _selectedTabIndex == 0 ? _buildAssetsList(viewModel.assets) : _buildLiabilitiesList(viewModel.liabilities),
+            _selectedTabIndex == 0
+                ? _buildAssetsList(viewModel.assets)
+                : _buildLiabilitiesList(viewModel.liabilities),
           ],
         );
       },
@@ -133,13 +135,15 @@ class AssetsLiabilitiesSectionState extends State<AssetsLiabilitiesSection> {
 
   Widget _buildLiabilitiesList(List<AssetLiabilityModel> liabilities) {
     return Column(
-      children: liabilities.map((liability) => _buildListItem(liability)).toList(),
+      children:
+          liabilities.map((liability) => _buildListItem(liability)).toList(),
     );
   }
 
   Widget _buildListItem(AssetLiabilityModel item) {
     return Builder(builder: (context) {
-      final viewModel = Provider.of<AssetLiabilityViewModel>(context, listen: false);
+      final viewModel =
+          Provider.of<AssetLiabilityViewModel>(context, listen: false);
       final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
       return Dismissible(
@@ -164,7 +168,8 @@ class AssetsLiabilitiesSectionState extends State<AssetsLiabilitiesSection> {
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Delete', style: TextStyle(color: Colors.red)),
+                  child:
+                      const Text('Delete', style: TextStyle(color: Colors.red)),
                 ),
               ],
             ),
@@ -198,7 +203,8 @@ class AssetsLiabilitiesSectionState extends State<AssetsLiabilitiesSection> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade100,
+                  color:
+                      isDarkMode ? Colors.grey.shade800 : Colors.grey.shade100,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(Icons.account_balance_wallet_outlined,
@@ -216,7 +222,7 @@ class AssetsLiabilitiesSectionState extends State<AssetsLiabilitiesSection> {
               ),
               const Spacer(),
               Text(
-                '₹${item.amount.toStringAsFixed(2)}',
+                '${Helpers.storeCurrency(context)}${item.amount.toStringAsFixed(2)}',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: _selectedTabIndex == 0 ? Colors.green : Colors.red,
                       fontWeight: FontWeight.w500,

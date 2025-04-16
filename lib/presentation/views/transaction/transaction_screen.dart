@@ -187,19 +187,19 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   Expanded(
                     child: SummaryCardWidget(
                         title: 'Income',
-                        amount: '₹${provider.totalIncome}',
+                        amount: '${provider.totalIncome}',
                         textColor: Colors.green),
                   ),
                   Expanded(
                     child: SummaryCardWidget(
                         title: 'Expense',
-                        amount: '₹${provider.totalExpense}',
+                        amount: '${provider.totalExpense}',
                         textColor: Colors.red),
                   ),
                   Expanded(
                     child: SummaryCardWidget(
                         title: 'Available',
-                        amount: '₹${provider.availableBalance}',
+                        amount: '${provider.availableBalance}',
                         textColor: Colors.blue),
                   ),
                 ],

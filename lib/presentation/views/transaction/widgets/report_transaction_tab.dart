@@ -87,9 +87,8 @@ class _ReportTransactionTabState extends State<ReportTransactionTab> {
             title: 'Spending by Category',
             chart: FutureBuilder<Map<String, double>>(
               future: vm.getCategoryTotals(
-                startDate: 
-                    DateTime.now().subtract(const Duration(days: 30)),
-                endDate:  DateTime.now(),
+                startDate: DateTime.now().subtract(const Duration(days: 30)),
+                endDate: DateTime.now(),
                 type: TransactionType.expense,
               ),
               builder: (context, snapshot) {
@@ -138,15 +137,15 @@ class _ReportTransactionTabState extends State<ReportTransactionTab> {
               children: [
                 ReportItemWidget(
                   label: 'Total Income',
-                  value: '₹${vm.totalIncome.toStringAsFixed(2)}',
+                  value: vm.totalIncome.toStringAsFixed(2),
                 ),
                 ReportItemWidget(
                   label: 'Total Expenses',
-                  value: '₹${vm.totalExpense.toStringAsFixed(2)}',
+                  value: vm.totalExpense.toStringAsFixed(2),
                 ),
                 ReportItemWidget(
                   label: 'Net Savings',
-                  value: '₹${vm.availableBalance.toStringAsFixed(2)}',
+                  value: vm.availableBalance.toStringAsFixed(2),
                   textColor:
                       vm.availableBalance >= 0 ? Colors.green : Colors.red,
                 ),

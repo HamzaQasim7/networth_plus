@@ -1,6 +1,16 @@
+import 'package:currency_picker/currency_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../services/session_manager.dart';
 
 class Helpers {
+  static String? storeCurrency(BuildContext context) {
+    final currencyCode = context.watch<SessionManager>().selectedCurrency;
+    return currencyCode;
+  }
+
   static String formatCurrency(double amount) {
     final formatter = NumberFormat.currency(symbol: '\$');
     return formatter.format(amount);
@@ -28,4 +38,4 @@ class Helpers {
       return 'Just now';
     }
   }
-} 
+}

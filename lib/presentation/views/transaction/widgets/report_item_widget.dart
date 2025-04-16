@@ -1,3 +1,4 @@
+import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:flutter/material.dart';
 
 class ReportItemWidget extends StatelessWidget {
@@ -16,7 +17,7 @@ class ReportItemWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: Theme.of(context).textTheme.bodyMedium),
-          Text(value,
+          Text('${Helpers.storeCurrency(context)}$value',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: textColor,
                     fontWeight: FontWeight.bold,

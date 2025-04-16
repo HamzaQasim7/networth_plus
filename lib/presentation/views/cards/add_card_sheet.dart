@@ -1,4 +1,5 @@
 import 'package:finance_tracker/core/constants/console.dart';
+import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:finance_tracker/widgets/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -132,7 +133,7 @@ class _AddCardSheetState extends State<AddCardSheet> {
                   decoration: InputDecoration(
                     labelText: 'Balance',
                     border: const OutlineInputBorder(),
-                    prefixText: '₹ ',
+                    prefixText: Helpers.storeCurrency(context),
                     labelStyle: TextStyle(
                       color: isDarkMode
                           ? ThemeConstants.textSecondaryDark

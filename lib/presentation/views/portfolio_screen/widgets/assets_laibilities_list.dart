@@ -1,3 +1,4 @@
+import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../viewmodels/asset_liability_viewmodel.dart';
@@ -21,12 +22,12 @@ class AssetLiabilitiesList extends StatelessWidget {
             children: [
               _buildSectionTitle('Top Assets:', topAssets, isDarkMode),
               const SizedBox(height: 8),
-              ..._buildListItems(topAssets),
+              ..._buildListItems(topAssets, context),
               const SizedBox(height: 16),
               _buildSectionTitle(
                   'Top Liabilities:', topLiabilities, isDarkMode),
               const SizedBox(height: 8),
-              ..._buildListItems(topLiabilities),
+              ..._buildListItems(topLiabilities, context),
             ],
           ),
         );
@@ -47,7 +48,7 @@ class AssetLiabilitiesList extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildListItems(List<dynamic> items) {
+  List<Widget> _buildListItems(List<dynamic> items, BuildContext context) {
     return items
         .map((item) => Padding(
               padding: const EdgeInsets.only(bottom: 4),
@@ -68,7 +69,7 @@ class AssetLiabilitiesList extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '₹${item.amount.toStringAsFixed(2)}',
+                    '${Helpers.storeCurrency(context)}${item.amount.toStringAsFixed(2)}',
                     style: TextStyle(
                       fontSize: 10,
                       color: item.isAsset ? Colors.green : Colors.red,

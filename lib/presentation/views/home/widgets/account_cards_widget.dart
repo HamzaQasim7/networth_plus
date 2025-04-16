@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/theme_constants.dart';
+import '../../../../core/services/session_manager.dart';
 import '../../../../data/models/account_card_model.dart';
 import '../../../../viewmodels/account_card_viewmodel.dart';
 import '../../../../widgets/app_header_text.dart';
@@ -78,6 +79,7 @@ class AccountCardsWidget extends StatelessWidget {
 
   Widget _buildCardItem(AccountCardModel card, BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final currencyCode = context.watch<SessionManager>().selectedCurrency;
 
     return GestureDetector(
       onTap: () {
@@ -138,7 +140,7 @@ class AccountCardsWidget extends StatelessWidget {
             ),
             const Gap(8),
             Text(
-              '₹${card.balance.toStringAsFixed(2)}',
+              '$currencyCode${card.balance.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: isDarkMode

@@ -1,7 +1,9 @@
 import 'package:finance_tracker/core/constants/console.dart';
+import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:finance_tracker/data/models/settlement_model.dart';
 import 'package:finance_tracker/viewmodels/settlement_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/helper_utils.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
@@ -45,7 +47,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final viewModel = context.watch<SettlementViewModel>();
-    
+
     // Only show error if it's new
     if (viewModel.error != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -115,7 +117,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
           ),
         ),
         trailing: Text(
-          '₹${settlement.amount.toStringAsFixed(2)}',
+          '${Helpers.storeCurrency(context)}${settlement.amount.toStringAsFixed(2)}',
           style: TextStyle(
             color: settlement.isOwed ? Colors.red : Colors.green,
             fontWeight: FontWeight.bold,

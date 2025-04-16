@@ -1,3 +1,4 @@
+import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:finance_tracker/widgets/app_header_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -32,7 +33,9 @@ class NetWorthDisplay extends StatelessWidget {
             ),
             const Gap(20),
             AppHeaderText(
-                text: '₹${netWorth.toStringAsFixed(2)}', fontSize: 24),
+                text:
+                    '${Helpers.storeCurrency(context)}${netWorth.toStringAsFixed(2)}',
+                fontSize: 24),
             Divider(
                 color: Theme.of(context).brightness == Brightness.dark
                     ? Colors.grey.shade800

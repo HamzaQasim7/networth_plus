@@ -12,12 +12,12 @@ class BalanceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<AssetLiabilityViewModel>();
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
+
     // Get cash and bank balances from assets
     final cashBalance = vm.assets
         .where((a) => a.type == 'Cash')
         .fold(0.0, (sum, item) => sum + item.amount);
-        
+
     final bankBalance = vm.assets
         .where((a) => a.type == 'Bank')
         .fold(0.0, (sum, item) => sum + item.amount);
@@ -43,20 +43,10 @@ class BalanceCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: isDarkMode 
-                        ? ThemeConstants.textPrimaryDark 
+                    color: isDarkMode
+                        ? ThemeConstants.textPrimaryDark
                         : ThemeConstants.textPrimaryLight,
                   ),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.arrow_forward, 
-                    size: 20,
-                    color: isDarkMode 
-                        ? ThemeConstants.textPrimaryDark 
-                        : ThemeConstants.textPrimaryLight,
-                  ),
-                  onPressed: () {},
                 ),
               ],
             ),
@@ -66,12 +56,12 @@ class BalanceCard extends StatelessWidget {
               children: [
                 _BalanceItem(
                   title: 'Cash',
-                  amount: Helpers.formatCurrency(cashBalance),
+                  amount: '${Helpers.storeCurrency(context)}$cashBalance',
                   textColor: ThemeConstants.primaryColor,
                 ),
                 _BalanceItem(
                   title: 'Bank',
-                  amount: Helpers.formatCurrency(bankBalance),
+                  amount: '${Helpers.storeCurrency(context)}$bankBalance',
                   textColor: ThemeConstants.primaryColor,
                 ),
               ],
@@ -97,15 +87,15 @@ class _BalanceItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
           style: TextStyle(
-            color: isDarkMode 
-                ? ThemeConstants.textSecondaryDark 
+            color: isDarkMode
+                ? ThemeConstants.textSecondaryDark
                 : ThemeConstants.textSecondaryLight,
             fontSize: 14,
           ),

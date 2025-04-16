@@ -1,9 +1,10 @@
 import 'package:finance_tracker/core/routes/routes.dart';
 import 'package:finance_tracker/core/services/session_manager.dart';
+import 'package:finance_tracker/core/utils/motion_toast.dart';
+import 'package:finance_tracker/presentation/views/on_boardings/currency_picker_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/notification_toggle.dart';
 import 'package:finance_tracker/viewmodels/auth_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/theme_provider.dart';
-import 'package:finance_tracker/widgets/banner_ad_widget.dart';
 import 'package:finance_tracker/widgets/shared_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,11 +31,10 @@ class _SettingsViewState extends State<SettingsView> {
 
     if (adViewModel.isInterstitialAdLoaded) {
       adViewModel.interstitialAd!.show();
-      adViewModel.loadInterstitialAd(); // Optionally reload for next time
+      adViewModel.loadInterstitialAd();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Ad not ready yet")),
-      );
+      ToastUtils.showWarningToast(context,
+          title: 'Wait', description: 'Ad not ready yet');
     }
   }
 
@@ -94,10 +94,14 @@ class _SettingsViewState extends State<SettingsView> {
                 children: [
                   SettingsTile(
                     title: 'Currency',
-                    subtitle: 'Set your preferred currency',
-                    leading:
-                        _buildIconContainer(context, Icons.currency_exchange),
-                    onTap: () {},
+                    subtitle: Provider.of<SessionManager>(context).selectedCurrency ?? 'Set your preferred currency',
+                    leading: _buildIconContainer(context, Icons.currency_exchange),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CurrencyPickerScreen(isFromSettings: true)),
+                      );
+                    },
                   ),
                   SettingsTile(
                     title: 'App Theme',
@@ -119,13 +123,13 @@ class _SettingsViewState extends State<SettingsView> {
                     leading: _buildIconContainer(context, Icons.language),
                     onTap: () {},
                   ),
-                  SettingsTile(
-                    title: 'Theme Customization',
-                    subtitle: 'Customize app appearance',
-                    leading:
-                        _buildIconContainer(context, Icons.palette_outlined),
-                    onTap: () {},
-                  ),
+                  // SettingsTile(
+                  //   title: 'Theme Customization',
+                  //   subtitle: 'Customize app appearance',
+                  //   leading:
+                  //       _buildIconContainer(context, Icons.palette_outlined),
+                  //   onTap: () {},
+                  // ),
                 ],
               ),
               _SettingsSection(

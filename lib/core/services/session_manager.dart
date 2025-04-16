@@ -32,6 +32,7 @@ class SessionManager extends ChangeNotifier {
 
   Future<void> setSelectedCurrency(String currency) async {
     await _prefs.setString(_selectedCurrencyKey, currency);
+    notifyListeners();
   }
 
   Future<void> clearSession() async {

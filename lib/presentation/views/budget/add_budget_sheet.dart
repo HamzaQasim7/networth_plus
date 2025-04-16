@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 import '../../../../viewmodels/budget_viewmodel.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/utils/helpers.dart';
+
 class AddBudgetSheet extends StatefulWidget {
   final String categoryName;
   final IconData categoryIcon;
@@ -54,7 +56,7 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
   void initState() {
     super.initState();
     final budget = widget.existingBudget;
-    
+
     if (budget != null) {
       _category = budget.category;
       _categoryIcon = _getIconForCategory(budget.category);
@@ -268,7 +270,7 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
         TextFormField(
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
-            prefixText: '₹ ',
+            prefixText: '${Helpers.storeCurrency(context)}',
             labelText: 'Enter Budget Amount',
             border: const OutlineInputBorder(),
             helperText: 'Set your budget limit for this category',
@@ -429,49 +431,52 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
   void _saveBudget() async {
     if (_formKey.currentState?.validate() ?? false) {
       final viewModel = Provider.of<BudgetViewModel>(context, listen: false);
-      
+
       if (viewModel.isLoading) {
         const CustomLoadingOverlay();
       }
 
       final budget = widget.existingBudget?.copyWith(
-        category: _category,
-        amount: _budgetAmount,
-        startDate: _startDate,
-        endDate: _endDate,
-        periodType: _period,
-        customPeriod: _period == 'Custom' ? _getCustomPeriodDescription() : null,
-        isRecurring: _isRecurring,
-        collaborators: _collaborators,
-        alerts: _alerts,
-        isActive: true,
-        updatedAt: DateTime.now(),
-      ) ?? BudgetModel(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        userId: viewModel.authViewModel.currentUser!.id,
-        category: _category,
-        amount: _budgetAmount,
-        startDate: _startDate,
-        endDate: _endDate,
-        periodType: _period,
-        customPeriod: _period == 'Custom' ? _getCustomPeriodDescription() : null,
-        isRecurring: _isRecurring,
-        collaborators: _collaborators,
-        alerts: _alerts,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        isActive: true,
-      );
+            category: _category,
+            amount: _budgetAmount,
+            startDate: _startDate,
+            endDate: _endDate,
+            periodType: _period,
+            customPeriod:
+                _period == 'Custom' ? _getCustomPeriodDescription() : null,
+            isRecurring: _isRecurring,
+            collaborators: _collaborators,
+            alerts: _alerts,
+            isActive: true,
+            updatedAt: DateTime.now(),
+          ) ??
+          BudgetModel(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            userId: viewModel.authViewModel.currentUser!.id,
+            category: _category,
+            amount: _budgetAmount,
+            startDate: _startDate,
+            endDate: _endDate,
+            periodType: _period,
+            customPeriod:
+                _period == 'Custom' ? _getCustomPeriodDescription() : null,
+            isRecurring: _isRecurring,
+            collaborators: _collaborators,
+            alerts: _alerts,
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+            isActive: true,
+          );
 
-      final success = widget.existingBudget != null 
+      final success = widget.existingBudget != null
           ? await viewModel.updateBudget(budget)
           : await viewModel.createBudget(budget);
 
       if (success && mounted) {
         Navigator.pop(context);
         ToastUtils.showSuccessToast(context,
-            title: 'Success', 
-            description: widget.existingBudget != null 
+            title: 'Success',
+            description: widget.existingBudget != null
                 ? 'Budget updated successfully'
                 : 'Budget created successfully');
       }
