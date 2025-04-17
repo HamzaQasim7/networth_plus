@@ -8,9 +8,11 @@ import 'package:finance_tracker/viewmodels/asset_liability_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/auth_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/budget_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/debt_viewmodel.dart';
+import 'package:finance_tracker/viewmodels/profile_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/retirement_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/savings_goal_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/settlement_viewmodel.dart';
+import 'package:finance_tracker/viewmodels/subscription_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/theme_provider.dart';
 import 'package:finance_tracker/viewmodels/transaction_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/projection_viewmodel.dart';
@@ -117,6 +119,17 @@ class MyApp extends StatelessWidget {
             authViewModel: context.read<AuthViewModel>(),
           ),
         ),
+            ChangeNotifierProvider(
+      create: (context) => ProfileViewModel(
+        authViewModel: context.read<AuthViewModel>(),
+      ),
+      
+    ),
+        ChangeNotifierProvider(
+      create: (context) => SubscriptionViewModel(
+        authViewModel: context.read<AuthViewModel>(),
+      ),
+    ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) {

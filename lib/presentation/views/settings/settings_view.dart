@@ -10,8 +10,10 @@ import 'package:finance_tracker/presentation/views/settings/widgets/future_proje
 import 'package:finance_tracker/presentation/views/settings/widgets/income_expense_analysis_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/notification_toggle.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/past_performance_screen.dart';
+import 'package:finance_tracker/presentation/views/settings/widgets/profile_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/retirement_planning_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/savings_goal_screen.dart';
+import 'package:finance_tracker/presentation/views/settings/widgets/subscription_screen.dart';
 import 'package:finance_tracker/viewmodels/auth_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/theme_provider.dart';
 import 'package:finance_tracker/widgets/shared_app_bar.dart';
@@ -263,14 +265,24 @@ class _SettingsViewState extends State<SettingsView> {
                     title: 'Profile',
                     subtitle: 'Manage personal information',
                     leading: _buildIconContainer(context, Icons.person_outline),
-                    onTap: () {},
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfileScreen(),
+                      ),
+                    ),
                   ),
                   SettingsTile(
                     title: 'Subscription Plan',
                     subtitle: 'Manage your subscription',
                     leading:
                         _buildIconContainer(context, Icons.card_membership),
-                    onTap: () {},
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SubscriptionScreen(),
+                      ),
+                    ),
                   ),
                   SettingsTile(
                     title: 'Security',
