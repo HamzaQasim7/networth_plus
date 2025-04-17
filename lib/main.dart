@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_tracker/data/providers/budget_provider.dart';
 import 'package:finance_tracker/viewmodels/account_card_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/ad_service_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/asset_liability_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/auth_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/budget_viewmodel.dart';
+import 'package:finance_tracker/viewmodels/savings_goal_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/settlement_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/theme_provider.dart';
 import 'package:finance_tracker/viewmodels/transaction_viewmodel.dart';
@@ -26,6 +28,11 @@ void main() async {
   await MobileAds.instance.initialize();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // Enable Firestore offline persistence
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: true,
+    cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
   );
   // Initialize SharedPreferences
   final prefs = await SharedPreferences.getInstance();
@@ -93,6 +100,11 @@ class MyApp extends StatelessWidget {
             transactionVM: context.read<TransactionViewModel>(),
           ),
         ),
+            ChangeNotifierProvider(
+      create: (context) => SavingsGoalViewModel(
+        authViewModel: context.read<AuthViewModel>(),
+      ),
+    ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) {

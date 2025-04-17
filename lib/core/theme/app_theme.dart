@@ -35,7 +35,7 @@ class AppTheme {
   }
 
   static ColorScheme _buildLightColorScheme() {
-    return ColorScheme.light(
+    return const ColorScheme.light(
       primary: ThemeConstants.primaryColor,
       secondary: ThemeConstants.secondaryColor,
       tertiary: ThemeConstants.accentColor,
@@ -47,7 +47,7 @@ class AppTheme {
   }
 
   static ColorScheme _buildDarkColorScheme() {
-    return ColorScheme.dark(
+    return const ColorScheme.dark(
       primary: ThemeConstants.primaryColor,
       secondary: ThemeConstants.secondaryColor,
       tertiary: ThemeConstants.accentColor,

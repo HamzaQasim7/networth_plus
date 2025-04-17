@@ -8,6 +8,7 @@ import 'package:finance_tracker/presentation/views/settings/widgets/future_proje
 import 'package:finance_tracker/presentation/views/settings/widgets/income_expense_analysis_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/notification_toggle.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/past_performance_screen.dart';
+import 'package:finance_tracker/presentation/views/settings/widgets/savings_goal_screen.dart';
 import 'package:finance_tracker/viewmodels/auth_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/theme_provider.dart';
 import 'package:finance_tracker/widgets/shared_app_bar.dart';
@@ -201,7 +202,14 @@ class _SettingsViewState extends State<SettingsView> {
                     title: 'Savings Goals',
                     subtitle: 'Set and track savings targets',
                     leading: _buildIconContainer(context, Icons.savings),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SavingsGoalsScreen(),
+                        ),
+                      );
+                    },
                   ),
                   SettingsTile(
                     title: 'Debt Repayment Plan',
