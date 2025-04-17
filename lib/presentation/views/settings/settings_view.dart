@@ -3,11 +3,14 @@ import 'package:finance_tracker/core/services/session_manager.dart';
 import 'package:finance_tracker/core/utils/motion_toast.dart';
 import 'package:finance_tracker/presentation/views/on_boardings/currency_picker_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/budget_vs_actual_screen.dart';
+import 'package:finance_tracker/presentation/views/settings/widgets/debt_repayment_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/download_report_screen.dart';
+import 'package:finance_tracker/presentation/views/settings/widgets/financial_calculator_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/future_projections_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/income_expense_analysis_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/notification_toggle.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/past_performance_screen.dart';
+import 'package:finance_tracker/presentation/views/settings/widgets/retirement_planning_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/savings_goal_screen.dart';
 import 'package:finance_tracker/viewmodels/auth_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/theme_provider.dart';
@@ -97,7 +100,8 @@ class _SettingsViewState extends State<SettingsView> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const IncomeExpenseAnalysisScreen(),
+                          builder: (context) =>
+                              const IncomeExpenseAnalysisScreen(),
                         ),
                       );
                     },
@@ -216,19 +220,39 @@ class _SettingsViewState extends State<SettingsView> {
                     subtitle: 'Manage and track debt payments',
                     leading:
                         _buildIconContainer(context, Icons.account_balance),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const DebtRepaymentScreen(),
+                        ),
+                      );
+                    },
                   ),
                   SettingsTile(
                     title: 'Retirement Planning',
                     subtitle: 'Plan for your retirement',
                     leading: _buildIconContainer(context, Icons.beach_access),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const RetirementPlanningScreen(),
+                        ),
+                      );
+                    },
                   ),
                   SettingsTile(
                     title: 'Financial Calculator',
                     subtitle: 'Calculate loans, investments & more',
                     leading: _buildIconContainer(context, Icons.calculate),
-                    onTap: () {},
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const FinancialCalculatorScreen(),
+                      ),
+                    ),
                   ),
                 ],
               ),

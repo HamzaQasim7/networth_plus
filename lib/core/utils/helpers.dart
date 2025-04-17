@@ -6,9 +6,18 @@ import 'package:provider/provider.dart';
 import '../services/session_manager.dart';
 
 class Helpers {
-  static String? storeCurrency(BuildContext context) {
-    final currencyCode = context.watch<SessionManager>().selectedCurrency;
-    return currencyCode;
+  static String storeCurrency(BuildContext context) {
+    try {
+      // Use listen: false since we don't need to rebuild on currency changes in event handlers
+      final sessionManager = Provider.of<SessionManager>(context, listen: false);
+      return sessionManager.selectedCurrency ?? '\$';
+    } catch (e) {
+      return '\$'; // Fallback currency symbol
+    }
+  }
+
+  static String formatAmount(double amount, String currency) {
+    return '$currency${amount.toStringAsFixed(2)}';
   }
 
   static String formatCurrency(double amount) {

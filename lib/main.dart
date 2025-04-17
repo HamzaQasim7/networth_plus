@@ -7,6 +7,8 @@ import 'package:finance_tracker/viewmodels/ad_service_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/asset_liability_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/auth_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/budget_viewmodel.dart';
+import 'package:finance_tracker/viewmodels/debt_viewmodel.dart';
+import 'package:finance_tracker/viewmodels/retirement_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/savings_goal_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/settlement_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/theme_provider.dart';
@@ -100,11 +102,21 @@ class MyApp extends StatelessWidget {
             transactionVM: context.read<TransactionViewModel>(),
           ),
         ),
-            ChangeNotifierProvider(
-      create: (context) => SavingsGoalViewModel(
-        authViewModel: context.read<AuthViewModel>(),
-      ),
-    ),
+        ChangeNotifierProvider(
+          create: (context) => SavingsGoalViewModel(
+            authViewModel: context.read<AuthViewModel>(),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DebtViewModel(
+            authViewModel: context.read<AuthViewModel>(),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => RetirementViewModel(
+            authViewModel: context.read<AuthViewModel>(),
+          ),
+        ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) {

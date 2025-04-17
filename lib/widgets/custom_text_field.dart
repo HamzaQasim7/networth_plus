@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
   final String? hintText;
   final String? labelText;
   final String? helperText;
+  final String? initialValue;
   final String? suffixText;
   final String? prefixText;
   final IconData? icon;
@@ -57,12 +58,14 @@ class CustomTextField extends StatelessWidget {
     this.suffixText,
     this.onTap,
     this.onSaved,
+    this.initialValue,
   });
 
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return TextFormField(
+      initialValue: initialValue,
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
