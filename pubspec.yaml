@@ -76,16 +76,16 @@ flutter_launcher_icons:
   web:
     generate: false
 
-# Splash Screen Configuration   flutter pub run flutter_native_splash:create
+# Splash Screen Configuration   dart run flutter_native_splash:create
 flutter_native_splash:
-  color: "#FFFFFF"
+  color: "#21A472"
   image: assets/icons/app_logo.jpg
   color_dark: "#121212"
   image_dark: assets/icons/app_logo.jpg
 
   android_12:
     image: assets/icons/app_logo.jpg
-    icon_background_color: "#FFFFFF"
+    icon_background_color: "#21A472"
     image_dark: assets/icons/app_logo.jpg
     icon_background_color_dark: "#121212"
 

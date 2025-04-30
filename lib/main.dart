@@ -119,22 +119,21 @@ class MyApp extends StatelessWidget {
             authViewModel: context.read<AuthViewModel>(),
           ),
         ),
-            ChangeNotifierProvider(
-      create: (context) => ProfileViewModel(
-        authViewModel: context.read<AuthViewModel>(),
-      ),
-      
-    ),
         ChangeNotifierProvider(
-      create: (context) => SubscriptionViewModel(
-        authViewModel: context.read<AuthViewModel>(),
-      ),
-    ),
+          create: (context) => ProfileViewModel(
+            authViewModel: context.read<AuthViewModel>(),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SubscriptionViewModel(
+            authViewModel: context.read<AuthViewModel>(),
+          ),
+        ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) {
           return MaterialApp(
-            title: 'Finance Tracker',
+            title: 'NetWorth+',
             theme: ThemeConstants.lightTheme,
             darkTheme: ThemeConstants.darkTheme,
             themeMode: themeProvider.themeMode,
