@@ -239,16 +239,15 @@ class _TransactionsTabState extends State<TransactionsTab> {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () async {
+            onPressed: () {
               Navigator.pop(context);
-              final success = await viewModel.deleteTransaction(transactionId);
-              if (success && context.mounted) {
-                ToastUtils.showSuccessToast(
-                  context,
-                  title: 'Success',
-                  description: 'Transaction deleted successfully',
-                );
-              }
+              viewModel.deleteTransaction(transactionId);
+              ToastUtils.showSuccessToast(
+                context,
+                title: 'Success',
+                description: 'Transaction deleted successfully',
+              );
+              Navigator.pop(context);
             },
             child: const Text('Delete', style: TextStyle(color: Colors.red)),
           ),

@@ -34,6 +34,8 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
   // Form data
   String _category = '';
   IconData _categoryIcon = Icons.category;
+  String _categoryIconFontFamily = 'FontAwesomeSolid'; // <-- Add this
+  String _categoryIconCode = Icons.category.codePoint.toString();
   double _budgetAmount = 0;
   String _period = 'Monthly';
   bool _isRecurring = false;
@@ -59,7 +61,9 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
 
     if (budget != null) {
       _category = budget.category;
-      _categoryIcon = _getIconForCategory(budget.category);
+      _categoryIconCode = budget.icon;
+      _categoryIcon =
+          IconData(int.parse(_categoryIconCode), fontFamily: 'MaterialIcons');
       _budgetAmount = budget.amount;
       _period = budget.periodType;
       _isRecurring = budget.isRecurring;
@@ -70,6 +74,7 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
     } else {
       _category = widget.categoryName;
       _categoryIcon = widget.categoryIcon;
+      _categoryIconCode = widget.categoryIcon.codePoint.toString();
     }
   }
 
@@ -270,7 +275,7 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
         TextFormField(
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
-            prefixText: '${Helpers.storeCurrency(context)}',
+            prefixText: Helpers.storeCurrency(context),
             labelText: 'Enter Budget Amount',
             border: const OutlineInputBorder(),
             helperText: 'Set your budget limit for this category',
@@ -449,6 +454,7 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
             alerts: _alerts,
             isActive: true,
             updatedAt: DateTime.now(),
+            icon: _categoryIconCode,
           ) ??
           BudgetModel(
             id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -466,6 +472,8 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
             isActive: true,
+            icon: _categoryIconCode,
+            iconFontFamily: _categoryIconFontFamily,
           );
 
       final success = widget.existingBudget != null
@@ -486,8 +494,9 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
   String _getCustomPeriodDescription() {
     final difference = _endDate.difference(_startDate);
     if (difference.inDays <= 31) return '${difference.inDays} days';
-    if (difference.inDays <= 365)
+    if (difference.inDays <= 365) {
       return '${(difference.inDays / 30).round()} months';
+    }
     return '${(difference.inDays / 365).round()} years';
   }
 
@@ -612,10 +621,21 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
     );
   }
 
+  void _handleCategorySelections(dynamic category) {
+    setState(() {
+      _category = category['title'] as String;
+      _categoryIcon = category['icon'] as IconData;
+      _categoryIconCode = _categoryIcon.codePoint.toString();
+    });
+  }
+
   void _handleCategorySelection(dynamic category) {
     setState(() {
       _category = category['title'] as String;
       _categoryIcon = category['icon'] as IconData;
+      _categoryIconCode = _categoryIcon.codePoint.toString();
+      _categoryIconFontFamily =
+          _categoryIcon.fontFamily ?? 'FontAwesomeSolid'; // <-- NEW
     });
   }
 

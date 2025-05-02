@@ -23,9 +23,16 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/constants/theme_constants.dart';
 import 'core/routes/routes.dart';
+import 'core/services/notification_service.dart';
 import 'core/services/session_manager.dart';
 import 'firebase_options.dart';
 import 'presentation/views/session_wrapper.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  print("Handling a background message: ${message.messageId}");
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +47,10 @@ void main() async {
   );
   // Initialize SharedPreferences
   final prefs = await SharedPreferences.getInstance();
-
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // Initialize notification service
+  final notificationService = NotificationService();
+  await notificationService.initialize();
   runApp(MyApp(prefs: prefs));
 }
 

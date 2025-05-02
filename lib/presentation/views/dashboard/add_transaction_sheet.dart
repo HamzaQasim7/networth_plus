@@ -17,6 +17,7 @@ import '../../../core/utils/motion_toast.dart';
 import '../../../viewmodels/account_card_viewmodel.dart';
 import '../../../widgets/custom_loader.dart';
 import '../cards/add_card_sheet.dart';
+import '../../../data/providers/budget_provider.dart';
 
 class AddTransactionSheet extends StatefulWidget {
   final bool isEditing;
@@ -616,6 +617,12 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
           success = await viewModel.updateTransaction(transaction);
         } else {
           success = await viewModel.addTransaction(transaction);
+        }
+
+        if (success && !isIncome && selectedCategory != null) {
+          await Provider.of<BudgetProvider>(context, listen: false)
+              .addSpendingToCategory(
+                  selectedCategory!, double.tryParse(_amountController.text) ?? 0.0);
         }
 
         if (success && mounted) {

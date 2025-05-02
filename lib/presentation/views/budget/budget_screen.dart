@@ -40,10 +40,12 @@ class _BudgetScreenState extends State<BudgetScreen> {
                 focusedDay: _focusedDay,
                 onMonthChanged: _onMonthChanged,
               ),
-              BudgetSummaryCard(
-                totalBudget: viewModel.totalBudget,
-                totalSpent: viewModel.totalSpent,
-              ),
+              Consumer<BudgetViewModel>(builder: (context, pro, child) {
+                return BudgetSummaryCard(
+                  totalBudget: pro.totalBudget,
+                  totalSpent: pro.totalSpent,
+                );
+              }),
               const BudgetCategorySection(
                 title: 'Budgeted Categories',
               ),

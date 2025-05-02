@@ -12,6 +12,11 @@ class BudgetProvider extends ChangeNotifier {
 
   List<BudgetModel> get budgets => _budgets;
   bool get isLoading => _isLoading;
+   double get totalBudget =>
+      _budgets.fold(0, (sum, budget) => sum + budget.amount);
+  double get totalSpent =>
+      _budgets.fold(0, (sum, budget) => sum + budget.spent);
+  double get remainingBudget => totalBudget - totalSpent;
 
   Future<void> loadBudgets(String userId) async {
     try {
@@ -62,9 +67,16 @@ class BudgetProvider extends ChangeNotifier {
     }
   }
 
-  double get totalBudget =>
-      _budgets.fold(0, (sum, budget) => sum + budget.amount);
-  double get totalSpent =>
-      _budgets.fold(0, (sum, budget) => sum + budget.spent);
-  double get remainingBudget => totalBudget - totalSpent;
+ 
+
+  Future<void> addSpendingToCategory(String category, double amount) async {
+    final index = _budgets.indexWhere((b) => b.category == category);
+    if (index != -1) {
+      final budget = _budgets[index];
+      final updatedBudget = budget.copyWith(spent: budget.spent + amount);
+      _budgets[index] = updatedBudget;
+      notifyListeners();
+      await _repository.updateBudget(updatedBudget);
+    }
+  }
 }

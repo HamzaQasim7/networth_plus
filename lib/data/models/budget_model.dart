@@ -6,6 +6,8 @@ class BudgetModel {
   final String category;
   final double amount;
   final double spent;
+  final String icon;
+  final String iconFontFamily;
   final DateTime startDate;
   final DateTime endDate;
   final String periodType; // 'monthly', 'yearly', 'custom'
@@ -23,6 +25,8 @@ class BudgetModel {
     required this.category,
     required this.amount,
     this.spent = 0.0,
+    required this.icon,
+    required this.iconFontFamily,
     required this.startDate,
     required this.endDate,
     required this.periodType,
@@ -43,6 +47,8 @@ class BudgetModel {
       category: data['category'] as String,
       amount: (data['amount'] as num).toDouble(),
       spent: (data['spent'] as num).toDouble(),
+      icon: data['icon'] as String? ?? '',
+      iconFontFamily: data['iconFontFamily'] as String? ?? '',
       startDate: (data['startDate'] as Timestamp).toDate(),
       endDate: (data['endDate'] as Timestamp).toDate(),
       periodType: data['periodType'] as String,
@@ -62,6 +68,8 @@ class BudgetModel {
       'category': category,
       'amount': amount,
       'spent': spent,
+      'icon': icon,
+      'iconFontFamily': iconFontFamily,
       'startDate': Timestamp.fromDate(startDate),
       'endDate': Timestamp.fromDate(endDate),
       'periodType': periodType,
@@ -84,6 +92,8 @@ class BudgetModel {
     String? category,
     double? amount,
     double? spent,
+    String? icon,
+    String? iconFontFamily,
     DateTime? startDate,
     DateTime? endDate,
     String? periodType,
@@ -100,6 +110,8 @@ class BudgetModel {
       category: category ?? this.category,
       amount: amount ?? this.amount,
       spent: spent ?? this.spent,
+      icon: icon ?? this.icon,
+      iconFontFamily: iconFontFamily ?? this.iconFontFamily,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       periodType: periodType ?? this.periodType,
@@ -112,4 +124,6 @@ class BudgetModel {
       updatedAt: updatedAt ?? DateTime.now(),
     );
   }
+
+  
 } 
