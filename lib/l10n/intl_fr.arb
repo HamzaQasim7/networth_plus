@@ -1,0 +1,23 @@
+{
+  "@@locale": "fr",
+  "appTitle": "Gestionnaire de Finances",
+  "homeTitle": "Tableau de Bord",
+  "transactionsTitle": "Transactions",
+  "budgetTitle": "Budget",
+  "settingsTitle": "Paramètres",
+  "languageTitle": "Langue",
+  "incomeLabel": "Revenus",
+  "expenseLabel": "Dépenses",
+  "balanceLabel": "Solde",
+  "savingsLabel": "Épargne",
+  "investmentsLabel": "Investissements",
+  "addTransaction": "Ajouter une Transaction",
+  "categoryLabel": "Catégorie",
+  "amountLabel": "Montant",
+  "dateLabel": "Date",
+  "notesLabel": "Notes",
+  "saveButton": "Enregistrer",
+  "cancelButton": "Annuler",
+  "systemDefault": "Défaut du Système",
+  "netWorth": "Valeur Nette"
+}

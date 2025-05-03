@@ -8,6 +8,7 @@ import 'package:finance_tracker/presentation/views/settings/widgets/download_rep
 import 'package:finance_tracker/presentation/views/settings/widgets/financial_calculator_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/future_projections_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/income_expense_analysis_screen.dart';
+import 'package:finance_tracker/presentation/views/settings/widgets/language_selector_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/notification_toggle.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/past_performance_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/profile_screen.dart';
@@ -173,7 +174,12 @@ class _SettingsViewState extends State<SettingsView> {
                     title: 'Language',
                     subtitle: 'Choose your preferred language',
                     leading: _buildIconContainer(context, Icons.language),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const LanguageSelectorScreen()));
+                    },
                   ),
                   // SettingsTile(
                   //   title: 'Theme Customization',

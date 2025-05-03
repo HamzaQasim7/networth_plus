@@ -1,0 +1,22 @@
+{
+  "@@locale": "es",
+  "appTitle": "Gestor de Finanzas",
+  "homeTitle": "Panel Principal",
+  "transactionsTitle": "Transacciones",
+  "budgetTitle": "Presupuesto",
+  "settingsTitle": "Configuración",
+  "languageTitle": "Idioma",
+  "incomeLabel": "Ingresos",
+  "expenseLabel": "Gastos",
+  "balanceLabel": "Balance",
+  "savingsLabel": "Ahorros",
+  "investmentsLabel": "Inversiones",
+  "addTransaction": "Añadir Transacción",
+  "categoryLabel": "Categoría",
+  "amountLabel": "Cantidad",
+  "dateLabel": "Fecha",
+  "notesLabel": "Notas",
+  "saveButton": "Guardar",
+  "cancelButton": "Cancelar",
+  "systemDefault": "Predeterminado del Sistema"
+}

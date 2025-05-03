@@ -1,0 +1,266 @@
+{
+  "@@locale": "en",
+  "appTitle": "Finance Manager",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "homeTitle": "Dashboard",
+  "@homeTitle": {
+    "description": "Title for the home screen"
+  },
+  "transactionsTitle": "Transactions",
+  "@transactionsTitle": {
+    "description": "Title for the transactions screen"
+  },
+  "budgetTitle": "Budget",
+  "@budgetTitle": {
+    "description": "Title for the budget screen"
+  },
+  "portfolio": "Portfolio",
+    "@portfolio": {
+      "description": "Label for portfolio section"
+    },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "Title for the settings screen"
+  },
+  "notificationsTitle": "Notifications",
+    "@notificationsTitle": {
+      "description": "Title for the notifications screen"
+    },
+  "languageTitle": "Language",
+  "@languageTitle": {
+    "description": "Title for the language selection option"
+  },
+  "incomeLabel": "Income",
+  "@incomeLabel": {
+    "description": "Label for income"
+  },
+  "expenseLabel": "Expenses",
+  "@expenseLabel": {
+    "description": "Label for expenses"
+  },
+  "balanceLabel": "Balance",
+  "@balanceLabel": {
+    "description": "Label for balance"
+  },
+  "savingsLabel": "Savings",
+  "@savingsLabel": {
+    "description": "Label for savings"
+  },
+  "investmentsLabel": "Investments",
+  "@investmentsLabel": {
+    "description": "Label for investments"
+  },
+  "addTransaction": "Add Transaction",
+  "@addTransaction": {
+    "description": "Button to add a new transaction"
+  },
+  "categoryLabel": "Category",
+  "@categoryLabel": {
+    "description": "Label for category"
+  },
+  "amountLabel": "Amount",
+  "@amountLabel": {
+    "description": "Label for amount"
+  },
+  "dateLabel": "Date",
+  "@dateLabel": {
+    "description": "Label for date"
+  },
+  "notesLabel": "Notes",
+  "@notesLabel": {
+    "description": "Label for notes"
+  },
+  "saveButton": "Save",
+  "@saveButton": {
+    "description": "Save button text"
+  },
+  "cancelButton": "Cancel",
+  "@cancelButton": {
+    "description": "Cancel button text"
+  },
+  "systemDefault": "System Default",
+  "@systemDefault": {
+    "description": "System default language option"
+  },
+  "netWorth": "Net Worth",
+  "@netWorth": {
+    "description": "Net Worth label"
+  },
+"yearlyGrowth": "Yearly Growth",
+  "@yearlyGrowth": {
+    "description": "Label for yearly growth"
+  },
+  "vsLastYear": "vs Last Year",
+  "@vsLastYear": {
+    "description": "Label for comparison with the previous year"
+  },
+  "growthTrend": "Growth Trend",
+    "@growthTrend": {
+      "description": "Label for growth trend"
+    },
+"yourCardsAndAccounts": "Your Cards & Accounts",
+  "@yourCardsAndAccounts": {
+    "description": "Label for the section displaying cards and accounts"
+  },
+  "retryButton": "Retry",
+    "@retryButton": {
+      "description": "Button text for retrying an action"
+    },
+"addNewCard": "Add New Card",
+  "@addNewCard": {
+    "description": "Button text for adding a new card"
+  },
+  "availableBalance": "Available balance",
+    "@availableBalance": {
+      "description": "Label for available balance"
+    },
+    "cashLabel": "Cash",
+      "@cashLabel": {
+        "description": "Label for cash balance"
+      },
+      "bankLabel": "Bank",
+        "@bankLabel": {
+          "description": "Label for bank balance"
+        },
+        "upcomingPayments": "Upcoming payments",
+          "@upcomingPayments": {
+            "description": "Label for upcoming payments section"
+          },
+          "noUpcomingPayments": "No upcoming payments",
+            "@noUpcomingPayments": {
+              "description": "Message displayed when there are no upcoming payments"
+            },
+            "last30Days": "Last 30 days",
+              "@last30Days": {
+                "description": "Label for the last 30 days section"
+              },
+              "income": "Income",
+                "@income": {
+                  "description": "Label for income section"
+                },
+                "expense": "Expense",
+                  "@expense": {
+                    "description": "Label for expense section"
+                  },
+                  "savings": "Savings",
+                    "@savings": {
+                      "description": "Label for savings section"
+                    },
+                    "whatWouldYouLikeToAdd": "What would you like to add?",
+                      "@whatWouldYouLikeToAdd": {
+                        "description": "Prompt asking the user what they would like to add"
+                      },
+                      "addAsset": "Add Asset",
+                        "@addAsset": {
+                          "description": "Button or label for adding an asset"
+                        },
+                          "addLiability": "Add Liability",
+                          "@addLiability": {
+                            "description": "Button or label for adding a liability"
+                          },
+                            "report": "Report",
+                            "@report": {
+                              "description": "Label for the report section"
+                            },
+                              "settleUp": "Settle Up",
+                              "@settleUp": {
+                                "description": "Button or label for settling up transactions"
+                              },
+                               "byCategory": "By Category",
+                                "@byCategory": {
+                                  "description": "Filter option for categorizing items"
+                                },
+                                  "byDateRange": "By Date Range",
+                                  "@byDateRange": {
+                                    "description": "Filter option for selecting a date range"
+                                  },
+                                    "byAmount": "By Amount",
+                                    "@byAmount": {
+                                      "description": "Filter option for selecting by amount"
+                                    },
+                                    "available": "Available",
+                                      "@available": {
+                                        "description": "Label for available items or balance"
+                                      },
+                                       "error": "Error",
+                                        "@error": {
+                                          "description": "Label for error messages or titles"
+                                        },
+                                          "noTransactionsFound": "No transactions found",
+                                          "@noTransactionsFound": {
+                                            "description": "Message displayed when no transactions are available"
+                                          },
+                                           "paymentMethod": "Payment Method",
+                                            "@paymentMethod": {
+                                              "description": "Label for payment method"
+                                            },
+                                             "settlement": "Settlement",
+                                              "@settlement": {
+                                                "description": "Label for settlement details or description"
+                                              },
+                                               "edit": "Edit",
+                                                "@edit": {
+                                                  "description": "Label for edit action or button"
+                                                },
+                                                 "delete": "Delete",
+                                                  "@delete": {
+                                                    "description": "Label for delete action or button"
+                                                  },
+                                                   "success": "Success",
+                                                    "@success": {
+                                                      "description": "Label for success messages or titles"
+                                                    },
+                                                      "transactionUpdatedSuccessfully": "Transaction updated successfully",
+                                                      "@transactionUpdatedSuccessfully": {
+                                                        "description": "Message displayed when a transaction is successfully updated"
+                                                      },
+                                                       "deleteTransaction": "Delete Transaction",
+                                                        "@deleteTransaction": {
+                                                          "description": "Label for delete transaction action or button"
+                                                        },
+                                                          "confirmDeleteTransaction": "Are you sure you want to delete this transaction?",
+                                                          "@confirmDeleteTransaction": {
+                                                            "description": "Confirmation message for deleting a transaction"
+                                                          },
+                                                            "cancel": "Cancel",
+                                                            "@cancel": {
+                                                              "description": "Label for cancel action or button"
+                                                            },
+                                                             "transactionDeletedSuccessfully": "Transaction deleted successfully",
+                                                              "@transactionDeletedSuccessfully": {
+                                                                "description": "Message displayed when a transaction is successfully deleted"
+                                                              },
+                                                            "delete": "Delete",
+                                                              "@delete": {
+                                                                "description": "Label for delete action or button"
+                                                              },
+                                                               "spendingByCategory": "Spending by Category",
+                                                                "@spendingByCategory": {
+                                                                  "description": "Title for the spending by category chart"
+                                                                },
+                                                                 "noExpenseDataAvailable": "No expense data available for selected period",
+                                                                  "@noExpenseDataAvailable": {
+                                                                    "description": "Message displayed when there is no expense data for the selected period"
+                                                                  },
+                                                                    "financialSummary": "Financial Summary",
+                                                                    "@financialSummary": {
+                                                                      "description": "Title for the financial summary section"
+                                                                    },
+                                                                      "totalIncome": "Total Income",
+                                                                      "@totalIncome": {
+                                                                        "description": "Label for total income"
+                                                                      },
+                                                                        "totalExpenses": "Total Expenses",
+                                                                        "@totalExpenses": {
+                                                                          "description": "Label for total expenses"
+                                                                        },
+                                                                          "netSavings": "Net Savings",
+                                                                          "@netSavings": {
+                                                                            "description": "Label for net savings"
+                                                                          }
+
+
+
+}

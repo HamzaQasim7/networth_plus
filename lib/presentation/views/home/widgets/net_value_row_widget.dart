@@ -1,3 +1,4 @@
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/widgets/app_header_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,7 @@ class NetValueRowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<AssetLiabilityViewModel>();
     final currencyCode = context.watch<SessionManager>().selectedCurrency;
+    final localization = AppLocalizations.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -20,7 +22,8 @@ class NetValueRowWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppHeaderText(
-                text: 'Net Worth: $currencyCode${vm.netWorth}', fontSize: 20),
+                text: '${localization.netWorth}: $currencyCode${vm.netWorth}',
+                fontSize: 20),
             // Text(
             //   '▲ ${Helpers.formatCurrency(vm.totalAssets)} Assets'
             //   ' ▼ ${Helpers.formatCurrency(vm.totalLiabilities)} Liabilities',
