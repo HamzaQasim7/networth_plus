@@ -1,6 +1,8 @@
 import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'edit_asset_liability_dialog.dart';
+import 'package:gap/gap.dart';
 
 import '../../../../core/constants/theme_constants.dart';
 import '../../../../viewmodels/asset_liability_viewmodel.dart';
@@ -140,10 +142,27 @@ class AssetsLiabilitiesSectionState extends State<AssetsLiabilitiesSection> {
     );
   }
 
+  Future<void> _showEditDialog(AssetLiabilityModel item) async {
+    final result = await showDialog<AssetLiabilityModel>(
+      context: context,
+      builder: (context) => EditAssetLiabilityDialog(item: item),
+    );
+
+    if (result != null && mounted) {
+      final viewModel = Provider.of<AssetLiabilityViewModel>(context, listen: false);
+      final success = await viewModel.updateAssetLiability(result);
+      
+      if (success && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Item updated successfully')),
+        );
+      }
+    }
+  }
+
   Widget _buildListItem(AssetLiabilityModel item) {
     return Builder(builder: (context) {
-      final viewModel =
-          Provider.of<AssetLiabilityViewModel>(context, listen: false);
+      final viewModel = Provider.of<AssetLiabilityViewModel>(context, listen: false);
       final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
       return Dismissible(
@@ -168,8 +187,7 @@ class AssetsLiabilitiesSectionState extends State<AssetsLiabilitiesSection> {
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child:
-                      const Text('Delete', style: TextStyle(color: Colors.red)),
+                  child: const Text('Delete', style: TextStyle(color: Colors.red)),
                 ),
               ],
             ),
@@ -189,46 +207,57 @@ class AssetsLiabilitiesSectionState extends State<AssetsLiabilitiesSection> {
             ),
           );
         },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200,
+        child: InkWell(
+          onTap: () => _showEditDialog(item),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200,
+                ),
               ),
             ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color:
-                      isDarkMode ? Colors.grey.shade800 : Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(Icons.account_balance_wallet_outlined,
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    Icons.account_balance_wallet_outlined,
                     color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
-                    size: 20),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                item.name,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    item.name,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: isDarkMode
                           ? ThemeConstants.textPrimaryDark
                           : ThemeConstants.textPrimaryLight,
                     ),
-              ),
-              const Spacer(),
-              Text(
-                '${Helpers.storeCurrency(context)}${item.amount.toStringAsFixed(2)}',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: _selectedTabIndex == 0 ? Colors.green : Colors.red,
-                      fontWeight: FontWeight.w500,
-                    ),
-              ),
-            ],
+                  ),
+                ),
+                Text(
+                  '${Helpers.storeCurrency(context)}${item.amount.toStringAsFixed(2)}',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: _selectedTabIndex == 0 ? Colors.green : Colors.red,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const Gap(8),
+                Icon(
+                  Icons.edit,
+                  size: 18,
+                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                ),
+              ],
+            ),
           ),
         ),
       );

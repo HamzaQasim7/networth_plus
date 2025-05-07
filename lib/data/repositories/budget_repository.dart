@@ -77,10 +77,13 @@ class BudgetRepository {
       await _firestore
           .collection(_collection)
           .doc(budgetId)
-          .update({'spent': FieldValue.increment(amount)});
+          .update({
+            'spent': FieldValue.increment(amount),
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
     } catch (e) {
       console('Error updating budget spending: $e', type: DebugType.error);
-      throw Exception('Failed to update budget. Please try again.');
+      throw Exception('Failed to update budget spending. Please try again.');
     }
   }
 } 

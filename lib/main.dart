@@ -92,9 +92,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProxyProvider<AuthViewModel, BudgetViewModel>(
           create: (context) => BudgetViewModel(
             authViewModel: context.read<AuthViewModel>(),
+            transactionViewModel: context.read<TransactionViewModel>(),
           ),
           update: (context, authVM, budgetVM) =>
-              budgetVM ?? BudgetViewModel(authViewModel: authVM),
+              budgetVM ??
+              BudgetViewModel(
+                authViewModel: authVM,
+                transactionViewModel: context.read<TransactionViewModel>(),
+              ),
         ),
         ChangeNotifierProxyProvider<AuthViewModel, SettlementViewModel>(
           create: (context) => SettlementViewModel(

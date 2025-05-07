@@ -18,6 +18,7 @@ import '../../../viewmodels/account_card_viewmodel.dart';
 import '../../../widgets/custom_loader.dart';
 import '../cards/add_card_sheet.dart';
 import '../../../data/providers/budget_provider.dart';
+import '../../../viewmodels/budget_viewmodel.dart';
 
 class AddTransactionSheet extends StatefulWidget {
   final bool isEditing;
@@ -328,16 +329,40 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
 
   // Helper Methods for UI Components
   Widget _buildCategorySelector() {
-    return TextFormField(
-      readOnly: true,
-      controller: TextEditingController(text: selectedCategory),
-      decoration: InputDecoration(
-        labelText: 'Category',
-        prefixIcon: const Icon(Iconsax.category_2_bold),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-        suffixIcon: const Icon(Iconsax.arrow_down_1_bold),
-      ),
-      onTap: _showCategoryBottomSheet,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextFormField(
+          readOnly: true,
+          controller: TextEditingController(text: selectedCategory),
+          decoration: InputDecoration(
+            labelText: 'Category',
+            prefixIcon: Icon(_getSelectedIcon()),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+            suffixIcon: const Icon(Iconsax.arrow_down_1_bold),
+          ),
+          onTap: _showCategoryBottomSheet,
+        ),
+        if (availableBudget != null && !isIncome) ...[
+          const Gap(4),
+          Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: Text(
+              'Available Budget: ${Helpers.storeCurrency(context)}${availableBudget!.toStringAsFixed(2)}',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: availableBudget! < 0
+                        ? Colors.red
+                        : Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.color
+                            ?.withOpacity(0.5),
+                    fontSize: 12,
+                  ),
+            ),
+          ),
+        ],
+      ],
     );
   }
 
@@ -360,9 +385,12 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
             if (amount == null || amount <= 0) {
               return 'Please enter a valid amount';
             }
-            if (!isIncome && amount > viewModel.availableBalance) {
-              return 'Amount exceeds available balance';
+            if (!isIncome && amount > viewModel.availableBalance == 0) {
+              return 'Please add income first!';
             }
+            // if (!isIncome && amount > viewModel.availableBalance) {
+            //   return 'Amount exceeds available balance';
+            // }
             return null;
           },
         ),
@@ -371,7 +399,8 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
           Padding(
             padding: const EdgeInsets.only(left: 12),
             child: Text(
-              'Available Balance: ${Helpers.storeCurrency(context)}${viewModel.availableBalance.toStringAsFixed(2)}',
+              'Available Balance: ${Helpers.storeCurrency(context)}${availableBudget?.toStringAsFixed(2)}' ??
+                  '',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context)
                         .textTheme
@@ -621,8 +650,8 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
 
         if (success && !isIncome && selectedCategory != null) {
           await Provider.of<BudgetProvider>(context, listen: false)
-              .addSpendingToCategory(
-                  selectedCategory!, double.tryParse(_amountController.text) ?? 0.0);
+              .addSpendingToCategory(selectedCategory!,
+                  double.tryParse(_amountController.text) ?? 0.0);
         }
 
         if (success && mounted) {
@@ -645,13 +674,16 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
 
   dynamic _getSelectedIcon() {
     if (selectedCategory == null) return Icons.category;
-    return (CategoryList.categories.firstWhere(
+
+    final categoryData = CategoryList.categories.firstWhere(
       (cat) => cat['title'] == selectedCategory,
       orElse: () => _customCategories.firstWhere(
         (cat) => cat['title'] == selectedCategory,
         orElse: () => {'icon': Icons.category},
       ),
-    ))['icon'];
+    );
+
+    return categoryData['icon'];
   }
 
   void _showCategoryBottomSheet() {
@@ -852,9 +884,10 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
       });
       return;
     }
-    // Mock budget data - replace with actual budget fetching logic
+
+    final budgetVM = context.read<BudgetViewModel>();
     setState(() {
-      availableBudget = 1000.0; // Example budget
+      availableBudget = budgetVM.getAvailableBudgetForCategory(category);
     });
   }
 

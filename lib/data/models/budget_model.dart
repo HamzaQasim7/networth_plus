@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:finance_tracker/core/constants/categories_list.dart';
+import 'package:flutter/material.dart';
 
 class BudgetModel {
   final String id;
@@ -88,6 +90,17 @@ class BudgetModel {
   double get progress => spent / amount;
   bool get isOverBudget => spent > amount;
 
+  Map<String, dynamic> getCategoryIcon() {
+    final categoryData = CategoryList.categories.firstWhere(
+      (cat) => cat['title'] == category,
+      orElse: () => {'icon': Icons.category, 'title': category},
+    );
+    return {
+      'icon': categoryData['icon'],
+      'title': categoryData['title'],
+    };
+  }
+
   BudgetModel copyWith({
     String? category,
     double? amount,
@@ -104,13 +117,18 @@ class BudgetModel {
     bool? isActive,
     DateTime? updatedAt,
   }) {
+    final categoryData = category != null ? CategoryList.categories.firstWhere(
+      (cat) => cat['title'] == category,
+      orElse: () => {'icon': Icons.category, 'title': category},
+    ) : null;
+
     return BudgetModel(
       id: id,
       userId: userId,
       category: category ?? this.category,
       amount: amount ?? this.amount,
       spent: spent ?? this.spent,
-      icon: icon ?? this.icon,
+      icon: categoryData?['icon'] ?? icon ?? this.icon,
       iconFontFamily: iconFontFamily ?? this.iconFontFamily,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
@@ -124,6 +142,4 @@ class BudgetModel {
       updatedAt: updatedAt ?? DateTime.now(),
     );
   }
-
-  
 } 
