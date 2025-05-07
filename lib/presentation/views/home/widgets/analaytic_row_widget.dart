@@ -14,9 +14,6 @@ class AnalyticsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final budgetVM = context.watch<BudgetViewModel>();
-    final assetVM = context.watch<AssetLiabilityViewModel>();
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 20,
@@ -37,15 +34,6 @@ class AnalyticsRow extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           child: const ProgressIndicatorWidget(),
-        ),
-        const AppHeaderText(text: 'Growth Trend', fontSize: 18),
-        SizedBox(
-          height: 200,
-          child: LineChartWidget(
-            netWorthHistory: assetVM.netWorthHistory
-                .map((h) => FlSpot(h.date.month.toDouble(), h.amount))
-                .toList(),
-          ),
         ),
       ],
     );
