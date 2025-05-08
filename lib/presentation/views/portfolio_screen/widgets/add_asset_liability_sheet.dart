@@ -25,6 +25,9 @@ class AddAssetLiabilitySheet extends StatefulWidget {
 class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
   int _currentStep = 0;
   final _formKey = GlobalKey<FormState>();
+  final _typeFormKey = GlobalKey<FormState>();
+  final _amountFormKey = GlobalKey<FormState>();
+  final _detailsFormKey = GlobalKey<FormState>();
 
   // Form data
   String _type = '';
@@ -162,12 +165,14 @@ class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
                             width: 120,
                             child: ElevatedButton(
                               onPressed: () {
-                                if (_currentStep < 4) {
-                                  setState(() {
-                                    _currentStep++;
-                                  });
-                                } else {
-                                  _saveAssetLiability();
+                                if (_validateCurrentStep()) {
+                                  if (_currentStep < 4) {
+                                    setState(() {
+                                      _currentStep++;
+                                    });
+                                  } else {
+                                    _saveAssetLiability();
+                                  }
                                 }
                               },
                               style: ElevatedButton.styleFrom(
@@ -254,159 +259,209 @@ class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
     final types =
         widget.isAsset ? AppConstants.assetsList : AppConstants.liabilityList;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        buildReusableText('Type'),
-        const Gap(16),
-        ...types.map(
-          (type) => ListTile(
-            title: Text(
-              type,
-              style: TextStyle(
-                color: isDarkMode
-                    ? ThemeConstants.textPrimaryDark
-                    : ThemeConstants.textPrimaryLight,
+    return Form(
+      key: _typeFormKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildReusableText('Type *'),
+          const Gap(16),
+          ...types.map(
+            (type) => ListTile(
+              title: Text(
+                type,
+                style: TextStyle(
+                  color: isDarkMode
+                      ? ThemeConstants.textPrimaryDark
+                      : ThemeConstants.textPrimaryLight,
+                ),
+              ),
+              leading: Radio<String>(
+                value: type,
+                groupValue: _type,
+                activeColor: ThemeConstants.primaryColor,
+                onChanged: (value) {
+                  setState(() => _type = value!);
+                },
               ),
             ),
-            leading: Radio<String>(
-              value: type,
-              groupValue: _type,
-              activeColor: ThemeConstants.primaryColor,
-              onChanged: (value) {
-                setState(() => _type = value!);
-              },
-            ),
           ),
-        ),
-        if (_type == 'Other')
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: CustomTextField(
-              labelText: 'Enter Custom Type',
-              onChanged: (value) {
-                setState(() {
-                  _type = value;
-                });
-              },
+          if (_type == 'Other')
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: CustomTextField(
+                labelText: 'Enter Custom Type *',
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a custom type';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  setState(() {
+                    _type = value;
+                  });
+                },
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildAmountStepContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        buildReusableText('Value/Amount'),
-        const Gap(16),
-        CustomTextField(
-          keyboardType: TextInputType.number,
-          prefixText: Helpers.storeCurrency(context),
-          labelText: widget.isAsset ? 'Asset Value' : 'Liability Amount',
-          helperText:
-              widget.isAsset ? 'Current market value' : 'Outstanding amount',
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter an amount';
-            }
-            if (double.tryParse(value) == null) {
-              return 'Please enter a valid number';
-            }
-            return null;
-          },
-          onChanged: (value) {
-            setState(() {
-              _amount = double.tryParse(value) ?? 0;
-            });
-          },
-        ),
-      ],
+    return Form(
+      key: _amountFormKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildReusableText('Value/Amount *'),
+          const Gap(16),
+          CustomTextField(
+            keyboardType: TextInputType.number,
+            prefixText: Helpers.storeCurrency(context),
+            labelText: widget.isAsset ? 'Asset Value' : 'Liability Amount',
+            helperText:
+                widget.isAsset ? 'Current market value' : 'Outstanding amount',
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter an amount';
+              }
+              final amount = double.tryParse(value);
+              if (amount == null) {
+                return 'Please enter a valid number';
+              }
+              if (amount <= 0) {
+                return 'Amount must be greater than 0';
+              }
+              return null;
+            },
+            onChanged: (value) {
+              setState(() {
+                _amount = double.tryParse(value) ?? 0;
+              });
+            },
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildDetailsStepContent() {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        buildReusableText('Details'),
-        const SizedBox(height: 16),
-        CustomTextField(
-          labelText: 'Name/Description',
-          onChanged: (value) {
-            setState(() {
-              _name = value;
-            });
-          },
-        ),
-        const Gap(16),
-        CustomTextField(
-          labelText: 'Purchase/Start Date',
-          readOnly: true,
-          controller: TextEditingController(
-            text: '${_startDate.day}/${_startDate.month}/${_startDate.year}',
-          ),
-          onTap: () async {
-            final picked = await showDatePicker(
-              context: context,
-              initialDate: _startDate,
-              firstDate: DateTime(2000),
-              lastDate: DateTime.now(),
-            );
-            if (picked != null) {
+    return Form(
+      key: _detailsFormKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildReusableText('Details'),
+          const SizedBox(height: 16),
+          CustomTextField(
+            labelText: 'Name/Description *',
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'Please enter a name or description';
+              }
+              return null;
+            },
+            onChanged: (value) {
               setState(() {
-                _startDate = picked;
+                _name = value;
               });
-            }
-          },
-        ),
-        if (!widget.isAsset) ...[
+            },
+          ),
           const Gap(16),
           CustomTextField(
-            keyboardType: TextInputType.number,
-            labelText: 'Interest Rate (%)',
-            suffixText: '%',
-            onChanged: (value) {
-              setState(() {
-                _interestRate = double.tryParse(value);
-              });
+            labelText: 'Purchase/Start Date *',
+            readOnly: true,
+            validator: (value) {
+              if (_startDate == null) {
+                return 'Please select a date';
+              }
+              return null;
+            },
+            controller: TextEditingController(
+              text: '${_startDate.day}/${_startDate.month}/${_startDate.year}',
+            ),
+            onTap: () async {
+              final picked = await showDatePicker(
+                context: context,
+                initialDate: _startDate,
+                firstDate: DateTime(2000),
+                lastDate: DateTime.now(),
+              );
+              if (picked != null) {
+                setState(() {
+                  _startDate = picked;
+                });
+              }
             },
           ),
-          const Gap(16),
-          DropdownButtonFormField<String>(
-            decoration: InputDecoration(
-              labelText: 'Payment Schedule',
-              border: const OutlineInputBorder(),
-              labelStyle: TextStyle(
+          if (!widget.isAsset) ...[
+            const Gap(16),
+            CustomTextField(
+              keyboardType: TextInputType.number,
+              labelText: 'Interest Rate (%) *',
+              suffixText: '%',
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter an interest rate';
+                }
+                final rate = double.tryParse(value);
+                if (rate == null) {
+                  return 'Please enter a valid number';
+                }
+                if (rate < 0) {
+                  return 'Interest rate cannot be negative';
+                }
+                return null;
+              },
+              onChanged: (value) {
+                setState(() {
+                  _interestRate = double.tryParse(value);
+                });
+              },
+            ),
+            const Gap(16),
+            DropdownButtonFormField<String>(
+              decoration: InputDecoration(
+                labelText: 'Payment Schedule *',
+                border: const OutlineInputBorder(),
+                labelStyle: TextStyle(
+                  color: isDarkMode
+                      ? ThemeConstants.textSecondaryDark
+                      : ThemeConstants.textSecondaryLight,
+                ),
+              ),
+              value: _paymentSchedule,
+              hint: const Text('Select payment frequency'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select a payment schedule';
+                }
+                return null;
+              },
+              items: ['Monthly', 'Quarterly', 'Yearly']
+                  .map((schedule) => DropdownMenuItem(
+                        value: schedule,
+                        child: Text(schedule),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                setState(() {
+                  _paymentSchedule = value;
+                });
+              },
+              style: TextStyle(
                 color: isDarkMode
-                    ? ThemeConstants.textSecondaryDark
-                    : ThemeConstants.textSecondaryLight,
+                    ? ThemeConstants.textPrimaryDark
+                    : ThemeConstants.textPrimaryLight,
               ),
             ),
-            value: _paymentSchedule,
-            hint: const Text('Select payment frequency'),
-            items: ['Monthly', 'Quarterly', 'Yearly']
-                .map((schedule) => DropdownMenuItem(
-                      value: schedule,
-                      child: Text(schedule),
-                    ))
-                .toList(),
-            onChanged: (value) {
-              setState(() {
-                _paymentSchedule = value;
-              });
-            },
-            style: TextStyle(
-              color: isDarkMode
-                  ? ThemeConstants.textPrimaryDark
-                  : ThemeConstants.textPrimaryLight,
-            ),
-          ),
+          ],
         ],
-      ],
+      ),
     );
   }
 
@@ -532,8 +587,89 @@ class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
     );
   }
 
+  bool _validateCurrentStep() {
+    switch (_currentStep) {
+      case 0: // Type step
+        if (_type.isEmpty) {
+          ToastUtils.showErrorToast(
+            context,
+            title: 'Validation Error',
+            description: 'Please select a type',
+          );
+          return false;
+        }
+        return true;
+
+      case 1: // Amount step
+        if (_amount <= 0) {
+          ToastUtils.showErrorToast(
+            context,
+            title: 'Validation Error',
+            description: 'Please enter a valid amount greater than 0',
+          );
+          return false;
+        }
+        return true;
+
+      case 2: // Details step
+        if (_name.trim().isEmpty) {
+          ToastUtils.showErrorToast(
+            context,
+            title: 'Validation Error',
+            description: 'Please enter a name/description',
+          );
+          return false;
+        }
+        // Validate interest rate for liabilities
+        if (!widget.isAsset && _interestRate == null) {
+          ToastUtils.showErrorToast(
+            context,
+            title: 'Validation Error',
+            description: 'Please enter an interest rate',
+          );
+          return false;
+        }
+        // Validate payment schedule for liabilities
+        if (!widget.isAsset && (_paymentSchedule == null || _paymentSchedule!.isEmpty)) {
+          ToastUtils.showErrorToast(
+            context,
+            title: 'Validation Error',
+            description: 'Please select a payment schedule',
+          );
+          return false;
+        }
+        return true;
+
+      default:
+        return true;
+    }
+  }
+
   void _saveAssetLiability() {
+    if (!_validateCurrentStep()) {
+      return;
+    }
+
     if (_formKey.currentState?.validate() ?? false) {
+      // Validate all required fields one final time
+      if (_type.isEmpty || _amount <= 0 || _name.trim().isEmpty) {
+        ToastUtils.showErrorToast(
+          context,
+          title: 'Validation Error',
+          description: 'Please fill in all required fields',
+        );
+        return;
+      }
+
+      if (!widget.isAsset && (_interestRate == null || _paymentSchedule == null)) {
+        ToastUtils.showErrorToast(
+          context,
+          title: 'Validation Error',
+          description: 'Please fill in all required liability fields',
+        );
+        return;
+      }
+
       if (!mounted) return;
 
       final viewModel =
@@ -559,10 +695,11 @@ class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
       viewModel.createAssetLiability(newItem).then((success) {
         if (mounted && success) {
           Navigator.pop(context);
-          ToastUtils.showSuccessToast(context,
-              title: 'Success',
-              description:
-                  '${widget.isAsset ? "Asset" : "Liability"} added successfully');
+          ToastUtils.showSuccessToast(
+            context,
+            title: 'Success',
+            description: '${widget.isAsset ? "Asset" : "Liability"} added successfully',
+          );
         }
       });
     }
