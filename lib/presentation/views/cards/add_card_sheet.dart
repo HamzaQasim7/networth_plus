@@ -1,6 +1,7 @@
 import 'package:finance_tracker/core/constants/console.dart';
 import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:finance_tracker/widgets/custom_loader.dart';
+import 'package:finance_tracker/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/constants/theme_constants.dart';
@@ -96,50 +97,26 @@ class _AddCardSheetState extends State<AddCardSheet> {
                   },
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
+                CustomTextField(
                   initialValue: _cardName,
-                  decoration: InputDecoration(
-                    labelText: 'Name',
-                    border: const OutlineInputBorder(),
-                    labelStyle: TextStyle(
-                      color: isDarkMode
-                          ? ThemeConstants.textSecondaryDark
-                          : ThemeConstants.textSecondaryLight,
-                    ),
-                  ),
+                  labelText: 'Name',
                   onChanged: (value) => _cardName = value,
                   validator: (value) =>
                       value?.isEmpty ?? true ? 'Please enter a name' : null,
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
+                CustomTextField(
                   initialValue: _cardNumber,
-                  decoration: InputDecoration(
-                    labelText: 'Card/Account Number',
-                    border: const OutlineInputBorder(),
-                    labelStyle: TextStyle(
-                      color: isDarkMode
-                          ? ThemeConstants.textSecondaryDark
-                          : ThemeConstants.textSecondaryLight,
-                    ),
-                  ),
+                  labelText: 'Card/Account Number',
+                  keyboardType: TextInputType.number,
                   onChanged: (value) => _cardNumber = value,
                   validator: (value) =>
                       value?.isEmpty ?? true ? 'Please enter a number' : null,
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
+                CustomTextField(
                   initialValue: _balance.toString(),
-                  decoration: InputDecoration(
-                    labelText: 'Balance',
-                    border: const OutlineInputBorder(),
-                    prefixText: Helpers.storeCurrency(context),
-                    labelStyle: TextStyle(
-                      color: isDarkMode
-                          ? ThemeConstants.textSecondaryDark
-                          : ThemeConstants.textSecondaryLight,
-                    ),
-                  ),
+                  labelText: 'Balance',
                   keyboardType: TextInputType.number,
                   onChanged: (value) => _balance = double.tryParse(value) ?? 0,
                   validator: (value) =>

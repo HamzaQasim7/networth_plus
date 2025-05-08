@@ -25,7 +25,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final budgetVM = context.watch<BudgetViewModel>();
+    // final budgetVM = context.watch<BudgetViewModel>();
     final assetVM = context.watch<AssetLiabilityViewModel>();
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
