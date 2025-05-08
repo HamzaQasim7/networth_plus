@@ -153,10 +153,10 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
+        crossAxisCount: 4,
         childAspectRatio: 1.0,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
+        crossAxisSpacing: 3,
+        mainAxisSpacing: 3,
       ),
       itemCount: categories.length,
       itemBuilder: (context, index) => _buildCategoryItem(index),
@@ -175,7 +175,7 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(category['icon'] as IconData,
-                color: _getCategoryIconColor(isSelected), size: 32),
+                color: _getCategoryIconColor(isSelected), size: 20),
             const SizedBox(height: 8),
             Text(category['title'] as String,
                 textAlign: TextAlign.center,
@@ -654,7 +654,8 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
           : isDarkMode
               ? ThemeConstants.textPrimaryDark
               : Colors.grey[800],
-      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+      fontSize: 12,
     );
   }
 
