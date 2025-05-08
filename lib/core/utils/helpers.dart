@@ -8,11 +8,11 @@ import '../services/session_manager.dart';
 class Helpers {
   static String storeCurrency(BuildContext context) {
     try {
-      // Use listen: false since we don't need to rebuild on currency changes in event handlers
-      final sessionManager = Provider.of<SessionManager>(context, listen: false);
+      final sessionManager =
+          Provider.of<SessionManager>(context, listen: false);
       return sessionManager.selectedCurrency ?? '\$';
     } catch (e) {
-      return '\$'; // Fallback currency symbol
+      return '\$';
     }
   }
 

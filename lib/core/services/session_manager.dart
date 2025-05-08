@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:currency_picker/currency_picker.dart';
 
 class SessionManager extends ChangeNotifier {
   static const String _hasSeenOnboardingKey = 'has_seen_onboarding';
   static const String _selectedCurrencyKey = 'selected_currency';
+  static const String _selectedCurrencySymbolKey = 'selected_currency_symbol';
 
   final SharedPreferences _prefs;
   final FirebaseAuth _auth;
@@ -25,6 +27,7 @@ class SessionManager extends ChangeNotifier {
   bool get hasSeenOnboarding => _prefs.getBool(_hasSeenOnboardingKey) ?? false;
 
   String? get selectedCurrency => _prefs.getString(_selectedCurrencyKey);
+  String? get selectedCurrencySymbol => _prefs.getString(_selectedCurrencySymbolKey) ?? '\$';
 
   Future<void> setHasSeenOnboarding(bool value) async {
     await _prefs.setBool(_hasSeenOnboardingKey, value);
@@ -32,6 +35,11 @@ class SessionManager extends ChangeNotifier {
 
   Future<void> setSelectedCurrency(String currency) async {
     await _prefs.setString(_selectedCurrencyKey, currency);
+    // Get the currency symbol from the currency_picker package
+    final currencyInfo = CurrencyService().findByCode(currency);
+    if (currencyInfo != null) {
+      await _prefs.setString(_selectedCurrencySymbolKey, currencyInfo.symbol);
+    }
     notifyListeners();
   }
 
@@ -39,6 +47,7 @@ class SessionManager extends ChangeNotifier {
     await _auth.signOut();
     // Don't clear onboarding flag as we don't want to show it again
     await _prefs.remove(_selectedCurrencyKey);
+    await _prefs.remove(_selectedCurrencySymbolKey);
   }
 
   // Add method to handle authentication success

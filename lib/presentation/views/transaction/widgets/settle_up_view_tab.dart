@@ -281,7 +281,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
             ),
             const Gap(16),
             Text(
-              '₹${settlement.amount.toStringAsFixed(2)}',
+              '${Helpers.storeCurrency(context)}${settlement.amount.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     color: settlement.isOwed ? Colors.red : Colors.green,
                   ),

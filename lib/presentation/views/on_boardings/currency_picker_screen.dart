@@ -40,7 +40,7 @@ class _CurrencyPickerScreenState extends State<CurrencyPickerScreen> {
 
   void _selectCurrency(BuildContext context, Currency currency) async {
     final sessionManager = context.read<SessionManager>();
-    await sessionManager.setSelectedCurrency(currency.code);
+    await sessionManager.setSelectedCurrency(currency.symbol);
 
     if (mounted) {
       setState(() {
@@ -116,7 +116,7 @@ class _CurrencyPickerScreenState extends State<CurrencyPickerScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            selectedCurrency!.code,
+                            '${selectedCurrency!.code} (${selectedCurrency!.symbol})',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium

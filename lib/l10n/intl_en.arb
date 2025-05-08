@@ -259,8 +259,91 @@
                                                                           "netSavings": "Net Savings",
                                                                           "@netSavings": {
                                                                             "description": "Label for net savings"
-                                                                          }
-
+                                                                          },
+                                                                          "operationFailed": "Operation Failed",
+                                                                          "@operationFailed": {
+                                                                            "description": "Message displayed when an operation fails"
+                                                                          },
+                                                                          "addNewSettlement": "Add New Settlement",
+                                                                          "@addNewSettlement": {
+                                                                            "description": "Button or label for adding a new settlement"
+                                                                          },
+                                                                          "noSettlementsFound": "No settlements found",
+                                                                          "@noSettlementsFound": {
+                                                                            "description": "Message displayed when no settlements are available"
+                                                                          },
+                                                                          "youOwe": "You owe",
+                                                                          "@youOwe": {
+                                                                            "description": "Label indicating that the user owes someone"
+                                                                          },
+                                                                          "owesYou": "Owes you",
+                                                                          "@owesYou": {
+                                                                            "description": "Label indicating that someone owes the user"
+                                                                          },
+                                                                          "personName": "Person Name",
+                                                                          "@personName": {
+                                                                            "description": "Label for entering or displaying a person's name"
+                                                                          },
+                                                                          "amount": "Amount",
+                                                                          "@amount": {
+                                                                            "description": "Label for entering or displaying an amount"
+                                                                          },
+                                                                          "theyOweMe": "They Owe Me",
+                                                                          "@theyOweMe": {
+                                                                            "description": "Label indicating that someone owes the user"
+                                                                          },
+                                                                          "iOweThem": "I Owe Them",
+                                                                          "@iOweThem": {
+                                                                            "description": "Label indicating that the user owes someone"
+                                                                          },
+                                                                          "invalidInput": "Invalid Input",
+                                                                          "@invalidInput": {
+                                                                            "description": "Message displayed when the user provides invalid input"
+                                                                          },
+                                                                          "pleaseEnterAName": "Please enter a name",
+                                                                          "@pleaseEnterAName": {
+                                                                            "description": "Message prompting the user to enter a name"
+                                                                          },
+                                                                          "invalidAmount": "Invalid Amount",
+                                                                          "@invalidAmount": {
+                                                                            "description": "Message displayed when the user provides an invalid amount"
+                                                                          },
+                                                                          "pleaseEnterAValidNumber": "Please enter a valid number",
+                                                                          "@pleaseEnterAValidNumber": {
+                                                                            "description": "Message prompting the user to enter a valid number"
+                                                                          },
+                                                                          "settlementAddedSuccessfully": "Settlement added successfully",
+                                                                          "@settlementAddedSuccessfully": {
+                                                                            "description": "Message displayed when a settlement is successfully added"
+                                                                          },
+                                                                          "addSettlement": "Add Settlement",
+                                                                          "@addSettlement": {
+                                                                            "description": "Button or label for adding a settlement"
+                                                                          },
+                                                                          "relatedTransactions": "Related Transactions",
+                                                                          "@relatedTransactions": {
+                                                                            "description": "Label for the section displaying related transactions"
+                                                                          },
+                                                                          "paymentMarkedAsCompleted": "Payment marked as completed",
+                                                                          "@paymentMarkedAsCompleted": {
+                                                                            "description": "Message displayed when a payment is successfully marked as completed"
+                                                                          },
+                                                                          "reminderSentSuccessfully": "Reminder sent successfully",
+                                                                          "@reminderSentSuccessfully": {
+                                                                            "description": "Message displayed when a reminder is successfully sent"
+                                                                          },
+                                                                          "payNow": "Pay Now",
+                                                                          "@payNow": {
+                                                                            "description": "Button or label for initiating a payment"
+                                                                          },
+                                                                          "remind": "Remind",
+                                                                          "@remind": {
+                                                                            "description": "Button or label for sending a reminder"
+                                                                          },
+                                                                          "budgetedCategories": "Budgeted Categories",
+                                                                          "@budgetedCategories": {
+                                                                            "description": "Label for the section displaying budgeted categories"
+                                                                          },
 
 
 }
