@@ -130,7 +130,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
     _dateController.dispose();
     _timeController.dispose();
     _splitNameController.dispose();
-    _splitNameController.dispose();
+    _splitEmailController.dispose();
     super.dispose();
   }
 

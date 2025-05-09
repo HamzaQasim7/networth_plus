@@ -3,14 +3,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../data/repositories/transaction_repository.dart';
 import '../data/models/transaction_model.dart';
 import 'package:collection/collection.dart';
+import '../viewmodels/auth_viewmodel.dart';
 
 class TransactionViewModel extends ChangeNotifier {
   final TransactionRepository _repository;
-  final FirebaseAuth _auth;
+  final AuthViewModel _authViewModel;
   
   List<TransactionModel> _transactions = [];
   bool _isLoading = false;
   String? _error;
+  bool _disposed = false;
+  DateTime _selectedMonth = DateTime.now(); // Add selected month tracking
   
   // Total tracking variables
   double _totalIncome = 0.0;
@@ -18,9 +21,9 @@ class TransactionViewModel extends ChangeNotifier {
   double _availableBalance = 0.0;
 
   // Getters for totals
-  double get totalIncome => _totalIncome;
-  double get totalExpense => _totalExpense;
-  double get availableBalance => _availableBalance;
+  // double get totalIncome => _totalIncome;
+  // double get totalExpense => _totalExpense;
+  // double get availableBalance => _availableBalance;
   
   // Filters
   DateTime? _startDate;
@@ -31,19 +34,134 @@ class TransactionViewModel extends ChangeNotifier {
   String? _filterPaymentMethod;
 
   TransactionViewModel({
+    required AuthViewModel authViewModel,
     TransactionRepository? repository,
-    FirebaseAuth? auth,
-  })  : _repository = repository ?? TransactionRepository(),
-        _auth = auth ?? FirebaseAuth.instance {
-    // Initialize totals when viewmodel is created
-    _loadTotals();
+  })  : _authViewModel = authViewModel,
+        _repository = repository ?? TransactionRepository() {
+    _init();
   }
 
   // Getters
   List<TransactionModel> get transactions => _transactions;
   bool get isLoading => _isLoading;
   String? get error => _error;
-  String? get currentUserId => _auth.currentUser?.uid;
+  String? get currentUserId => _authViewModel.currentUser?.id;
+  DateTime get selectedMonth => _selectedMonth;
+
+  // Filtered transactions for selected month
+  List<TransactionModel> get filteredTransactions => _transactions
+      .where((t) =>
+          t.date.month == _selectedMonth.month &&
+          t.date.year == _selectedMonth.year)
+      .toList();
+
+  // Monthly totals
+  double get totalIncome => filteredTransactions
+      .where((t) => t.type == TransactionType.income)
+      .fold(0.0, (sum, t) => sum + t.amount);
+
+  double get totalExpense => filteredTransactions
+      .where((t) => t.type == TransactionType.expense)
+      .fold(0.0, (sum, t) => sum + t.amount);
+
+  double get availableBalance => totalIncome - totalExpense;
+
+  void _init() {
+    if (_authViewModel.currentUser != null) {
+      loadTransactionsForMonth(_selectedMonth);
+    }
+  }
+
+  // Add this method for setting selected month
+  void setSelectedMonth(DateTime month) {
+    _selectedMonth = DateTime(month.year, month.month, 1);
+    loadTransactionsForMonth(_selectedMonth);
+    notifyListeners();
+  }
+
+  // Add this method for loading transactions for a specific month
+  Future<void> loadTransactionsForMonth(DateTime month) async {
+    if (currentUserId == null) return;
+
+    try {
+      _setLoading(true);
+      _error = null;
+
+      final startDate = DateTime(month.year, month.month, 1);
+      final endDate = DateTime(month.year, month.month + 1, 0);
+
+      _transactions = await _repository.getTransactions(
+        userId: currentUserId!,
+        startDate: startDate,
+        endDate: endDate,
+      );
+
+      notifyListeners();
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // Add this method for getting monthly statistics
+  Map<String, dynamic> getMonthlyStatistics() {
+    final startDate = DateTime(_selectedMonth.year, _selectedMonth.month, 1);
+    final endDate = DateTime(_selectedMonth.year, _selectedMonth.month + 1, 0);
+
+    // Get category breakdown
+    final categoryBreakdown = groupBy(
+      filteredTransactions.where((t) => t.type == TransactionType.expense),
+      (TransactionModel t) => t.category,
+    ).map((category, transactions) => MapEntry(
+          category,
+          transactions.fold(0.0, (sum, t) => sum + t.amount),
+        ));
+
+    // Get previous month comparison
+    final previousMonth = DateTime(_selectedMonth.year, _selectedMonth.month - 1);
+    final previousMonthStats = _getPreviousMonthComparison(previousMonth);
+
+    return {
+      'totalIncome': totalIncome,
+      'totalExpense': totalExpense,
+      'balance': availableBalance,
+      'transactionCount': filteredTransactions.length,
+      'startDate': startDate,
+      'endDate': endDate,
+      'categoryBreakdown': categoryBreakdown,
+      'previousMonth': previousMonthStats,
+    };
+  }
+
+  // Add this helper method for previous month comparison
+  Map<String, double> _getPreviousMonthComparison(DateTime previousMonth) {
+    final previousTransactions = _transactions.where((t) =>
+        t.date.month == previousMonth.month && t.date.year == previousMonth.year);
+
+    final previousIncome = previousTransactions
+        .where((t) => t.type == TransactionType.income)
+        .fold(0.0, (sum, t) => sum + t.amount);
+
+    final previousExpense = previousTransactions
+        .where((t) => t.type == TransactionType.expense)
+        .fold(0.0, (sum, t) => sum + t.amount);
+
+    final previousBalance = previousIncome - previousExpense;
+
+    return {
+      'incomeChange': totalIncome > 0 && previousIncome > 0
+          ? ((totalIncome - previousIncome) / previousIncome) * 100
+          : 0.0,
+      'expenseChange': totalExpense > 0 && previousExpense > 0
+          ? ((totalExpense - previousExpense) / previousExpense) * 100
+          : 0.0,
+      'balanceChange': availableBalance != 0 && previousBalance != 0
+          ? ((availableBalance - previousBalance) / previousBalance.abs()) * 100
+          : 0.0,
+    };
+  }
 
   // Load transactions with optional filters
   Future<void> loadTransactions({
@@ -341,6 +459,12 @@ class TransactionViewModel extends ChangeNotifier {
         transactions.fold(0.0, (sum, t) => sum + t.amount),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
   }
 }
 

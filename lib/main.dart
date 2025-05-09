@@ -20,6 +20,7 @@ import 'package:finance_tracker/viewmodels/transaction_viewmodel.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +46,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // Restrict the app to portrait mode
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   // Enable Firestore offline persistence
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
@@ -80,7 +86,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => LocaleViewModel()),
         ChangeNotifierProvider(create: (_) => SessionManager(prefs: prefs)),
-        ChangeNotifierProvider(create: (_) => TransactionViewModel()),
+        ChangeNotifierProvider(
+            create: (_) =>
+                TransactionViewModel(authViewModel: AuthViewModel())),
         ChangeNotifierProxyProvider<AuthViewModel, AssetLiabilityViewModel>(
           create: (context) => AssetLiabilityViewModel(
             authViewModel: context.read<AuthViewModel>(),
