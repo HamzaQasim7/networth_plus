@@ -73,9 +73,9 @@ class BudgetItem extends StatelessWidget {
                             case 'edit':
                               onEdit();
                               break;
-                            case 'share':
-                              onShare();
-                              break;
+                            // case 'share':
+                            //   onShare();
+                            //   break;
                             case 'delete':
                               onDelete();
                               break;
@@ -86,10 +86,10 @@ class BudgetItem extends StatelessWidget {
                             value: 'edit',
                             child: Text('Edit Budget'),
                           ),
-                          const PopupMenuItem(
-                            value: 'share',
-                            child: Text('Share Budget'),
-                          ),
+                          // const PopupMenuItem(
+                          //   value: 'share',
+                          //   child: Text('Share Budget'),
+                          // ),
                           const PopupMenuItem(
                             value: 'delete',
                             child: Text('Delete Budget'),

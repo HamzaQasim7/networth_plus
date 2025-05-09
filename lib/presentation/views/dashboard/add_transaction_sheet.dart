@@ -1,5 +1,6 @@
 import 'package:finance_tracker/core/constants/categories_list.dart';
 import 'package:finance_tracker/core/constants/theme_constants.dart';
+import 'package:finance_tracker/core/constants/validator.dart';
 import 'package:finance_tracker/data/models/transaction_model.dart';
 import 'package:finance_tracker/viewmodels/transaction_viewmodel.dart';
 import 'package:finance_tracker/widgets/custom_button.dart';
@@ -43,6 +44,8 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   final _descriptionController = TextEditingController();
   final _dateController = TextEditingController();
   final _timeController = TextEditingController();
+  final _splitNameController = TextEditingController();
+  final _splitEmailController = TextEditingController();
 
   // Transaction State
   bool isIncome = false;
@@ -126,6 +129,8 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
     _descriptionController.dispose();
     _dateController.dispose();
     _timeController.dispose();
+    _splitNameController.dispose();
+    _splitNameController.dispose();
     super.dispose();
   }
 
@@ -944,13 +949,29 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
           borderRadius: BorderRadius.circular(12),
         ),
         title: const Text('Add Person to Split'),
-        content: const Column(
+        content: Column(
+          spacing: 8,
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Name or Email',
-              ),
+            CustomTextField(
+              controller: _splitNameController,
+              labelText: 'Name',
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a name';
+                }
+                return null;
+              },
+            ),
+            CustomTextField(
+              controller: _splitEmailController,
+              labelText: 'Email',
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter the email';
+                }
+                return null;
+              },
             ),
           ],
         ),
@@ -963,7 +984,8 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
             onPressed: () {
               setState(() {
                 splitWith.add({
-                  'name': 'New Person',
+                  'name': _splitNameController.text,
+                  'email': _splitEmailController.text,
                   'percentage':
                       splitType == 'Equal' ? 100 / (splitWith.length + 2) : 0,
                 });
@@ -1017,6 +1039,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
               final person = splitWith[index];
               return ListTile(
                 title: Text(person['name']),
+                subtitle: Text(person['email']),
                 trailing: splitType == 'Custom'
                     ? SizedBox(
                         width: 100,

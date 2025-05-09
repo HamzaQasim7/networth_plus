@@ -2,13 +2,12 @@ import 'package:finance_tracker/core/constants/categories_list.dart';
 import 'package:finance_tracker/core/utils/motion_toast.dart';
 import 'package:finance_tracker/data/models/budget_model.dart';
 import 'package:finance_tracker/presentation/views/budget/widgets/budget_components.dart';
-import 'package:finance_tracker/widgets/custom_loader.dart';
 import 'package:flutter/material.dart';
-import '../../../core/constants/theme_constants.dart';
-import 'package:provider/provider.dart';
-import '../../../../viewmodels/budget_viewmodel.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../viewmodels/budget_viewmodel.dart';
+import '../../../core/constants/theme_constants.dart';
 import '../../../core/utils/helpers.dart';
 
 class AddBudgetSheet extends StatefulWidget {
@@ -30,11 +29,14 @@ class AddBudgetSheet extends StatefulWidget {
 class _AddBudgetSheetState extends State<AddBudgetSheet> {
   int _currentStep = 0;
   final _formKey = GlobalKey<FormState>();
+  final _categoryFormKey = GlobalKey<FormState>();
+  final _amountFormKey = GlobalKey<FormState>();
+  final _periodFormKey = GlobalKey<FormState>();
 
   // Form data
   String _category = '';
   IconData _categoryIcon = Icons.category;
-  String _categoryIconFontFamily = 'FontAwesomeSolid'; // <-- Add this
+  String _categoryIconFontFamily = 'FontAwesomeSolid';
   String _categoryIconCode = Icons.category.codePoint.toString();
   double _budgetAmount = 0;
   String _period = 'Monthly';
@@ -45,6 +47,7 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
   DateTime _endDate = DateTime.now().add(const Duration(days: 30));
 
   bool get isDarkMode => Theme.of(context).brightness == Brightness.dark;
+
   TextStyle get titleStyle => Theme.of(context).textTheme.titleMedium!.copyWith(
         color: isDarkMode
             ? ThemeConstants.textPrimaryDark
@@ -62,8 +65,8 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
     if (budget != null) {
       _category = budget.category;
       _categoryIconCode = budget.icon;
-      _categoryIcon =
-          IconData(int.parse(_categoryIconCode), fontFamily: 'MaterialIcons');
+      _categoryIcon = IconData(int.parse(_categoryIconCode),
+          fontFamily: 'FontAwesomeSolid');
       _budgetAmount = budget.amount;
       _period = budget.periodType;
       _isRecurring = budget.isRecurring;
@@ -148,18 +151,17 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
   }
 
   Widget _buildCategoryGrid() {
-    const categories = CategoryList.categories;
+    final categories = CategoryList.categories.skip(9).toList();
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        childAspectRatio: 1.0,
-        crossAxisSpacing: 3,
-        mainAxisSpacing: 3,
-      ),
+          crossAxisCount: 4,
+          childAspectRatio: 1.0,
+          crossAxisSpacing: 3,
+          mainAxisSpacing: 3),
       itemCount: categories.length,
-      itemBuilder: (context, index) => _buildCategoryItem(index),
+      itemBuilder: (context, index) => _buildCategoryItem(index + 9),
     );
   }
 
@@ -264,53 +266,64 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
   }
 
   Widget _buildAmountStepContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Budget Amount',
-          style: titleStyle,
-        ),
-        const SizedBox(height: 16),
-        TextFormField(
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            prefixText: Helpers.storeCurrency(context),
-            labelText: 'Enter Budget Amount',
-            border: const OutlineInputBorder(),
-            helperText: 'Set your budget limit for this category',
-            labelStyle: TextStyle(
-              color: isDarkMode
-                  ? ThemeConstants.textSecondaryDark
-                  : ThemeConstants.textSecondaryLight,
-            ),
-            helperStyle: TextStyle(
-              color: isDarkMode
-                  ? ThemeConstants.textSecondaryDark
-                  : ThemeConstants.textSecondaryLight,
-            ),
+    return Form(
+      key: _amountFormKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Budget Amount *',
+            style: titleStyle,
           ),
-          style: TextStyle(
-            color: isDarkMode
-                ? ThemeConstants.textPrimaryDark
-                : ThemeConstants.textPrimaryLight,
+          const SizedBox(height: 16),
+          TextFormField(
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              prefixText: Helpers.storeCurrency(context),
+              labelText: 'Enter Budget Amount',
+              border: const OutlineInputBorder(),
+              helperText: 'Set your budget limit for this category',
+              errorStyle: const TextStyle(color: Colors.red),
+              labelStyle: TextStyle(
+                color: isDarkMode
+                    ? ThemeConstants.textSecondaryDark
+                    : ThemeConstants.textSecondaryLight,
+              ),
+              helperStyle: TextStyle(
+                color: isDarkMode
+                    ? ThemeConstants.textSecondaryDark
+                    : ThemeConstants.textSecondaryLight,
+              ),
+            ),
+            style: TextStyle(
+              color: isDarkMode
+                  ? ThemeConstants.textPrimaryDark
+                  : ThemeConstants.textPrimaryLight,
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a budget amount';
+              }
+              final amount = double.tryParse(value);
+              if (amount == null) {
+                return 'Please enter a valid number';
+              }
+              if (amount <= 0) {
+                return 'Amount must be greater than 0';
+              }
+              if (amount > 999999999) {
+                return 'Amount is too large';
+              }
+              return null;
+            },
+            onChanged: (value) {
+              setState(() {
+                _budgetAmount = double.tryParse(value) ?? 0;
+              });
+            },
           ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter a budget amount';
-            }
-            if (double.tryParse(value) == null) {
-              return 'Please enter a valid number';
-            }
-            return null;
-          },
-          onChanged: (value) {
-            setState(() {
-              _budgetAmount = double.tryParse(value) ?? 0;
-            });
-          },
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -434,13 +447,36 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
   }
 
   void _saveBudget() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      final viewModel = Provider.of<BudgetViewModel>(context, listen: false);
+    if (!_validateCurrentStep()) {
+      return;
+    }
 
-      if (viewModel.isLoading) {
-        const CustomLoadingOverlay();
-      }
+    // Validate all required fields one final time
+    if (_category.isEmpty || _budgetAmount <= 0) {
+      ToastUtils.showErrorToast(
+        context,
+        title: 'Validation Error',
+        description: 'Please fill in all required fields',
+      );
+      return;
+    }
 
+    if (_period == 'Custom' && _startDate.isAfter(_endDate)) {
+      ToastUtils.showErrorToast(
+        context,
+        title: 'Invalid Date Range',
+        description: 'Start date must be before end date',
+      );
+      return;
+    }
+
+    final viewModel = Provider.of<BudgetViewModel>(context, listen: false);
+
+    if (viewModel.isLoading) {
+      return;
+    }
+
+    try {
       final budget = widget.existingBudget?.copyWith(
             category: _category,
             amount: _budgetAmount,
@@ -455,6 +491,7 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
             isActive: true,
             updatedAt: DateTime.now(),
             icon: _categoryIconCode,
+            iconFontFamily: _categoryIconFontFamily,
           ) ??
           BudgetModel(
             id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -482,12 +519,20 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
 
       if (success && mounted) {
         Navigator.pop(context);
-        ToastUtils.showSuccessToast(context,
-            title: 'Success',
-            description: widget.existingBudget != null
-                ? 'Budget updated successfully'
-                : 'Budget created successfully');
+        ToastUtils.showSuccessToast(
+          context,
+          title: 'Success',
+          description: widget.existingBudget != null
+              ? 'Budget updated successfully'
+              : 'Budget created successfully',
+        );
       }
+    } catch (e) {
+      ToastUtils.showErrorToast(
+        context,
+        title: 'Error',
+        description: 'Failed to save budget. Please try again.',
+      );
     }
   }
 
@@ -599,12 +644,14 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
           width: 120,
           child: ElevatedButton(
             onPressed: () {
-              if (_currentStep < 5) {
-                setState(() {
-                  _currentStep++;
-                });
-              } else {
-                _saveBudget();
+              if (_validateCurrentStep()) {
+                if (_currentStep < 5) {
+                  setState(() {
+                    _currentStep++;
+                  });
+                } else {
+                  _saveBudget();
+                }
               }
             },
             style: ElevatedButton.styleFrom(
@@ -775,5 +822,58 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
       (c) => c['title'] == category,
       orElse: () => {'icon': Icons.category},
     )['icon'] as IconData;
+  }
+
+  bool _validateCurrentStep() {
+    switch (_currentStep) {
+      case 0: // Category step
+        if (_category.isEmpty) {
+          ToastUtils.showErrorToast(
+            context,
+            title: 'Required Field',
+            description: 'Please select a category',
+          );
+          return false;
+        }
+        return true;
+
+      case 1: // Amount step
+        if (_amountFormKey.currentState?.validate() ?? false) {
+          if (_budgetAmount <= 0) {
+            ToastUtils.showErrorToast(
+              context,
+              title: 'Invalid Amount',
+              description: 'Budget amount must be greater than 0',
+            );
+            return false;
+          }
+          return true;
+        }
+        return false;
+
+      case 2: // Period step
+        if (_period == 'Custom') {
+          if (_startDate.isAfter(_endDate)) {
+            ToastUtils.showErrorToast(
+              context,
+              title: 'Invalid Date Range',
+              description: 'Start date must be before end date',
+            );
+            return false;
+          }
+          if (_endDate.difference(_startDate).inDays < 1) {
+            ToastUtils.showErrorToast(
+              context,
+              title: 'Invalid Date Range',
+              description: 'Budget period must be at least 1 day',
+            );
+            return false;
+          }
+        }
+        return true;
+
+      default:
+        return true;
+    }
   }
 }

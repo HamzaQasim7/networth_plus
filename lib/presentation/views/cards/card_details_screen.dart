@@ -253,12 +253,10 @@ class CardDetailsScreen extends StatelessWidget {
           TextButton(
             onPressed: () async {
               Navigator.pop(context); // Close dialog
-              await viewModel.deleteAccountCard(card.id).then((value) => {
-                    Navigator.pop(context),
-                    ToastUtils.showSuccessToast(context,
-                        title: 'Deleted',
-                        description: 'Card deleted successfully'),
-                  });
+              await viewModel.deleteAccountCard(card.id);
+              Navigator.pop(context);
+              ToastUtils.showSuccessToast(context,
+                  title: 'Deleted', description: 'Card deleted successfully');
             },
             child: const Text(
               'Delete',

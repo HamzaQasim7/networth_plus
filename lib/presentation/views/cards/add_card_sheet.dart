@@ -25,22 +25,32 @@ class AddCardSheet extends StatefulWidget {
 
 class _AddCardSheetState extends State<AddCardSheet> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _numberController = TextEditingController();
+  final _balanceController = TextEditingController();
+  
   late String _cardType;
-  late String _cardName;
-  late String _cardNumber;
-  late double _balance;
   late Color _cardColor;
   late IconData _cardIcon;
+  bool _isProcessing = false;
 
   @override
   void initState() {
     super.initState();
     _cardType = widget.card?.type ?? 'Bank Account';
-    _cardName = widget.card?.name ?? '';
-    _cardNumber = widget.card?.number ?? '';
-    _balance = widget.card?.balance ?? 0.0;
+    _nameController.text = widget.card?.name ?? '';
+    _numberController.text = widget.card?.number ?? '';
+    _balanceController.text = (widget.card?.balance ?? 0.0).toString();
     _cardColor = widget.card?.color ?? Colors.blue;
     _cardIcon = widget.card?.icon ?? Icons.account_balance;
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _numberController.dispose();
+    _balanceController.dispose();
+    super.dispose();
   }
 
   @override
@@ -98,29 +108,27 @@ class _AddCardSheetState extends State<AddCardSheet> {
                 ),
                 const SizedBox(height: 16),
                 CustomTextField(
-                  initialValue: _cardName,
+                  controller: _nameController,
                   labelText: 'Name',
-                  onChanged: (value) => _cardName = value,
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? 'Please enter a name' : null,
+                  validator: (value) => value?.isEmpty ?? true ? 'Please enter a name' : null,
                 ),
                 const SizedBox(height: 16),
                 CustomTextField(
-                  initialValue: _cardNumber,
+                  controller: _numberController,
                   labelText: 'Card/Account Number',
                   keyboardType: TextInputType.number,
-                  onChanged: (value) => _cardNumber = value,
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? 'Please enter a number' : null,
+                  validator: (value) => value?.isEmpty ?? true ? 'Please enter a number' : null,
                 ),
                 const SizedBox(height: 16),
                 CustomTextField(
-                  initialValue: _balance.toString(),
+                  controller: _balanceController,
                   labelText: 'Balance',
                   keyboardType: TextInputType.number,
-                  onChanged: (value) => _balance = double.tryParse(value) ?? 0,
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? 'Please enter balance' : null,
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) return 'Please enter balance';
+                    if (double.tryParse(value!) == null) return 'Please enter a valid number';
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16),
                 _buildColorSelector(),
@@ -245,53 +253,76 @@ class _AddCardSheetState extends State<AddCardSheet> {
   }
 
   void _saveCard() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      final viewModel = context.read<AccountCardViewModel>();
-      if (viewModel.isLoading) {
-        const CustomLoadingOverlay();
-        console('DEBUG: ViewModel is already loading, skipping save operation');
-        return;
+    if (!(_formKey.currentState?.validate() ?? false)) {
+      console('DEBUG: Form validation failed');
+      return;
+    }
+
+    if (!mounted) return;
+
+    final viewModel = context.read<AccountCardViewModel>();
+    if (viewModel.isLoading) {
+      const CustomLoadingOverlay();
+      console('DEBUG: ViewModel is already loading, skipping save operation');
+      return;
+    }
+
+    console('DEBUG: Starting card save operation');
+    console('DEBUG: Card type: $_cardType');
+    console('DEBUG: Card name: $_nameController.text');
+    console('DEBUG: Card number: $_numberController.text');
+    console('DEBUG: Card balance: $_balanceController.text');
+
+    try {
+      bool success = false;
+      BuildContext dialogContext = context;
+
+      // Show loading indicator
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          dialogContext = context;
+          return const Center(child: CustomLoadingOverlay());
+        },
+      );
+
+      if (widget.isEditing && widget.card != null) {
+        // Update existing card
+        console('DEBUG: Updating existing card with ID: ${widget.card!.id}');
+        final updatedCard = widget.card!.copyWith(
+          name: _nameController.text,
+          number: _numberController.text,
+          type: _cardType,
+          balance: double.parse(_balanceController.text),
+          color: _cardColor,
+          icon: _cardIcon,
+        );
+
+        success = await viewModel.updateAccountCard(updatedCard);
+      } else {
+        // Create new card
+        console('DEBUG: Creating new card');
+        success = await viewModel.createAccountCard(
+          name: _nameController.text,
+          number: _numberController.text,
+          type: _cardType,
+          balance: double.parse(_balanceController.text),
+          color: _cardColor,
+          icon: _cardIcon,
+        );
       }
 
-      print('DEBUG: Starting card save operation');
-      print('DEBUG: Card type: $_cardType');
-      print('DEBUG: Card name: $_cardName');
-      print('DEBUG: Card number: $_cardNumber');
-      print('DEBUG: Card balance: $_balance');
+      console('DEBUG: Card operation result: $success');
 
-      try {
-        bool success;
+      // Close loading dialog
+      if (mounted && Navigator.canPop(dialogContext)) {
+        Navigator.pop(dialogContext);
+      }
 
-        if (widget.isEditing && widget.card != null) {
-          // Update existing card
-          print('DEBUG: Updating existing card with ID: ${widget.card!.id}');
-          final updatedCard = widget.card!.copyWith(
-            name: _cardName,
-            number: _cardNumber,
-            type: _cardType,
-            balance: _balance,
-            color: _cardColor,
-            icon: _cardIcon,
-          );
-
-          success = await viewModel.updateAccountCard(updatedCard);
-        } else {
-          // Create new card
-          print('DEBUG: Creating new card');
-          success = await viewModel.createAccountCard(
-            name: _cardName,
-            number: _cardNumber,
-            type: _cardType,
-            balance: _balance,
-            color: _cardColor,
-            icon: _cardIcon,
-          );
-        }
-
-        print('DEBUG: Card operation result: $success');
-
-        if (success && mounted) {
-          Navigator.pop(context);
+      if (success) {
+        if (mounted) {
+          // Show success message
           ToastUtils.showSuccessToast(
             context,
             title: 'Success',
@@ -299,19 +330,32 @@ class _AddCardSheetState extends State<AddCardSheet> {
                 ? 'Card updated successfully'
                 : 'Card added successfully',
           );
+
+          // Navigate back after a short delay to allow the toast to be visible
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (mounted && Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+          });
         }
-      } catch (e) {
-        print('DEBUG: Error saving card: $e');
+      } else {
         if (mounted) {
           ToastUtils.showErrorToast(
             context,
             title: 'Error',
-            description: e.toString(),
+            description: 'Failed to ${widget.isEditing ? 'update' : 'add'} card',
           );
         }
       }
-    } else {
-      print('DEBUG: Form validation failed');
+    } catch (e) {
+      console('DEBUG: Error saving card: $e');
+      if (mounted) {
+        ToastUtils.showErrorToast(
+          context,
+          title: 'Error',
+          description: e.toString(),
+        );
+      }
     }
   }
 }
