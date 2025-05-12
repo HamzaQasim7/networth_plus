@@ -1,3 +1,4 @@
+import 'package:finance_tracker/widgets/shared_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,9 +15,7 @@ class LanguageSelectorScreen extends StatelessWidget {
     final localizations = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(localizations.languageTitle),
-      ),
+      appBar: SharedAppbar(title: localizations.languageTitle),
       body: Column(
         children: [
           // System default option
@@ -30,15 +29,14 @@ class LanguageSelectorScreen extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          Divider(),
+          const Divider(),
           // Language options
           Expanded(
             child: ListView.builder(
               itemCount: LocalizationService.supportedLocales.length,
               itemBuilder: (context, index) {
                 final locale = LocalizationService.supportedLocales[index];
-                final languageName =
-                    LocalizationService.getLanguageName(locale);
+                final languageName = LocalizationService.getLanguageName(locale);
                 final isSelected = !localeViewModel.isSystemDefault &&
                     localeViewModel.locale?.languageCode == locale.languageCode;
 

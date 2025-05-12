@@ -36,12 +36,14 @@ class LocaleViewModel extends ChangeNotifier {
 
     if (savedLanguageCode == null) {
       // Use system locale if no preference is saved
+      final systemLocale = ui.window.locale;
       _localeModel = LocaleModel(
-        locale: ui.window.locale,
+        // Ensure proper locale is set for Arabic and Hindi
+        locale: LocalizationService.localeFromString(systemLocale.languageCode) ?? systemLocale,
         isSystemDefault: true,
       );
     } else {
-      // Use saved locale
+      // Use saved locale with proper country codes
       _localeModel = LocaleModel(
         locale: LocalizationService.localeFromString(savedLanguageCode)!,
         isSystemDefault: false,
@@ -57,9 +59,9 @@ class LocaleViewModel extends ChangeNotifier {
     // Save to preferences
     await _preferencesService.setLanguageCode(newLocale.languageCode);
 
-    // Update model
+    // Update model with proper locale including country code
     _localeModel = LocaleModel(
-      locale: newLocale,
+      locale: LocalizationService.localeFromString(newLocale.languageCode) ?? newLocale,
       isSystemDefault: false,
     );
 
@@ -71,9 +73,10 @@ class LocaleViewModel extends ChangeNotifier {
     // Clear saved preference
     await _preferencesService.clearLanguageCode();
 
-    // Update model
+    final systemLocale = ui.window.locale;
+    // Update model with proper locale including country code
     _localeModel = LocaleModel(
-      locale: ui.window.locale,
+      locale: LocalizationService.localeFromString(systemLocale.languageCode) ?? systemLocale,
       isSystemDefault: true,
     );
 
