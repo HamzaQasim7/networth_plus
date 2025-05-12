@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/theme_constants.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../viewmodels/asset_liability_viewmodel.dart';
 import '../../../../core/utils/helpers.dart';
 
@@ -10,6 +11,7 @@ class BalanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final vm = context.watch<AssetLiabilityViewModel>();
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
@@ -39,7 +41,7 @@ class BalanceCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Available balance',
+                  localization.availableBalance,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -55,12 +57,12 @@ class BalanceCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _BalanceItem(
-                  title: 'Cash',
+                  title: localization.cashLabel,
                   amount: '${Helpers.storeCurrency(context)}$cashBalance',
                   textColor: ThemeConstants.primaryColor,
                 ),
                 _BalanceItem(
-                  title: 'Bank',
+                  title: localization.bankLabel,
                   amount: '${Helpers.storeCurrency(context)}$bankBalance',
                   textColor: ThemeConstants.primaryColor,
                 ),

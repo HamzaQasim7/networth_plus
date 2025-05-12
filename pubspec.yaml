@@ -72,7 +72,7 @@ dev_dependencies:
   flutter_lints: ^4.0.0
 
 
-flutter_intl:
+flutter_intl:   # dart run intl_utils:generate
   enabled: true
   class_name: AppLocalizations # The name of the generated localization class
   main_locale: en # The main locale used for generating localization files
@@ -91,21 +91,21 @@ flutter_launcher_icons:
     generate: false
 
 # Splash Screen Configuration   dart run flutter_native_splash:create
-flutter_native_splash:
-  color: "#FFFFFF"
-  image: assets/icons/app_logo.jpg
-  color_dark: "#121212"
-  image_dark: assets/icons/app_logo.jpg
-
-  android_12:
-    image: assets/icons/app_logo.jpg
-    icon_background_color: "#FFFFFF"
-    image_dark: assets/icons/app_logo.jpg
-    icon_background_color_dark: "#121212"
-
-  web: false
-  ios: true
-  android: true
+#flutter_native_splash:
+#  color: "#FFFFFF"
+#  image: assets/icons/app_logo.jpg
+#  color_dark: "#121212"
+#  image_dark: assets/icons/app_logo.jpg
+#
+#  android_12:
+#    image: assets/icons/app_logo.jpg
+#    icon_background_color: "#FFFFFF"
+#    image_dark: assets/icons/app_logo.jpg
+#    icon_background_color_dark: "#121212"
+#
+#  web: false
+#  ios: true
+#  android: true
 
 flutter:
   uses-material-design: true

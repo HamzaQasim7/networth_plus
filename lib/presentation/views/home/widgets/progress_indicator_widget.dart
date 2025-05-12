@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/theme_constants.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../viewmodels/asset_liability_viewmodel.dart';
 
 class ProgressIndicatorWidget extends StatelessWidget {
@@ -17,19 +18,20 @@ class ProgressIndicatorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final vm = context.watch<AssetLiabilityViewModel>();
     final growth = _calculateYearlyGrowth(vm.netWorthHistory);
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDarkMode 
-        ? Colors.white.withOpacity(0.15) 
+    final backgroundColor = isDarkMode
+        ? Colors.white.withOpacity(0.15)
         : Colors.white.withOpacity(0.2);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Yearly Growth',
-          style: TextStyle(
+        Text(
+          localization.yearlyGrowth,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 16,
             fontWeight: FontWeight.w500,
@@ -45,9 +47,9 @@ class ProgressIndicatorWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
-          'vs Last Year',
-          style: TextStyle(
+        Text(
+          localization.vsLastYear,
+          style: const TextStyle(
             color: Colors.white70,
             fontSize: 12,
           ),

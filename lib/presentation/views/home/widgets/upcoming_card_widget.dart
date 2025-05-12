@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/constants/theme_constants.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../viewmodels/asset_liability_viewmodel.dart';
 import '../../../../core/utils/helpers.dart';
 
@@ -11,6 +12,7 @@ class UpcomingPaymentsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final vm = context.watch<AssetLiabilityViewModel>();
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
@@ -43,7 +45,7 @@ class UpcomingPaymentsCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Upcoming payments',
+                  localization.upcomingPayments,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -56,7 +58,7 @@ class UpcomingPaymentsCard extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             if (upcomingPayments.isEmpty)
-              const Text('No upcoming payments')
+              Text(localization.noUpcomingPayments)
             else
               ...upcomingPayments.map((payment) => Column(
                     children: [

@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:finance_tracker/data/models/transaction_model.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/presentation/views/transaction/widgets/report_item_widget.dart';
 import 'package:finance_tracker/presentation/views/transaction/widgets/transaction_chart_widget.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -79,12 +80,12 @@ class _ReportTransactionTabState extends State<ReportTransactionTab> {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<TransactionViewModel>();
-
+    final local = AppLocalizations.of(context);
     return SingleChildScrollView(
       child: Column(
         children: [
           TransactionChartWidget(
-            title: 'Spending by Category',
+            title: local.spendingByCategory,
             chart: FutureBuilder<Map<String, double>>(
               future: vm.getCategoryTotals(
                 startDate: DateTime.now().subtract(const Duration(days: 30)),
@@ -97,16 +98,17 @@ class _ReportTransactionTabState extends State<ReportTransactionTab> {
                 }
 
                 if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
+                  return Center(
+                      child: Text('${local.error}: ${snapshot.error}'));
                 }
 
                 final categoryTotals = snapshot.data ?? {};
 
                 if (categoryTotals.isEmpty) {
-                  return const Center(
+                  return Center(
                     child: Text(
                         textAlign: TextAlign.center,
-                        'No expense data available for selected period'),
+                        local.noExpenseDataAvailable),
                   );
                 }
 
@@ -132,19 +134,19 @@ class _ReportTransactionTabState extends State<ReportTransactionTab> {
             ),
           ),
           _buildReportSection(
-            title: 'Financial Summary',
+            title: local.financialSummary,
             child: Column(
               children: [
                 ReportItemWidget(
-                  label: 'Total Income',
+                  label: local.totalIncome,
                   value: vm.totalIncome.toStringAsFixed(2),
                 ),
                 ReportItemWidget(
-                  label: 'Total Expenses',
+                  label: local.totalExpenses,
                   value: vm.totalExpense.toStringAsFixed(2),
                 ),
                 ReportItemWidget(
-                  label: 'Net Savings',
+                  label: local.netSavings,
                   value: vm.availableBalance.toStringAsFixed(2),
                   textColor:
                       vm.availableBalance >= 0 ? Colors.green : Colors.red,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../viewmodels/transaction_viewmodel.dart';
 import '../../../../data/models/transaction_model.dart';
 import '../../dashboard/add_transaction_sheet.dart';
@@ -33,13 +34,14 @@ class _TransactionsTabState extends State<TransactionsTab> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     return Consumer<TransactionViewModel>(
       builder: (context, viewModel, child) {
         if (viewModel.error != null) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             ToastUtils.showErrorToast(
               context,
-              title: 'Error',
+              title: localization.error,
               description: viewModel.error!,
             );
             viewModel.clearError();
@@ -52,12 +54,14 @@ class _TransactionsTabState extends State<TransactionsTab> {
   }
 
   Widget _buildContent(TransactionViewModel viewModel) {
+    final localization = AppLocalizations.of(context);
+
     if (viewModel.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
     if (viewModel.transactions.isEmpty) {
-      return const Center(child: Text('No transactions found'));
+      return Center(child: Text(localization.noTransactionsFound));
     }
 
     return RefreshIndicator(
@@ -142,14 +146,17 @@ class _TransactionsTabState extends State<TransactionsTab> {
               ],
             ),
             const Gap(24),
-            _buildDetailRow('Category', transaction.category),
-            _buildDetailRow(
-                'Amount', '₹${transaction.amount.toStringAsFixed(2)}'),
-            _buildDetailRow(
-                'Date', DateFormat('MMM d, yyyy').format(transaction.date)),
-            _buildDetailRow('Payment Method', transaction.paymentMethod),
+            _buildDetailRow(AppLocalizations.of(context).categoryLabel,
+                transaction.category),
+            _buildDetailRow(AppLocalizations.of(context).amountLabel,
+                '₹${transaction.amount.toStringAsFixed(2)}'),
+            _buildDetailRow(AppLocalizations.of(context).dateLabel,
+                DateFormat('MMM d, yyyy').format(transaction.date)),
+            _buildDetailRow(AppLocalizations.of(context).paymentMethod,
+                transaction.paymentMethod),
             if (transaction.description.isNotEmpty)
-              _buildDetailRow('Settlement', transaction.description),
+              _buildDetailRow(AppLocalizations.of(context).settlement,
+                  transaction.description),
             const Gap(24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -157,14 +164,14 @@ class _TransactionsTabState extends State<TransactionsTab> {
                 _buildActionButton(
                   context,
                   icon: Icons.edit,
-                  label: 'Edit',
+                  label: AppLocalizations.of(context).edit,
                   onPressed: () =>
                       _editTransaction(context, transaction, viewModel),
                 ),
                 _buildActionButton(
                   context,
                   icon: Icons.delete,
-                  label: 'Delete',
+                  label: AppLocalizations.of(context).delete,
                   color: Colors.red,
                   onPressed: () =>
                       _deleteTransaction(context, transaction.id, viewModel),
@@ -212,8 +219,9 @@ class _TransactionsTabState extends State<TransactionsTab> {
           if (success && context.mounted) {
             ToastUtils.showSuccessToast(
               context,
-              title: 'Success',
-              description: 'Transaction updated successfully',
+              title: AppLocalizations.of(context).success,
+              description:
+                  AppLocalizations.of(context).transactionUpdatedSuccessfully,
             );
           }
         },
@@ -226,17 +234,17 @@ class _TransactionsTabState extends State<TransactionsTab> {
     String transactionId,
     TransactionViewModel viewModel,
   ) async {
+    final local = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: const Text('Delete Transaction'),
-        content:
-            const Text('Are you sure you want to delete this transaction?'),
+        title: Text(local.deleteTransaction),
+        content: Text(local.confirmDeleteTransaction),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(local.cancelButton),
           ),
           TextButton(
             onPressed: () {
@@ -244,12 +252,13 @@ class _TransactionsTabState extends State<TransactionsTab> {
               viewModel.deleteTransaction(transactionId);
               ToastUtils.showSuccessToast(
                 context,
-                title: 'Success',
-                description: 'Transaction deleted successfully',
+                title: local.success,
+                description: local.transactionDeletedSuccessfully,
               );
               Navigator.pop(context);
             },
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+            child:
+                Text(local.delete, style: const TextStyle(color: Colors.red)),
           ),
         ],
       ),

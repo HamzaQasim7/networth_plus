@@ -102,9 +102,18 @@ class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
           _buildTitleBar(),
           const Divider(height: 1),
           Expanded(
-            child: SingleChildScrollView(
+            child: Stack(
+              children: [
+                // Main scrollable content
+                SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.only(
+                      left: 16.0,
+                      right: 16.0,
+                      top: 16.0,
+                      // Add bottom padding to prevent content from being hidden behind buttons
+                      bottom: 80.0,
+                    ),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -119,8 +128,7 @@ class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
                               decoration: BoxDecoration(
                                 color: index <= _currentStep
                                     ? Theme.of(context).primaryColor
-                                    : Theme.of(context).brightness ==
-                                            Brightness.dark
+                                        : Theme.of(context).brightness == Brightness.dark
                                         ? Colors.grey[700]
                                         : Colors.grey[300],
                                 borderRadius: BorderRadius.circular(2),
@@ -135,8 +143,32 @@ class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
                       if (_currentStep == 2) _buildDetailsStepContent(),
                       if (_currentStep == 3) _buildAttachmentsStepContent(),
                       if (_currentStep == 4) _buildTrackingStepContent(),
-                      const Gap(24),
-                      Row(
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                // Fixed navigation buttons at bottom
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? ThemeConstants.surfaceDark
+                          : Colors.white,
+                      border: Border(
+                        top: BorderSide(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey[800]!
+                              : Colors.grey[300]!,
+                          width: 0.5,
+                        ),
+                      ),
+                    ),
+                    child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
@@ -149,13 +181,11 @@ class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
                                       });
                                     },
                                     style: OutlinedButton.styleFrom(
-                                      foregroundColor:
-                                          ThemeConstants.primaryColor,
+                                    foregroundColor: ThemeConstants.primaryColor,
                                       side: const BorderSide(
                                           color: ThemeConstants.primaryColor),
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
+                                        borderRadius: BorderRadius.circular(8)),
                                     ),
                                     child: const Text('Back'),
                                   )
@@ -178,16 +208,14 @@ class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
                               style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(100, 48),
                               ),
-                              child:
-                                  Text(_currentStep == 4 ? 'Save' : 'Continue'),
+                            child: Text(_currentStep == 4 ? 'Save' : 'Continue'),
                             ),
                           ),
                         ],
-                      ),
-                    ],
+              ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         ],

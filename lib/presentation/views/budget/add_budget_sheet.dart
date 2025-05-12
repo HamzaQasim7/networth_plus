@@ -95,22 +95,47 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
             _buildTitleBar(),
             const Divider(height: 1),
             Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        _buildStepIndicator(),
-                        const SizedBox(height: 24),
-                        _buildCurrentStepContent(),
-                        const SizedBox(height: 24),
-                        _buildNavigationButtons(),
-                      ],
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 16.0,
+                        right: 16.0,
+                        top: 16.0,
+                        bottom: 80.0,
+                      ),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            _buildStepIndicator(),
+                            const SizedBox(height: 24),
+                            _buildCurrentStepContent(),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: isDarkMode ? ThemeConstants.surfaceDark : Colors.white,
+                        border: Border(
+                          top: BorderSide(
+                            color: isDarkMode ? Colors.grey[800]! : Colors.grey[300]!,
+                            width: 0.5,
+                          ),
+                        ),
+                      ),
+                      child: _buildNavigationButtons(),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

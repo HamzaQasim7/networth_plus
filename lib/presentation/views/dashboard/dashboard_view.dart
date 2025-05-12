@@ -1,4 +1,5 @@
 import 'package:finance_tracker/core/constants/theme_constants.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/presentation/views/dashboard/widgets/activity_search_screen.dart';
 import 'package:finance_tracker/presentation/views/portfolio_screen/portfolio_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/settings_view.dart';
@@ -64,6 +65,7 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final localisation = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -105,7 +107,7 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
                       color: isDarkMode ? Colors.white70 : Colors.black87,
                     ),
                     const SizedBox(width: 12),
-                    const Text('Notifications'),
+                    Text(localisation.notificationsTitle),
                     const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.all(6),
@@ -134,7 +136,7 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
                       color: isDarkMode ? Colors.white70 : Colors.black87,
                     ),
                     const SizedBox(width: 12),
-                    const Text('Settings'),
+                    Text(localisation.settingsTitle),
                   ],
                 ),
               ),
@@ -203,20 +205,24 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
             // Show a dialog to choose between Asset and Liability
             showDialog(
               context: context,
-              builder: (context) => AlertDialog(
+              builder: (dialogContext) => AlertDialog(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
-                title: const AppHeaderText(
-                    text: 'What would you like to add?', fontSize: 18),
+                title: AppHeaderText(
+                    text: localisation.whatWouldYouLikeToAdd, fontSize: 18),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ListTile(
                       leading:
                           const Icon(Icons.arrow_upward, color: Colors.green),
-                      title: const Text('Add Asset'),
+                      title: Text(localisation.addAsset),
                       onTap: () {
-                        Navigator.pop(context); // Close dialog
+                        Navigator.pop(dialogContext); // Close dialog
+                        // Store the ViewModel reference before showing bottom sheet
+                        final viewModel = Provider.of<AssetLiabilityViewModel>(
+                            context,
+                            listen: false);
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
@@ -225,18 +231,23 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
                           builder: (context) =>
                               const AddAssetLiabilitySheet(isAsset: true),
                         ).then((_) {
-                          Provider.of<AssetLiabilityViewModel>(context,
-                                  listen: false)
-                              .reloadItems();
+                          // Check if the widget is still mounted before calling reloadItems
+                          if (mounted) {
+                            viewModel.reloadItems();
+                          }
                         });
                       },
                     ),
                     ListTile(
                       leading:
                           const Icon(Icons.arrow_downward, color: Colors.red),
-                      title: const Text('Add Liability'),
+                      title: Text(localisation.addLiability),
                       onTap: () {
-                        Navigator.pop(context); // Close dialog
+                        Navigator.pop(dialogContext); // Close dialog
+                        // Store the ViewModel reference before showing bottom sheet
+                        final viewModel = Provider.of<AssetLiabilityViewModel>(
+                            context,
+                            listen: false);
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
@@ -245,9 +256,10 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
                           builder: (context) =>
                               const AddAssetLiabilitySheet(isAsset: false),
                         ).then((_) {
-                          Provider.of<AssetLiabilityViewModel>(context,
-                                  listen: false)
-                              .reloadItems();
+                          // Check if the widget is still mounted before calling reloadItems
+                          if (mounted) {
+                            viewModel.reloadItems();
+                          }
                         });
                       },
                     ),
@@ -276,11 +288,14 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(0, Icons.dashboard, 'Home'),
-            _buildNavItem(1, Icons.sync_alt_outlined, 'Transaction'),
+            _buildNavItem(0, Icons.dashboard, localisation.homeTitle),
+            _buildNavItem(
+                1, Icons.sync_alt_outlined, localisation.transactionsTitle),
             const SizedBox(width: 30), // Space for FAB
-            _buildNavItem(2, Icons.account_balance_wallet_outlined, 'Budget'),
-            _buildNavItem(3, Icons.work_outline_rounded, 'Portfolio'),
+            _buildNavItem(2, Icons.account_balance_wallet_outlined,
+                localisation.budgetTitle),
+            _buildNavItem(
+                3, Icons.work_outline_rounded, localisation.portfolio),
           ],
         ),
       ),
@@ -300,7 +315,7 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
           children: [
             Icon(
               icon,
-              size: 24,
+              size: 22,
               color: isSelected
                   ? Theme.of(context).colorScheme.primary
                   : isDarkMode
@@ -310,12 +325,15 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
             const SizedBox(height: 4),
             Text(
               label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodySmall!.copyWith(
                   color: isSelected
                       ? Theme.of(context).colorScheme.primary
                       : isDarkMode
                           ? ThemeConstants.textPrimaryDark
-                          : ThemeConstants.textPrimaryLight),
+                          : ThemeConstants.textPrimaryLight,
+                  fontSize: 11),
             ),
           ],
         ),

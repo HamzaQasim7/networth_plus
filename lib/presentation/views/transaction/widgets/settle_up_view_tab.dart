@@ -1,6 +1,7 @@
 import 'package:finance_tracker/core/constants/console.dart';
 import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:finance_tracker/data/models/settlement_model.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/viewmodels/settlement_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/helper_utils.dart';
@@ -64,7 +65,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<SettlementViewModel>();
-
+    final local = AppLocalizations.of(context);
     return Stack(
       children: [
         Column(
@@ -74,15 +75,15 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
               child: ElevatedButton.icon(
                 onPressed: () => _showAddSettlementDialog(context),
                 icon: const Icon(Icons.add),
-                label: const Text('Add New Settlement'),
+                label: Text(local.addNewSettlement),
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 45),
                 ),
               ),
             ),
             if (viewModel.settlements.isEmpty && !viewModel.isLoading)
-              const Expanded(
-                child: Center(child: Text('No settlements found')),
+              Expanded(
+                child: Center(child: Text(local.noSettlementsFound)),
               )
             else
               Expanded(
@@ -104,6 +105,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
 
   Widget _buildSettlementCard(
       SettlementModel settlement, BuildContext context) {
+    final local = AppLocalizations.of(context);
     return Card(
       child: ListTile(
         leading: CircleAvatar(
@@ -111,7 +113,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
         ),
         title: Text(settlement.title),
         subtitle: Text(
-          settlement.isOwed ? 'You owe' : 'Owes you',
+          settlement.isOwed ? local.youOwe : local.owesYou,
           style: TextStyle(
             color: settlement.isOwed ? Colors.red : Colors.green,
           ),
@@ -133,6 +135,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController amountController = TextEditingController();
     bool isYouOwe = false;
+    final local = AppLocalizations.of(context);
 
     showModalBottomSheet(
       context: context,
@@ -153,7 +156,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Add New Settlement',
+                    local.addNewSettlement,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -168,7 +171,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
               CustomTextField(
                   controller: nameController,
                   keyboardType: TextInputType.text,
-                  labelText: 'Person Name',
+                  labelText: local.personName,
                   icon: Icons.person_outline),
               const Gap(16),
               CustomTextField(
@@ -178,7 +181,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                 ],
-                labelText: "Amount",
+                labelText: local.amountLabel,
                 icon: Icons.currency_rupee,
               ),
               const Gap(16),
@@ -186,7 +189,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
                 children: [
                   Expanded(
                     child: _buildChip(
-                      label: 'They Owe Me',
+                      label: local.theyOweMe,
                       isSelected: !isYouOwe,
                       onSelected: (selected) {
                         setState(() => isYouOwe = !selected);
@@ -198,7 +201,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
                   const Gap(8),
                   Expanded(
                     child: _buildChip(
-                      label: 'I Owe Them',
+                      label: local.iOweThem,
                       isSelected: isYouOwe,
                       onSelected: (selected) {
                         setState(() => isYouOwe = selected);
@@ -215,8 +218,8 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
                   if (nameController.text.isEmpty) {
                     ToastUtils.showErrorToast(
                       context,
-                      title: 'Invalid Input',
-                      description: 'Please enter a name',
+                      title: local.invalidInput,
+                      description: local.pleaseEnterAName,
                     );
                     return;
                   }
@@ -227,8 +230,8 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
                   if (amount == null || amount <= 0) {
                     ToastUtils.showErrorToast(
                       context,
-                      title: 'Invalid Amount',
-                      description: 'Please enter a valid number',
+                      title: local.invalidAmount,
+                      description: local.pleaseEnterAValidNumber,
                     );
                     return;
                   }
@@ -243,8 +246,8 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
                   if (success && context.mounted) {
                     ToastUtils.showSuccessToast(
                       context,
-                      title: 'Success',
-                      description: 'Settlement added successfully',
+                      title: local.success,
+                      description: local.settlementAddedSuccessfully,
                     );
                     Navigator.pop(context);
                   }
@@ -252,7 +255,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 45),
                 ),
-                child: const Text('Add Settlement'),
+                child: Text(local.addSettlement),
               ),
               const Gap(16),
             ],
@@ -265,6 +268,8 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
   void _showSettlementDetails(
       SettlementModel settlement, BuildContext context) {
     final viewModel = context.read<SettlementViewModel>();
+    final local = AppLocalizations.of(context);
+
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
@@ -275,8 +280,8 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
           children: [
             Text(
               settlement.isOwed
-                  ? 'You owe ${settlement.title}'
-                  : '${settlement.title} owes you',
+                  ? '${local.youOwe} ${settlement.title}'
+                  : '${settlement.title} ${local.owesYou}',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const Gap(16),
@@ -288,7 +293,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
             ),
             const Gap(24),
             Text(
-              'Related Transactions:',
+              '${local.relatedTransactions}:',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const Gap(8),
@@ -305,16 +310,16 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
                   if (context.mounted) {
                     ToastUtils.showSuccessToast(
                       context,
-                      title: 'Success',
+                      title: local.success,
                       description: settlement.isOwed
-                          ? 'Payment marked as completed'
-                          : 'Reminder sent successfully',
+                          ? local.paymentMarkedAsCompleted
+                          : local.reminderSentSuccessfully,
                     );
                     Navigator.pop(context);
                   }
                 },
                 child: Text(
-                  settlement.isOwed ? 'Pay Now' : 'Remind',
+                  settlement.isOwed ? local.payNow : local.remind,
                 ),
               ),
             ),

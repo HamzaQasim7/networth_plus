@@ -1,3 +1,4 @@
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ class AccountCardsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     return Consumer<AccountCardViewModel>(
       builder: (context, viewModel, child) {
         if (viewModel.isLoading) {
@@ -26,8 +28,8 @@ class AccountCardsWidget extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AppHeaderText(
-                text: 'Your Cards & Accounts',
+              AppHeaderText(
+                text: localization.yourCardsAndAccounts,
                 fontSize: 18,
               ),
               const Gap(16),
@@ -41,7 +43,7 @@ class AccountCardsWidget extends StatelessWidget {
                     const Gap(8),
                     ElevatedButton(
                       onPressed: () => viewModel.reloadAccountCards(),
-                      child: const Text('Retry'),
+                      child: Text(localization.retryButton),
                     ),
                   ],
                 ),
@@ -53,8 +55,8 @@ class AccountCardsWidget extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const AppHeaderText(
-              text: 'Your Cards & Accounts',
+            AppHeaderText(
+              text: localization.yourCardsAndAccounts,
               fontSize: 18,
             ),
             const Gap(16),
@@ -156,7 +158,7 @@ class AccountCardsWidget extends StatelessWidget {
 
   Widget _buildAddCardButton(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
+    final localization = AppLocalizations.of(context);
     return Container(
       width: 300,
       margin: const EdgeInsets.only(right: 16),
@@ -190,7 +192,7 @@ class AccountCardsWidget extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Add New Card',
+              localization.addNewCard,
               style: TextStyle(
                 color: isDarkMode
                     ? ThemeConstants.textSecondaryDark

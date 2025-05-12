@@ -5,6 +5,7 @@ import 'package:finance_tracker/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/constants/theme_constants.dart';
+import '../../../generated/l10n.dart';
 import '../../../viewmodels/account_card_viewmodel.dart';
 import '../../../data/models/account_card_model.dart';
 import '../../../core/utils/motion_toast.dart';
@@ -28,7 +29,7 @@ class _AddCardSheetState extends State<AddCardSheet> {
   final _nameController = TextEditingController();
   final _numberController = TextEditingController();
   final _balanceController = TextEditingController();
-  
+
   late String _cardType;
   late Color _cardColor;
   late IconData _cardIcon;
@@ -56,7 +57,7 @@ class _AddCardSheetState extends State<AddCardSheet> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
+    final localization = AppLocalizations.of(context);
     return Material(
       color: isDarkMode ? ThemeConstants.surfaceDark : Colors.white,
       borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
@@ -74,8 +75,8 @@ class _AddCardSheetState extends State<AddCardSheet> {
               children: [
                 Text(
                   widget.isEditing
-                      ? 'Edit Card/Account'
-                      : 'Add New Card/Account',
+                      ? localization.editCardAccount
+                      : localization.addNewCardAccount,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: isDarkMode
@@ -87,7 +88,7 @@ class _AddCardSheetState extends State<AddCardSheet> {
                 DropdownButtonFormField<String>(
                   value: _cardType,
                   decoration: InputDecoration(
-                    labelText: 'Type',
+                    labelText: localization.typeLabel,
                     border: const OutlineInputBorder(),
                     labelStyle: TextStyle(
                       color: isDarkMode
@@ -109,24 +110,32 @@ class _AddCardSheetState extends State<AddCardSheet> {
                 const SizedBox(height: 16),
                 CustomTextField(
                   controller: _nameController,
-                  labelText: 'Name',
-                  validator: (value) => value?.isEmpty ?? true ? 'Please enter a name' : null,
+                  labelText: localization.personName,
+                  validator: (value) => value?.isEmpty ?? true
+                      ? localization.pleaseEnterAName
+                      : null,
                 ),
                 const SizedBox(height: 16),
                 CustomTextField(
                   controller: _numberController,
-                  labelText: 'Card/Account Number',
+                  labelText: localization.cardAccountNumber,
                   keyboardType: TextInputType.number,
-                  validator: (value) => value?.isEmpty ?? true ? 'Please enter a number' : null,
+                  validator: (value) => value?.isEmpty ?? true
+                      ? localization.pleaseEnterAValidNumber
+                      : null,
                 ),
                 const SizedBox(height: 16),
                 CustomTextField(
                   controller: _balanceController,
-                  labelText: 'Balance',
+                  labelText: localization.balanceLabel,
                   keyboardType: TextInputType.number,
                   validator: (value) {
-                    if (value?.isEmpty ?? true) return 'Please enter balance';
-                    if (double.tryParse(value!) == null) return 'Please enter a valid number';
+                    if (value?.isEmpty ?? true) {
+                      return localization.pleaseEnterBalance;
+                    }
+                    if (double.tryParse(value!) == null) {
+                      return localization.pleaseEnterAValidNumber;
+                    }
                     return null;
                   },
                 ),
@@ -145,7 +154,9 @@ class _AddCardSheetState extends State<AddCardSheet> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: Text(widget.isEditing ? 'Update Card' : 'Add Card'),
+                    child: Text(widget.isEditing
+                        ? localization.updateCard
+                        : localization.addCard),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -158,6 +169,7 @@ class _AddCardSheetState extends State<AddCardSheet> {
   }
 
   Widget _buildColorSelector() {
+    final local = AppLocalizations.of(context);
     final colors = [
       Colors.blue,
       Colors.purple,
@@ -172,7 +184,7 @@ class _AddCardSheetState extends State<AddCardSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Card Color'),
+        Text(local.cardColor),
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
@@ -253,6 +265,7 @@ class _AddCardSheetState extends State<AddCardSheet> {
   }
 
   void _saveCard() async {
+    final local = AppLocalizations.of(context);
     if (!(_formKey.currentState?.validate() ?? false)) {
       console('DEBUG: Form validation failed');
       return;
@@ -325,10 +338,10 @@ class _AddCardSheetState extends State<AddCardSheet> {
           // Show success message
           ToastUtils.showSuccessToast(
             context,
-            title: 'Success',
+            title: local.success,
             description: widget.isEditing
-                ? 'Card updated successfully'
-                : 'Card added successfully',
+                ? local.cardUpdatedSuccessfully
+                : local.cardAddedSuccessfully,
           );
 
           // Navigate back after a short delay to allow the toast to be visible
@@ -342,8 +355,9 @@ class _AddCardSheetState extends State<AddCardSheet> {
         if (mounted) {
           ToastUtils.showErrorToast(
             context,
-            title: 'Error',
-            description: 'Failed to ${widget.isEditing ? 'update' : 'add'} card',
+            title: local.error,
+            description:
+                'Failed to ${widget.isEditing ? 'update' : 'add'} card',
           );
         }
       }
@@ -352,7 +366,7 @@ class _AddCardSheetState extends State<AddCardSheet> {
       if (mounted) {
         ToastUtils.showErrorToast(
           context,
-          title: 'Error',
+          title: local.error,
           description: e.toString(),
         );
       }

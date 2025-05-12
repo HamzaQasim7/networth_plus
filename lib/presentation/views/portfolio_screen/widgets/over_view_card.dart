@@ -1,7 +1,6 @@
-import 'package:finance_tracker/presentation/views/portfolio_screen/widgets/assets_laibilities_list.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/presentation/views/portfolio_screen/widgets/over_view_header_widget.dart';
 import 'package:finance_tracker/widgets/app_header_text.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -25,20 +24,18 @@ class OverviewCard extends StatelessWidget {
           color: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200,
         ),
       ),
-      child: const Padding(
-        padding: EdgeInsets.all(16),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             AppHeaderText(
-              text: 'Overview',
-              fontSize: 20,
-            ),
-            OverviewHeader(),
-            Gap(8),
-            NetWorthDisplay(),
-            Gap(16),
-            AssetsLiabilityCart(),
+                text: AppLocalizations.of(context).overview, fontSize: 20),
+            const OverviewHeader(),
+            const Gap(8),
+            const NetWorthDisplay(),
+            const Gap(16),
+            const AssetsLiabilityCart(),
           ],
         ),
       ),

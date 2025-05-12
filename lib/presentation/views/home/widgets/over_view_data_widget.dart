@@ -3,6 +3,7 @@ import 'package:finance_tracker/data/models/transaction_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/constants/theme_constants.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../viewmodels/transaction_viewmodel.dart';
 import '../../../../widgets/donut_card_widget.dart';
 import '../../../../core/utils/helpers.dart';
@@ -32,6 +33,7 @@ class _DataOverViewCardState extends State<DataOverViewCard> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final vm = context.watch<TransactionViewModel>();
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
@@ -62,7 +64,7 @@ class _DataOverViewCardState extends State<DataOverViewCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Last 30 days',
+                  localization.last30Days,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -71,16 +73,6 @@ class _DataOverViewCardState extends State<DataOverViewCard> {
                         : ThemeConstants.textPrimaryLight,
                   ),
                 ),
-                // IconButton(
-                //   icon: Icon(
-                //     Icons.more_horiz,
-                //     size: 20,
-                //     color: isDarkMode
-                //         ? ThemeConstants.textPrimaryDark
-                //         : ThemeConstants.textPrimaryLight,
-                //   ),
-                //   onPressed: () {},
-                // ),
               ],
             ),
             const SizedBox(height: 16),
@@ -99,19 +91,19 @@ class _DataOverViewCardState extends State<DataOverViewCard> {
                   child: Column(
                     children: [
                       _SummaryItem(
-                        label: 'Income',
+                        label: localization.incomeLabel,
                         amount: '$income',
                         textColor: ThemeConstants.positiveColor,
                       ),
                       const SizedBox(height: 8),
                       _SummaryItem(
-                        label: 'Expense',
+                        label: localization.expenseLabel,
                         amount: '$expense',
                         textColor: ThemeConstants.negativeColor,
                       ),
                       const SizedBox(height: 8),
                       _SummaryItem(
-                        label: 'Savings',
+                        label: localization.savingsLabel,
                         amount: '$savings',
                         textColor: savings >= 0
                             ? ThemeConstants.positiveColor

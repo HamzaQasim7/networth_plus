@@ -1,3 +1,4 @@
+import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:finance_tracker/widgets/app_header_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -366,20 +367,25 @@ class OverviewHeader extends StatelessWidget {
   }
 
   void _showAssetPerformanceDetail(BuildContext context) {
-    final viewModel = Provider.of<AssetLiabilityViewModel>(context, listen: false);
+    final viewModel =
+        Provider.of<AssetLiabilityViewModel>(context, listen: false);
     final assets = viewModel.assets;
-    final currencyFormat = NumberFormat.currency(symbol: '₹', decimalDigits: 0);
+    final currencyFormat = NumberFormat.currency(
+        symbol: Helpers.storeCurrency(context), decimalDigits: 0);
 
     // Calculate total assets value
-    final totalAssetsValue = assets.fold(0.0, (sum, asset) => sum + asset.currentValue);
+    final totalAssetsValue =
+        assets.fold(0.0, (sum, asset) => sum + asset.currentValue);
 
     // Group assets by type
-    final assetsByType = groupBy(assets, (AssetLiabilityModel asset) => asset.type);
+    final assetsByType =
+        groupBy(assets, (AssetLiabilityModel asset) => asset.type);
 
     // Calculate performance metrics
     final Map<String, double> typeDistribution = {};
     assetsByType.forEach((type, assets) {
-      final typeTotal = assets.fold(0.0, (sum, asset) => sum + asset.currentValue);
+      final typeTotal =
+          assets.fold(0.0, (sum, asset) => sum + asset.currentValue);
       typeDistribution[type] = (typeTotal / totalAssetsValue) * 100;
     });
 
@@ -390,7 +396,9 @@ class OverviewHeader extends StatelessWidget {
       builder: (context) => Container(
         height: MediaQuery.of(context).size.height * 0.9,
         decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark ? ThemeConstants.cardDark : Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? ThemeConstants.cardDark
+              : Colors.white,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
@@ -423,7 +431,9 @@ class OverviewHeader extends StatelessWidget {
                     // Asset Distribution
                     Card(
                       elevation: 0,
-                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[850] : Colors.grey[50],
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey[850]
+                          : Colors.grey[50],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -434,7 +444,10 @@ class OverviewHeader extends StatelessWidget {
                           children: [
                             Text(
                               'Asset Distribution',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
@@ -443,11 +456,15 @@ class OverviewHeader extends StatelessWidget {
                               height: 200,
                               child: PieChart(
                                 PieChartData(
-                                  sections: typeDistribution.entries.map((entry) {
-                                    final color = Colors.primaries[entry.key.hashCode % Colors.primaries.length];
+                                  sections:
+                                      typeDistribution.entries.map((entry) {
+                                    final color = Colors.primaries[
+                                        entry.key.hashCode %
+                                            Colors.primaries.length];
                                     return PieChartSectionData(
                                       value: entry.value,
-                                      title: '${entry.key}\n${entry.value.toStringAsFixed(1)}%',
+                                      title:
+                                          '${entry.key}\n${entry.value.toStringAsFixed(1)}%',
                                       color: color,
                                       radius: 80,
                                       titleStyle: const TextStyle(
@@ -475,17 +492,24 @@ class OverviewHeader extends StatelessWidget {
                                     title: Text(asset.name),
                                     subtitle: Text(asset.type),
                                     trailing: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
                                         Text(
-                                          currencyFormat.format(asset.currentValue),
-                                          style: const TextStyle(fontWeight: FontWeight.bold),
+                                          currencyFormat
+                                              .format(asset.currentValue),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         ),
                                         Text(
                                           '${asset.performancePercentage.toStringAsFixed(1)}%',
                                           style: TextStyle(
-                                            color: asset.performancePercentage >= 0 ? Colors.green : Colors.red,
+                                            color:
+                                                asset.performancePercentage >= 0
+                                                    ? Colors.green
+                                                    : Colors.red,
                                           ),
                                         ),
                                       ],
@@ -509,20 +533,24 @@ class OverviewHeader extends StatelessWidget {
   }
 
   void _showLiabilityAnalysisDetail(BuildContext context) {
-    final viewModel = Provider.of<AssetLiabilityViewModel>(context, listen: false);
+    final viewModel =
+        Provider.of<AssetLiabilityViewModel>(context, listen: false);
     final liabilities = viewModel.liabilities;
     final currencyFormat = NumberFormat.currency(symbol: '₹', decimalDigits: 0);
 
     // Calculate total liabilities value
-    final totalLiabilitiesValue = liabilities.fold(0.0, (sum, liability) => sum + liability.amount);
+    final totalLiabilitiesValue =
+        liabilities.fold(0.0, (sum, liability) => sum + liability.amount);
 
     // Group liabilities by type
-    final liabilitiesByType = groupBy(liabilities, (AssetLiabilityModel liability) => liability.type);
+    final liabilitiesByType =
+        groupBy(liabilities, (AssetLiabilityModel liability) => liability.type);
 
     // Calculate debt distribution
     final Map<String, double> typeDistribution = {};
     liabilitiesByType.forEach((type, liabilities) {
-      final typeTotal = liabilities.fold(0.0, (sum, liability) => sum + liability.amount);
+      final typeTotal =
+          liabilities.fold(0.0, (sum, liability) => sum + liability.amount);
       typeDistribution[type] = (typeTotal / totalLiabilitiesValue) * 100;
     });
 
@@ -533,7 +561,9 @@ class OverviewHeader extends StatelessWidget {
       builder: (context) => Container(
         height: MediaQuery.of(context).size.height * 0.9,
         decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark ? ThemeConstants.cardDark : Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? ThemeConstants.cardDark
+              : Colors.white,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
@@ -566,7 +596,9 @@ class OverviewHeader extends StatelessWidget {
                     // Total Liabilities Card
                     Card(
                       elevation: 0,
-                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[850] : Colors.grey[50],
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey[850]
+                          : Colors.grey[50],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -581,7 +613,10 @@ class OverviewHeader extends StatelessWidget {
                             const SizedBox(height: 8),
                             Text(
                               currencyFormat.format(totalLiabilitiesValue),
-                              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium
+                                  ?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.red,
                                   ),
@@ -590,8 +625,13 @@ class OverviewHeader extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                _buildMetricCard(context, 'Monthly EMIs', '₹25,000', Colors.red),
-                                _buildMetricCard(context, 'Debt Ratio', '${viewModel.debtToAssetRatio.toStringAsFixed(1)}%', Colors.orange),
+                                _buildMetricCard(context, 'Monthly EMIs',
+                                    '25,000', Colors.red),
+                                _buildMetricCard(
+                                    context,
+                                    'Debt Ratio',
+                                    '${viewModel.debtToAssetRatio.toStringAsFixed(1)}%',
+                                    Colors.orange),
                               ],
                             ),
                           ],
@@ -602,7 +642,9 @@ class OverviewHeader extends StatelessWidget {
                     // Debt Distribution Chart
                     Card(
                       elevation: 0,
-                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[850] : Colors.grey[50],
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey[850]
+                          : Colors.grey[50],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -613,7 +655,10 @@ class OverviewHeader extends StatelessWidget {
                           children: [
                             Text(
                               'Debt Distribution',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
@@ -622,11 +667,15 @@ class OverviewHeader extends StatelessWidget {
                               height: 200,
                               child: PieChart(
                                 PieChartData(
-                                  sections: typeDistribution.entries.map((entry) {
-                                    final color = Colors.primaries[entry.key.hashCode % Colors.primaries.length];
+                                  sections:
+                                      typeDistribution.entries.map((entry) {
+                                    final color = Colors.primaries[
+                                        entry.key.hashCode %
+                                            Colors.primaries.length];
                                     return PieChartSectionData(
                                       value: entry.value,
-                                      title: '${entry.key}\n${entry.value.toStringAsFixed(1)}%',
+                                      title:
+                                          '${entry.key}\n${entry.value.toStringAsFixed(1)}%',
                                       color: color,
                                       radius: 80,
                                       titleStyle: const TextStyle(
@@ -649,7 +698,9 @@ class OverviewHeader extends StatelessWidget {
                     // Loan Details
                     Card(
                       elevation: 0,
-                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[850] : Colors.grey[50],
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey[850]
+                          : Colors.grey[50],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -660,7 +711,10 @@ class OverviewHeader extends StatelessWidget {
                           children: [
                             Text(
                               'Loan Details',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
@@ -681,7 +735,8 @@ class OverviewHeader extends StatelessWidget {
   }
 
   void _showFinancialInsightsDetail(BuildContext context) {
-    final viewModel = Provider.of<AssetLiabilityViewModel>(context, listen: false);
+    final viewModel =
+        Provider.of<AssetLiabilityViewModel>(context, listen: false);
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     showModalBottomSheet(
@@ -755,13 +810,15 @@ class OverviewHeader extends StatelessWidget {
                                   Column(
                                     children: [
                                       Text(
-                                        '${(viewModel.financialHealthScore * 100).toStringAsFixed(0)}',
+                                        (viewModel.financialHealthScore * 100)
+                                            .toStringAsFixed(0),
                                         style: Theme.of(context)
                                             .textTheme
                                             .headlineMedium
                                             ?.copyWith(
                                               fontWeight: FontWeight.bold,
-                                              color: viewModel.financialHealthColor,
+                                              color: viewModel
+                                                  .financialHealthColor,
                                             ),
                                       ),
                                       Text(
@@ -770,7 +827,8 @@ class OverviewHeader extends StatelessWidget {
                                             .textTheme
                                             .bodyMedium
                                             ?.copyWith(
-                                              color: viewModel.financialHealthColor,
+                                              color: viewModel
+                                                  .financialHealthColor,
                                             ),
                                       ),
                                     ],
@@ -887,7 +945,7 @@ class OverviewHeader extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '₹${NumberFormat('#,##,###').format(entry.amount)}',
+                  '${Helpers.storeCurrency(context)}${NumberFormat('#,##,###').format(entry.amount)}',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
@@ -906,89 +964,6 @@ class OverviewHeader extends StatelessWidget {
         ),
       );
     }).toList();
-  }
-
-  List<Widget> _buildAssetPerformanceList(BuildContext context) {
-    final assets = [
-      {
-        'name': 'Real Estate',
-        'value': 4000000,
-        'return': '+8.5%',
-        'color': Colors.blue
-      },
-      {
-        'name': 'Stocks',
-        'value': 2500000,
-        'return': '+12.3%',
-        'color': Colors.green
-      },
-      {
-        'name': 'Cash & Bank',
-        'value': 2000000,
-        'return': '+3.2%',
-        'color': Colors.orange
-      },
-      {
-        'name': 'Others',
-        'value': 1500000,
-        'return': '+5.7%',
-        'color': Colors.purple
-      },
-    ];
-
-    return assets
-        .map((asset) => Container(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                  ),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 12,
-                    height: 12,
-                    decoration: BoxDecoration(
-                      color: asset['color'] as Color,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      asset['name'].toString(),
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
-                  Text(
-                    '₹${NumberFormat('#,##,###').format(asset['value'])}',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                  const SizedBox(width: 16),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      asset['return'].toString(),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.green,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                  ),
-                ],
-              ),
-            ))
-        .toList();
   }
 
   Widget _buildReportSection(
@@ -1051,10 +1026,12 @@ class OverviewHeader extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildLoanDetailsList(BuildContext context, List<AssetLiabilityModel> liabilities) {
+  List<Widget> _buildLoanDetailsList(
+      BuildContext context, List<AssetLiabilityModel> liabilities) {
     final currencyFormat = NumberFormat.currency(symbol: '₹', decimalDigits: 0);
 
-    return liabilities.map((liability) => Container(
+    return liabilities
+        .map((liability) => Container(
               padding: const EdgeInsets.symmetric(vertical: 12),
               decoration: BoxDecoration(
                 border: Border(
@@ -1070,13 +1047,13 @@ class OverviewHeader extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                liability.name,
+                        liability.name,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                       ),
                       Text(
-                currencyFormat.format(liability.amount),
+                        currencyFormat.format(liability.amount),
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                               color: Colors.red,
                               fontWeight: FontWeight.w500,
@@ -1089,53 +1066,55 @@ class OverviewHeader extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                'EMI: ${currencyFormat.format(liability.emi)}',
+                        'EMI: ${currencyFormat.format(liability.emi)}',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
-                'Interest: ${liability.interestRate}%',
+                        'Interest: ${liability.interestRate}%',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
-                'Remaining: ${liability.calculateLoanTermInMonths()} months',
+                        'Remaining: ${liability.calculateLoanTermInMonths()} months',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
                   ),
                 ],
               ),
-    )).toList();
+            ))
+        .toList();
   }
 
   List<Widget> _buildKeyMetricsList(BuildContext context) {
-   final viewModel = Provider.of<AssetLiabilityViewModel>(context, listen: false);
+    final viewModel =
+        Provider.of<AssetLiabilityViewModel>(context, listen: false);
 
-  final metrics = [
-    {
-      'name': 'Savings Rate',
-      'value': '25%',
-      'status': 'Good',
-      'color': Colors.green
-    },
-    {
-      'name': 'Debt-to-Income',
-      'value': '${(viewModel.debtToAssetRatio * 100).toStringAsFixed(1)}%',
-      'status': viewModel.debtToAssetRatio > 0.5 ? 'Risky' : 'Moderate',
-      'color': viewModel.debtToAssetRatio > 0.5 ? Colors.red : Colors.orange
-    },
-    {
-      'name': 'Emergency Fund',
-      'value': '3 months',
-      'status': 'Need Attention',
-      'color': Colors.red
-    },
-    {
-      'name': 'Investment Rate',
-      'value': '15%',
-      'status': 'Good',
-      'color': Colors.green
-    },
-  ];
+    final metrics = [
+      {
+        'name': 'Savings Rate',
+        'value': '25%',
+        'status': 'Good',
+        'color': Colors.green
+      },
+      {
+        'name': 'Debt-to-Income',
+        'value': '${(viewModel.debtToAssetRatio * 100).toStringAsFixed(1)}%',
+        'status': viewModel.debtToAssetRatio > 0.5 ? 'Risky' : 'Moderate',
+        'color': viewModel.debtToAssetRatio > 0.5 ? Colors.red : Colors.orange
+      },
+      {
+        'name': 'Emergency Fund',
+        'value': '3 months',
+        'status': 'Need Attention',
+        'color': Colors.red
+      },
+      {
+        'name': 'Investment Rate',
+        'value': '15%',
+        'status': 'Good',
+        'color': Colors.green
+      },
+    ];
     return metrics
         .map((metric) => Container(
               padding: const EdgeInsets.symmetric(vertical: 12),
@@ -1184,7 +1163,8 @@ class OverviewHeader extends StatelessWidget {
   }
 
   List<Widget> _buildRecommendationsList(BuildContext context) {
-    final viewModel = Provider.of<AssetLiabilityViewModel>(context, listen: false);
+    final viewModel =
+        Provider.of<AssetLiabilityViewModel>(context, listen: false);
     final recommendations = _generateRecommendations(viewModel);
 
     return recommendations
@@ -1237,7 +1217,8 @@ class OverviewHeader extends StatelessWidget {
   }
 
   // Helper method to generate recommendations based on financial data
-  List<Map<String, String>> _generateRecommendations(AssetLiabilityViewModel viewModel) {
+  List<Map<String, String>> _generateRecommendations(
+      AssetLiabilityViewModel viewModel) {
     final List<Map<String, String>> recommendations = [];
 
     // Add recommendations based on financial health
@@ -1252,7 +1233,8 @@ class OverviewHeader extends StatelessWidget {
     if (viewModel.debtToAssetRatio > 0.5) {
       recommendations.add({
         'title': 'Reduce Debt',
-        'description': 'Focus on paying down high-interest debt to improve financial health',
+        'description':
+            'Focus on paying down high-interest debt to improve financial health',
         'priority': 'High',
       });
     }

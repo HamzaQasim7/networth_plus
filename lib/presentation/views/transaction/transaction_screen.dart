@@ -1,17 +1,11 @@
-import 'package:collection/collection.dart';
-import 'package:finance_tracker/core/constants/categories_list.dart';
-import 'package:finance_tracker/core/utils/helpers.dart';
-import 'package:finance_tracker/presentation/views/transaction/widgets/transaction_monthly_selector.dart';
 import 'package:finance_tracker/presentation/views/transaction/widgets/report_transaction_tab.dart';
 import 'package:finance_tracker/presentation/views/transaction/widgets/settle_up_view_tab.dart';
+import 'package:finance_tracker/presentation/views/transaction/widgets/transaction_monthly_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:icons_plus/icons_plus.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/theme_constants.dart';
-import '../../../data/models/transaction_model.dart';
+import '../../../generated/l10n.dart';
 import '../../../viewmodels/transaction_viewmodel.dart';
 import '../../../widgets/summary_card_widget.dart';
 import 'widgets/transactions_tab.dart';
@@ -44,6 +38,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     return Scaffold(
       body: Column(
         children: [
@@ -67,21 +62,21 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   children: [
                     Expanded(
                       child: SummaryCardWidget(
-                        title: 'Income',
+                        title: localization.incomeLabel,
                         amount: viewModel.totalIncome.toString(),
                         textColor: Colors.green,
                       ),
                     ),
                     Expanded(
                       child: SummaryCardWidget(
-                        title: 'Expense',
+                        title: localization.expenseLabel,
                         amount: viewModel.totalExpense.toString(),
                         textColor: Colors.red,
                       ),
                     ),
                     Expanded(
                       child: SummaryCardWidget(
-                        title: 'Available',
+                        title: localization.available,
                         amount: viewModel.availableBalance.toString(),
                         textColor: Colors.blue,
                       ),
@@ -163,9 +158,5 @@ class _TransactionScreenState extends State<TransactionScreen> {
         }).toList(),
       ),
     );
-  }
-
-  void _handleFilterSelection(FilterOption option) {
-    // Implement filter logic based on the selected option
   }
 }

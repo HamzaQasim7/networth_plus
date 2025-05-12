@@ -1,3 +1,4 @@
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/presentation/views/portfolio_screen/widgets/assets_laibilities_section.dart';
 import 'package:finance_tracker/presentation/views/portfolio_screen/widgets/over_view_card.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -34,7 +35,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
         children: [
           const OverviewCard(),
           const Gap(16),
-          const AppHeaderText(text: 'Growth Trend', fontSize: 18),
+          AppHeaderText(
+              text: AppLocalizations.of(context).growthTrend, fontSize: 18),
           const Gap(16),
           SizedBox(
             height: 200,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../viewmodels/budget_viewmodel.dart';
+import '../../../generated/l10n.dart';
 import 'widgets/budget_monthly_selector_widget.dart';
 
 class BudgetScreen extends StatefulWidget {
@@ -22,6 +23,8 @@ class _BudgetScreenState extends State<BudgetScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context);
+
     return Consumer<BudgetViewModel>(
       builder: (context, viewModel, _) {
         if (viewModel.isLoading) {
@@ -29,7 +32,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
         }
 
         if (viewModel.error != null) {
-          return Center(child: Text('Error: ${viewModel.error}'));
+          return Center(child: Text('${local.error}: ${viewModel.error}'));
         }
 
         return SingleChildScrollView(
@@ -47,8 +50,8 @@ class _BudgetScreenState extends State<BudgetScreen> {
                   totalSpent: pro.totalSpent,
                 );
               }),
-              const BudgetCategorySection(
-                title: 'Budgeted Categories',
+              BudgetCategorySection(
+                title: local.budgetedCategories,
               ),
             ],
           ),
