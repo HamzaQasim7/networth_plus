@@ -124,10 +124,14 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: isDarkMode ? ThemeConstants.surfaceDark : Colors.white,
+                        color: isDarkMode
+                            ? ThemeConstants.surfaceDark
+                            : Colors.white,
                         border: Border(
                           top: BorderSide(
-                            color: isDarkMode ? Colors.grey[800]! : Colors.grey[300]!,
+                            color: isDarkMode
+                                ? Colors.grey[800]!
+                                : Colors.grey[300]!,
                             width: 0.5,
                           ),
                         ),
@@ -502,6 +506,18 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
     }
 
     try {
+      // Check if budget exists for this category in the selected month
+      if (widget.existingBudget == null &&
+          viewModel.isBudgetExistsForCategory(_category, _startDate)) {
+        ToastUtils.showErrorToast(
+          context,
+          title: 'Duplicate Budget',
+          description:
+              'A budget for this category already exists in the selected month',
+        );
+        return;
+      }
+
       final budget = widget.existingBudget?.copyWith(
             category: _category,
             amount: _budgetAmount,
@@ -542,7 +558,17 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
           ? await viewModel.updateBudget(budget)
           : await viewModel.createBudget(budget);
 
-      if (success && mounted) {
+      if (!success) {
+        ToastUtils.showErrorToast(
+          context,
+          title: 'Error',
+          description:
+              viewModel.error ?? 'Failed to save budget. Please try again.',
+        );
+        return;
+      }
+
+      if (mounted && success) {
         Navigator.pop(context);
         ToastUtils.showSuccessToast(
           context,
@@ -553,11 +579,21 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
         );
       }
     } catch (e) {
-      ToastUtils.showErrorToast(
-        context,
-        title: 'Error',
-        description: 'Failed to save budget. Please try again.',
-      );
+      String errorMessage = e.toString();
+      if (errorMessage.contains('already exists')) {
+        ToastUtils.showErrorToast(
+          context,
+          title: 'Duplicate Budget',
+          description:
+              'A budget for this category already exists in the selected month',
+        );
+      } else {
+        ToastUtils.showErrorToast(
+          context,
+          title: 'Error',
+          description: errorMessage.replaceAll('Exception: ', ''),
+        );
+      }
     }
   }
 

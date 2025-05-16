@@ -24,8 +24,39 @@ class BudgetRepository {
             .toList());
   }
 
+  Future<bool> isBudgetExistsForCategory(String userId, String category, DateTime date) async {
+    try {
+      final startOfMonth = DateTime(date.year, date.month, 1);
+      final endOfMonth = DateTime(date.year, date.month + 1, 0);
+
+      final querySnapshot = await _firestore
+          .collection(_collection)
+          .where('userId', isEqualTo: userId)
+          .where('category', isEqualTo: category)
+          .where('startDate', isGreaterThanOrEqualTo: Timestamp.fromDate(startOfMonth))
+          .where('startDate', isLessThanOrEqualTo: Timestamp.fromDate(endOfMonth))
+          .get();
+
+      return querySnapshot.docs.isNotEmpty;
+    } catch (e) {
+      console('Error checking budget existence: $e', type: DebugType.error);
+      throw Exception('Failed to check budget existence. Please try again.');
+    }
+  }
+
   Future<void> addBudget(BudgetModel budget) async {
     try {
+      // Check if budget already exists for this category in the same month
+      final exists = await isBudgetExistsForCategory(
+        budget.userId,
+        budget.category,
+        budget.startDate,
+      );
+
+      if (exists) {
+        throw Exception('A budget for this category already exists in the selected month.');
+      }
+
       await _firestore
           .collection(_collection)
           .doc(budget.id)
@@ -33,7 +64,7 @@ class BudgetRepository {
       console('Budget added: ${budget.id}', type: DebugType.info);
     } catch (e) {
       console('Error adding budget: $e', type: DebugType.error);
-      throw Exception('Failed to create budget. Please try again.');
+      throw Exception(e.toString());
     }
   }
 
