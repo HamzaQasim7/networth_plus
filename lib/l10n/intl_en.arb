@@ -631,19 +631,1063 @@
                                                                                                                       "cardColor": "Card Color",
                                                                                                                       "@cardColor": {
                                                                                                                         "description": "Label for Card Color"
-                                                                                                                      }
-
-
-
-
-
-
-
-
-
-
-
-
+                                                                                                                      },
+                                                                                                                      "saveMoreToBuildFoundation": "Save more to build a stronger financial foundation",
+                                                                                                                      "@saveMoreToBuildFoundation": {
+                                                                                                                        "description": "Recommendation to save more for a stronger financial foundation"
+                                                                                                                      },
+                                                                                                                      "unauthorized": "Unauthorized",
+                                                                                                                      "@unauthorized": {
+                                                                                                                        "description": "Message displayed when the user is unauthorized"
+                                                                                                                      },
+                                                                                                                      "transferMoney": "Transfer Money",
+                                                                                                                      "@transferMoney": {
+                                                                                                                        "description": "Label for transferring money"
+                                                                                                                      },
+                                                                                                                      "addTransaction": "Add Transaction",
+                                                                                                                      "@addTransaction": {
+                                                                                                                        "description": "Button to add a new transaction"
+                                                                                                                      },
+                                                                                                                      "transfer": "Transfer",
+                                                                                                                      "@transfer": {
+                                                                                                                        "description": "Label for transfer action or button"
+                                                                                                                      },
+                                                                                                                      "fromAccount": "From Account",
+                                                                                                                      "@fromAccount": {
+                                                                                                                        "description": "Label for selecting the source account"
+                                                                                                                      },
+                                                                                                                      "toAccount": "To Account",
+                                                                                                                      "@toAccount": {
+                                                                                                                        "description": "Label for selecting the destination account"
+                                                                                                                      },
+                                                                                                                      "transferAmount": "Transfer Amount",
+                                                                                                                      "@transferAmount": {
+                                                                                                                        "description": "Label for the amount to be transferred"
+                                                                                                                      },
+                                                                                                                      "enterAmountToTransfer": "Enter amount to transfer",
+                                                                                                                      "@enterAmountToTransfer": {
+                                                                                                                        "description": "Placeholder or message prompting the user to enter the transfer amount"
+                                                                                                                      },
+                                                                                                                      "availableBudget": "Available Budget",
+                                                                                                                      "@availableBudget": {
+                                                                                                                        "description": "Label for available budget"
+                                                                                                                      },
+                                                                                                                      "enterAmount": "Enter amount",
+                                                                                                                      "@enterAmount": {
+                                                                                                                        "description": "Placeholder or message prompting the user to enter an amount"
+                                                                                                                      },
+                                                                                                                      "pleaseEnterAnAmount": "Please enter an amount",
+                                                                                                                      "@pleaseEnterAnAmount": {
+                                                                                                                        "description": "Message prompting the user to enter an amount"
+                                                                                                                      },
+                                                                                                                      "pleaseEnterAValidAmount": "Please enter a valid amount",
+                                                                                                                      "@pleaseEnterAValidAmount": {
+                                                                                                                        "description": "Message prompting the user to enter a valid amount"
+                                                                                                                      },
+                                                                                                                      "pleaseAddIncomeFirst": "Please add income first!",
+                                                                                                                      "@pleaseAddIncomeFirst": {
+                                                                                                                        "description": "Message prompting the user to add income before proceeding"
+                                                                                                                      },
+                                                                                                                      "description": "Description",
+                                                                                                                      "@description": {
+                                                                                                                        "description": "Label for description field"
+                                                                                                                      },
+                                                                                                                      "enterDescription": "Enter description",
+                                                                                                                      "@enterDescription": {
+                                                                                                                        "description": "Placeholder or message prompting the user to enter a description"
+                                                                                                                      },
+                                                                                                                      "date": "Date",
+                                                                                                                      "@date": {
+                                                                                                                        "description": "Label for selecting a date"
+                                                                                                                      },
+                                                                                                                      "paymentMethod": "Payment Method",
+                                                                                                                      "@paymentMethod": {
+                                                                                                                        "description": "Label for selecting a payment method"
+                                                                                                                      },
+                                                                                                                      "time": "Time",
+                                                                                                                      "@time": {
+                                                                                                                        "description": "Label for selecting a time"
+                                                                                                                      },
+                                                                                                                      "cashWallet": "Cash Wallet",
+                                                                                                                      "@cashWallet": {
+                                                                                                                        "description": "Label for the cash wallet payment method"
+                                                                                                                      },
+                                                                                                                     "addNewAccount": "Add New Account",
+                                                                                                                     "@addNewAccount": {
+                                                                                                                       "description": "Button text for adding a new account"
+                                                                                                                     },
+                                                                                                                     "pleaseSelectAPaymentMethod": "Please select a payment method",
+                                                                                                                     "@pleaseSelectAPaymentMethod": {
+                                                                                                                       "description": "Message prompting the user to select a payment method"
+                                                                                                                     },
+                                                                                                                     "recurringTransaction": "Recurring Transaction",
+                                                                                                                     "@recurringTransaction": {
+                                                                                                                       "description": "Label for enabling or disabling recurring transactions"
+                                                                                                                     },
+                                                                                                                      "frequency": "Frequency",
+                                                                                                                      "@frequency": {
+                                                                                                                        "description": "Label for selecting the frequency of a transaction"
+                                                                                                                      },
+                                                                                                                      "splitTransaction": "Split Transaction",
+                                                                                                                      "@splitTransaction": {
+                                                                                                                        "description": "Label for splitting a transaction"
+                                                                                                                      },
+                                                                                                                      "updateTransaction": "Update Transaction",
+                                                                                                                      "@updateTransaction": {
+                                                                                                                        "description": "Label for updating a transaction"
+                                                                                                                      },
+                                                                                                                      "transferMoney": "Transfer Money",
+                                                                                                                      "@transferMoney": {
+                                                                                                                        "description": "Label for transferring money"
+                                                                                                                      },
+                                                                                                                      "saveTransaction": "Save Transaction",
+                                                                                                                      "@saveTransaction": {
+                                                                                                                        "description": "Label for saving a transaction"
+                                                                                                                      },
+                                                                                                                      "transactionAddedSuccessfully": "Transaction added successfully",
+                                                                                                                      "@transactionAddedSuccessfully": {
+                                                                                                                        "description": "Message displayed when a transaction is successfully added"
+                                                                                                                      },
+                                                                                                                      "selectCategory": "Select Category",
+                                                                                                                        "@selectCategory": {
+                                                                                                                          "description": "Label for selecting a category"
+                                                                                                                        },
+                                                                                                                        "newCategory": "New Category",
+                                                                                                                        "@newCategory": {
+                                                                                                                          "description": "Label for creating a new category"
+                                                                                                                        },
+                                                                                                                        "addNewCategory": "Add New Category",
+                                                                                                                        "@addNewCategory": {
+                                                                                                                          "description": "Button text for adding a new category"
+                                                                                                                        },
+                                                                                                                        "categoryName": "Category Name",
+                                                                                                                        "@categoryName": {
+                                                                                                                          "description": "Label for entering the name of a category"
+                                                                                                                        },
+                                                                                                                        "add": "Add",
+                                                                                                                        "@add": {
+                                                                                                                          "description": "Button text for adding an item"
+                                                                                                                        },
+                                                                                                                        "addNewAccount": "Add New Account",
+                                                                                                                        "@addNewAccount": {
+                                                                                                                          "description": "Button text for adding a new account"
+                                                                                                                        },
+                                                                                                                        "accountName": "Account Name",
+                                                                                                                        "@accountName": {
+                                                                                                                          "description": "Label for entering the name of an account"
+                                                                                                                        },
+                                                                                                                        "accountType": "Account Type",
+                                                                                                                          "@accountType": {
+                                                                                                                            "description": "Label for selecting the type of account"
+                                                                                                                          },
+                                                                                                                          "bankAccount": "Bank Account",
+                                                                                                                          "@bankAccount": {
+                                                                                                                            "description": "Label for bank account type"
+                                                                                                                          },
+                                                                                                                          "creditCard": "Credit Card",
+                                                                                                                          "@creditCard": {
+                                                                                                                            "description": "Label for credit card type"
+                                                                                                                          },
+                                                                                                                          "cash": "Cash",
+                                                                                                                          "@cash": {
+                                                                                                                            "description": "Label for cash type"
+                                                                                                                          },
+                                                                                                                          "addPersonToSplit": "Add Person to Split",
+                                                                                                                          "@addPersonToSplit": {
+                                                                                                                            "description": "Button text for adding a person to split"
+                                                                                                                          },
+                                                                                                                          "name": "Name",
+                                                                                                                          "@name": {
+                                                                                                                            "description": "Label for entering a person's name"
+                                                                                                                          },
+                                                                                                                          "email": "Email",
+                                                                                                                          "@email": {
+                                                                                                                            "description": "Label for entering a person's email"
+                                                                                                                          },
+                                                                                                                          "pleaseEnterTheEmail": "Please enter the email",
+                                                                                                                          "@pleaseEnterTheEmail": {
+                                                                                                                            "description": "Message prompting the user to enter an email"
+                                                                                                                          },
+                                                                                                                          "splitEqually": "Split Equally",
+                                                                                                                          "@splitEqually": {
+                                                                                                                            "description": "Label for the split equally option"
+                                                                                                                          },
+                                                                                                                          "customSplit": "Custom Split",
+                                                                                                                          "@customSplit": {
+                                                                                                                            "description": "Label for the custom split option"
+                                                                                                                          },
+                                                                                                                          "budgetPeriod": "Budget Period",
+                                                                                                                            "@budgetPeriod": {
+                                                                                                                              "description": "Label for selecting the budget period"
+                                                                                                                            },
+                                                                                                                            "monthly": "Monthly",
+                                                                                                                            "@monthly": {
+                                                                                                                              "description": "Label for the monthly budget period"
+                                                                                                                            },
+                                                                                                                            "quarterly": "Quarterly",
+                                                                                                                            "@quarterly": {
+                                                                                                                              "description": "Label for the quarterly budget period"
+                                                                                                                            },
+                                                                                                                            "yearly": "Yearly",
+                                                                                                                            "@yearly": {
+                                                                                                                              "description": "Label for the yearly budget period"
+                                                                                                                            },
+                                                                                                                            "custom": "Custom",
+                                                                                                                            "@custom": {
+                                                                                                                              "description": "Label for the custom budget period"
+                                                                                                                            },
+                                                                                                                            "alertsAndNotifications": "Alerts & Notifications",
+                                                                                                                            "@alertsAndNotifications": {
+                                                                                                                              "description": "Label for the alerts and notifications section"
+                                                                                                                            },
+                                                                                                                            "eightyPercentBudgetUsed": "80% of budget used",
+                                                                                                                            "@eightyPercentBudgetUsed": {
+                                                                                                                              "description": "Notification message for 80% of the budget being used"
+                                                                                                                            },
+                                                                                                                            "ninetyPercentBudgetUsed": "90% of budget used",
+                                                                                                                            "@ninetyPercentBudgetUsed": {
+                                                                                                                              "description": "Notification message for 90% of the budget being used"
+                                                                                                                            },
+                                                                                                                            "budgetExceeded": "Budget exceeded",
+                                                                                                                            "@budgetExceeded": {
+                                                                                                                              "description": "Notification message for when the budget is exceeded"
+                                                                                                                            },
+                                                                                                                            "budgetAmount": "Budget Amount",
+                                                                                                                            "@budgetAmount": {
+                                                                                                                              "description": "Label for entering the budget amount"
+                                                                                                                            },
+                                                                                                                            "enterBudgetAmount": "Enter Budget Amount",
+                                                                                                                            "@enterBudgetAmount": {
+                                                                                                                              "description": "Placeholder or message prompting the user to enter a budget amount"
+                                                                                                                            },
+                                                                                                                            "setYourBudgetLimit": "Set your budget limit for this category",
+                                                                                                                            "@setYourBudgetLimit": {
+                                                                                                                              "description": "Message prompting the user to set a budget limit for a category"
+                                                                                                                            },
+                                                                                                                            "pleaseEnterABudgetAmount": "Please enter a budget amount",
+                                                                                                                            "@pleaseEnterABudgetAmount": {
+                                                                                                                              "description": "Message prompting the user to enter a budget amount"
+                                                                                                                            },
+                                                                                                                            "pleaseEnterAValidNumber": "Please enter a valid number",
+                                                                                                                            "@pleaseEnterAValidNumber": {
+                                                                                                                              "description": "Message prompting the user to enter a valid number"
+                                                                                                                            },
+                                                                                                                            "amountMustBeGreaterThanZero": "Amount must be greater than 0",
+                                                                                                                            "@amountMustBeGreaterThanZero": {
+                                                                                                                              "description": "Message indicating that the amount must be greater than 0"
+                                                                                                                            },
+                                                                                                                            "amountIsTooLarge": "Amount is too large",
+                                                                                                                            "@amountIsTooLarge": {
+                                                                                                                              "description": "Message indicating that the entered amount is too large"
+                                                                                                                            },
+                                                                                                                            "recurringOptions": "Recurring Options",
+                                                                                                                              "@recurringOptions": {
+                                                                                                                                "description": "Label for recurring budget options"
+                                                                                                                              },
+                                                                                                                              "makeThisBudgetRecurring": "Make this budget recurring?",
+                                                                                                                              "@makeThisBudgetRecurring": {
+                                                                                                                                "description": "Prompt asking if the budget should be made recurring"
+                                                                                                                              },
+                                                                                                                              "budgetWillResetEachPeriod": "Budget will automatically reset each period",
+                                                                                                                              "@budgetWillResetEachPeriod": {
+                                                                                                                                "description": "Message indicating that the budget will reset each period"
+                                                                                                                              },
+                                                                                                                              "budgetWillResetAtBeginning": "Budget will automatically reset at the beginning of each period",
+                                                                                                                              "@budgetWillResetAtBeginning": {
+                                                                                                                                "description": "Message indicating that the budget will reset at the start of each period"
+                                                                                                                              },
+                                                                                                                              "carryOverRemainingBalance": "Carry over remaining balance",
+                                                                                                                              "@carryOverRemainingBalance": {
+                                                                                                                                "description": "Option to carry over the remaining balance to the next period"
+                                                                                                                              },
+                                                                                                                              "collaborators": "Collaborators",
+                                                                                                                              "@collaborators": {
+                                                                                                                                "description": "Label for the collaborators section"
+                                                                                                                              },
+                                                                                                                              "addCollaborators": "Add Collaborators",
+                                                                                                                              "@addCollaborators": {
+                                                                                                                                "description": "Button text for adding collaborators"
+                                                                                                                              },
+                                                                                                                              "shareThisBudget": "Share this budget with others",
+                                                                                                                              "@shareThisBudget": {
+                                                                                                                                "description": "Message prompting the user to share the budget with others"
+                                                                                                                              },
+                                                                                                                              "addCollaborator": "Add Collaborator",
+                                                                                                                              "@addCollaborator": {
+                                                                                                                                "description": "Button text for adding a single collaborator"
+                                                                                                                              },
+                                                                                                                              "enterEmailOrName": "Enter email or name",
+                                                                                                                              "@enterEmailOrName": {
+                                                                                                                                "description": "Placeholder or message prompting the user to enter an email or name"
+                                                                                                                              },
+                                                                                                                              "validationError": "Validation Error",
+                                                                                                                              "@validationError": {
+                                                                                                                                "description": "Label for validation error messages"
+                                                                                                                              },
+                                                                                                                              "pleaseFillRequiredFields": "Please fill in all required fields",
+                                                                                                                              "@pleaseFillRequiredFields": {
+                                                                                                                                "description": "Message prompting the user to fill in all required fields"
+                                                                                                                              },
+                                                                                                                              "invalidDateRange": "Invalid Date Range",
+                                                                                                                              "@invalidDateRange": {
+                                                                                                                                "description": "Message indicating that the selected date range is invalid"
+                                                                                                                              },
+                                                                                                                              "startDateBeforeEndDate": "Start date must be before end date",
+                                                                                                                              "@startDateBeforeEndDate": {
+                                                                                                                                "description": "Message indicating that the start date must be earlier than the end date"
+                                                                                                                              },
+                                                                                                                              "duplicateBudget": "Duplicate Budget",
+                                                                                                                              "@duplicateBudget": {
+                                                                                                                                "description": "Message indicating that a budget for the category already exists in the selected month"
+                                                                                                                              },
+                                                                                                                              "failedToSaveBudget": "Failed to save budget. Please try again.",
+                                                                                                                              "@failedToSaveBudget": {
+                                                                                                                                "description": "Message displayed when saving the budget fails"
+                                                                                                                              },
+                                                                                                                              "budgetUpdatedSuccessfully": "Budget updated successfully",
+                                                                                                                                "@budgetUpdatedSuccessfully": {
+                                                                                                                                  "description": "Message displayed when a budget is successfully updated"
+                                                                                                                                },
+                                                                                                                                "budgetCreatedSuccessfully": "Budget created successfully",
+                                                                                                                                "@budgetCreatedSuccessfully": {
+                                                                                                                                  "description": "Message displayed when a budget is successfully created"
+                                                                                                                                },
+                                                                                                                                "duplicateBudget": "Duplicate Budget",
+                                                                                                                                "@duplicateBudget": {
+                                                                                                                                  "description": "Message indicating that a budget for the category already exists in the selected month"
+                                                                                                                                },
+                                                                                                                                "setBudget": "Set Budget",
+                                                                                                                                "@setBudget": {
+                                                                                                                                  "description": "Button text for setting a budget"
+                                                                                                                                },
+                                                                                                                                "save": "Save",
+                                                                                                                                "@save": {
+                                                                                                                                  "description": "Button text for saving"
+                                                                                                                                },
+                                                                                                                                "back": "Back",
+                                                                                                                                "@back": {
+                                                                                                                                  "description": "Button text for going back"
+                                                                                                                                },
+                                                                                                                                "continue": "Continue",
+                                                                                                                                "@continue": {
+                                                                                                                                  "description": "Button text for continuing to the next step"
+                                                                                                                                },
+                                                                                                                                "enterCustomCategory": "Enter Custom Category",
+                                                                                                                                  "@enterCustomCategory": {
+                                                                                                                                    "description": "Label for entering a custom category"
+                                                                                                                                  },
+                                                                                                                                  "startDate": "Start Date",
+                                                                                                                                  "@startDate": {
+                                                                                                                                    "description": "Label for selecting the start date"
+                                                                                                                                  },
+                                                                                                                                  "endDate": "End Date",
+                                                                                                                                  "@endDate": {
+                                                                                                                                    "description": "Label for selecting the end date"
+                                                                                                                                  },
+                                                                                                                                  "customAlertThreshold": "Custom Alert Threshold (%)",
+                                                                                                                                  "@customAlertThreshold": {
+                                                                                                                                    "description": "Label for entering a custom alert threshold percentage"
+                                                                                                                                  },
+                                                                                                                                  "enterCustomPercentage": "Enter a custom percentage for alerts",
+                                                                                                                                  "@enterCustomPercentage": {
+                                                                                                                                    "description": "Helper text for entering a custom alert percentage"
+                                                                                                                                  },
+                                                                                                                                  "requiredField": "Required Field",
+                                                                                                                                  "@requiredField": {
+                                                                                                                                    "description": "Message indicating that a required field is missing"
+                                                                                                                                  },
+                                                                                                                                  "pleaseSelectACategory": "Please select a category",
+                                                                                                                                  "@pleaseSelectACategory": {
+                                                                                                                                    "description": "Message prompting the user to select a category"
+                                                                                                                                  },
+                                                                                                                                  "invalidAmount": "Invalid Amount",
+                                                                                                                                  "@invalidAmount": {
+                                                                                                                                    "description": "Message indicating that the entered amount is invalid"
+                                                                                                                                  },
+                                                                                                                                  "budgetAmountMustBeGreaterThanZero": "Budget amount must be greater than 0",
+                                                                                                                                  "@budgetAmountMustBeGreaterThanZero": {
+                                                                                                                                    "description": "Message indicating that the budget amount must be greater than zero"
+                                                                                                                                  },
+                                                                                                                                  "invalidDateRange": "Invalid Date Range",
+                                                                                                                                  "@invalidDateRange": {
+                                                                                                                                    "description": "Message indicating that the selected date range is invalid"
+                                                                                                                                  },
+                                                                                                                                  "startDateMustBeBeforeEndDate": "Start date must be before end date",
+                                                                                                                                  "@startDateMustBeBeforeEndDate": {
+                                                                                                                                    "description": "Message indicating that the start date must be earlier than the end date"
+                                                                                                                                  },
+                                                                                                                                  "budgetPeriodMustBeAtLeastOneDay": "Budget period must be at least 1 day",
+                                                                                                                                  "@budgetPeriodMustBeAtLeastOneDay": {
+                                                                                                                                    "description": "Message indicating that the budget period must be at least one day"
+                                                                                                                                  },
+                                                                                                                                  "asset": "Asset",
+                                                                                                                                    "@asset": {
+                                                                                                                                      "description": "Label for asset type"
+                                                                                                                                    },
+                                                                                                                                    "liability": "Liability",
+                                                                                                                                    "@liability": {
+                                                                                                                                      "description": "Label for liability type"
+                                                                                                                                    },
+                                                                                                                                    "type": "Type",
+                                                                                                                                    "@type": {
+                                                                                                                                      "description": "Label for selecting a type"
+                                                                                                                                    },
+                                                                                                                                    "enterCustomType": "Enter Custom Type",
+                                                                                                                                    "@enterCustomType": {
+                                                                                                                                      "description": "Label for entering a custom type"
+                                                                                                                                    },
+                                                                                                                                    "pleaseEnterACustomType": "Please enter a custom type",
+                                                                                                                                    "@pleaseEnterACustomType": {
+                                                                                                                                      "description": "Message prompting the user to enter a custom type"
+                                                                                                                                    },
+                                                                                                                                    "valueOrAmount": "Value/Amount",
+                                                                                                                                    "@valueOrAmount": {
+                                                                                                                                      "description": "Label for entering a value or amount"
+                                                                                                                                    },
+                                                                                                                                    "assetValue": "Asset Value",
+                                                                                                                                    "@assetValue": {
+                                                                                                                                      "description": "Label for entering the value of an asset"
+                                                                                                                                    },
+                                                                                                                                    "liabilityAmount": "Liability Amount",
+                                                                                                                                    "@liabilityAmount": {
+                                                                                                                                      "description": "Label for entering the amount of a liability"
+                                                                                                                                    },
+                                                                                                                                    "currentMarketValue": "Current market value",
+                                                                                                                                    "@currentMarketValue": {
+                                                                                                                                      "description": "Helper text for entering the current market value"
+                                                                                                                                    },
+                                                                                                                                    "outstandingAmount": "Outstanding amount",
+                                                                                                                                    "@outstandingAmount": {
+                                                                                                                                      "description": "Helper text for entering the outstanding amount"
+                                                                                                                                    },
+                                                                                                                                    "pleaseEnterAnAmount": "Please enter an amount",
+                                                                                                                                    "@pleaseEnterAnAmount": {
+                                                                                                                                      "description": "Message prompting the user to enter an amount"
+                                                                                                                                    },
+                                                                                                                                    "amountMustBeGreaterThanZero": "Amount must be greater than 0",
+                                                                                                                                    "@amountMustBeGreaterThanZero": {
+                                                                                                                                      "description": "Message indicating that the amount must be greater than 0"
+                                                                                                                                    },
+                                                                                                                                    "details": "Details",
+                                                                                                                                    "@details": {
+                                                                                                                                      "description": "Label for the details section"
+                                                                                                                                    },
+                                                                                                                                    "nameOrDescription": "Name/Description",
+                                                                                                                                    "@nameOrDescription": {
+                                                                                                                                      "description": "Label for entering a name or description"
+                                                                                                                                    },
+                                                                                                                                    "pleaseEnterANameOrDescription": "Please enter a name or description",
+                                                                                                                                    "@pleaseEnterANameOrDescription": {
+                                                                                                                                      "description": "Message prompting the user to enter a name or description"
+                                                                                                                                    },
+                                                                                                                                    "purchaseOrStartDate": "Purchase/Start Date",
+                                                                                                                                    "@purchaseOrStartDate": {
+                                                                                                                                      "description": "Label for selecting the purchase or start date"
+                                                                                                                                    },
+                                                                                                                                    "pleaseSelectADate": "Please select a date",
+                                                                                                                                    "@pleaseSelectADate": {
+                                                                                                                                      "description": "Message prompting the user to select a date"
+                                                                                                                                    },
+                                                                                                                                    "interestRate": "Interest Rate (%)",
+                                                                                                                                    "@interestRate": {
+                                                                                                                                      "description": "Label for entering the interest rate"
+                                                                                                                                    },
+                                                                                                                                    "pleaseEnterAnInterestRate": "Please enter an interest rate",
+                                                                                                                                    "@pleaseEnterAnInterestRate": {
+                                                                                                                                      "description": "Message prompting the user to enter an interest rate"
+                                                                                                                                    },
+                                                                                                                                    "interestRateCannotBeNegative": "Interest rate cannot be negative",
+                                                                                                                                    "@interestRateCannotBeNegative": {
+                                                                                                                                      "description": "Message indicating that the interest rate cannot be negative"
+                                                                                                                                    },
+                                                                                                                                    "paymentSchedule": "Payment Schedule",
+                                                                                                                                    "@paymentSchedule": {
+                                                                                                                                      "description": "Label for selecting a payment schedule"
+                                                                                                                                    },
+                                                                                                                                    "selectPaymentFrequency": "Select payment frequency",
+                                                                                                                                    "@selectPaymentFrequency": {
+                                                                                                                                      "description": "Placeholder for selecting a payment frequency"
+                                                                                                                                    },
+                                                                                                                                    "pleaseSelectAPaymentSchedule": "Please select a payment schedule",
+                                                                                                                                    "@pleaseSelectAPaymentSchedule": {
+                                                                                                                                      "description": "Message prompting the user to select a payment schedule"
+                                                                                                                                    },
+                                                                                                                                    "documentsOrAttachments": "Documents/Attachments",
+                                                                                                                                    "@documentsOrAttachments": {
+                                                                                                                                      "description": "Label for the documents or attachments section"
+                                                                                                                                    },
+                                                                                                                                    "addDocument": "Add Document",
+                                                                                                                                    "@addDocument": {
+                                                                                                                                      "description": "Button text for adding a document"
+                                                                                                                                    },
+                                                                                                                                    "valueUpdates": "Value Updates",
+                                                                                                                                    "@valueUpdates": {
+                                                                                                                                      "description": "Label for value updates tracking option"
+                                                                                                                                    },
+                                                                                                                                    "paymentReminders": "Payment Reminders",
+                                                                                                                                    "@paymentReminders": {
+                                                                                                                                      "description": "Label for payment reminders tracking option"
+                                                                                                                                    },
+                                                                                                                                    "documentExpiry": "Document Expiry",
+                                                                                                                                    "@documentExpiry": {
+                                                                                                                                      "description": "Label for document expiry tracking option"
+                                                                                                                                    },
+                                                                                                                                    "interestRateChanges": "Interest Rate Changes",
+                                                                                                                                    "@interestRateChanges": {
+                                                                                                                                      "description": "Label for interest rate changes tracking option"
+                                                                                                                                    },
+                                                                                                                                    "trackingPreferences": "Tracking Preferences",
+                                                                                                                                    "@trackingPreferences": {
+                                                                                                                                      "description": "Label for tracking preferences section"
+                                                                                                                                    },
+                                                                                                                                    "customTrackingNote": "Custom Tracking Note",
+                                                                                                                                    "@customTrackingNote": {
+                                                                                                                                      "description": "Label for custom tracking note field"
+                                                                                                                                    },
+                                                                                                                                    "addSpecificTrackingRequirements": "Add any specific tracking requirements",
+                                                                                                                                    "@addSpecificTrackingRequirements": {
+                                                                                                                                      "description": "Helper text for adding specific tracking requirements"
+                                                                                                                                    },
+                                                                                                                                    "pleaseSelectAType": "Please select a type",
+                                                                                                                                    "@pleaseSelectAType": {
+                                                                                                                                      "description": "Message prompting the user to select a type"
+                                                                                                                                    },
+                                                                                                                                    "pleaseEnterAValidAmount": "Please enter a valid amount greater than 0",
+                                                                                                                                    "@pleaseEnterAValidAmount": {
+                                                                                                                                      "description": "Message prompting the user to enter a valid amount greater than 0"
+                                                                                                                                    },
+                                                                                                                                    "pleaseEnterANameOrDescription": "Please enter a name/description",
+                                                                                                                                    "@pleaseEnterANameOrDescription": {
+                                                                                                                                      "description": "Message prompting the user to enter a name or description"
+                                                                                                                                    },
+                                                                                                                                    "pleaseEnterAnInterestRate": "Please enter an interest rate",
+                                                                                                                                    "@pleaseEnterAnInterestRate": {
+                                                                                                                                      "description": "Message prompting the user to enter an interest rate"
+                                                                                                                                    },
+                                                                                                                                    "pleaseSelectAPaymentSchedule": "Please select a payment schedule",
+                                                                                                                                    "@pleaseSelectAPaymentSchedule": {
+                                                                                                                                      "description": "Message prompting the user to select a payment schedule"
+                                                                                                                                    },
+                                                                                                                                    "pleaseFillRequiredFields": "Please fill in all required fields",
+                                                                                                                                    "@pleaseFillRequiredFields": {
+                                                                                                                                      "description": "Message prompting the user to fill in all required fields"
+                                                                                                                                    },
+                                                                                                                                    "pleaseFillRequiredLiabilityFields": "Please fill in all required liability fields",
+                                                                                                                                    "@pleaseFillRequiredLiabilityFields": {
+                                                                                                                                      "description": "Message prompting the user to fill in all required liability fields"
+                                                                                                                                    },
+                                                                                                                                    "changeCurrency": "Change Currency",
+                                                                                                                                    "@changeCurrency": {
+                                                                                                                                      "description": "Label for changing the currency"
+                                                                                                                                    },
+                                                                                                                                    "selectYourCurrency": "Select Your Currency",
+                                                                                                                                    "@selectYourCurrency": {
+                                                                                                                                      "description": "Title for selecting the user's currency"
+                                                                                                                                    },
+                                                                                                                                    "choosePreferredCurrency": "Choose your preferred currency to get started.",
+                                                                                                                                    "@choosePreferredCurrency": {
+                                                                                                                                      "description": "Message prompting the user to choose their preferred currency"
+                                                                                                                                    },
+                                                                                                                                    "currencyUsageInfo": "This will be used for all your financial transactions and reports.",
+                                                                                                                                    "@currencyUsageInfo": {
+                                                                                                                                      "description": "Message explaining the purpose of selecting a currency"
+                                                                                                                                    },
+                                                                                                                                    "selectCurrency": "Select Currency",
+                                                                                                                                    "@selectCurrency": {
+                                                                                                                                      "description": "Button text for selecting a currency"
+                                                                                                                                    },
+                                                                                                                                    "changeCurrencyButton": "Change Currency",
+                                                                                                                                    "@changeCurrencyButton": {
+                                                                                                                                      "description": "Button text for changing the currency"
+                                                                                                                                    },
+                                                                                                                                    "nextButton": "Next",
+                                                                                                                                    "@nextButton": {
+                                                                                                                                      "description": "Button text for proceeding to the next step"
+                                                                                                                                    },
+                                                                                                                                    "wait": "Wait",
+                                                                                                                                    "@wait": {
+                                                                                                                                      "description": "Message displayed when the user needs to wait"
+                                                                                                                                    },
+                                                                                                                                    "adNotReadyYet": "Ad not ready yet",
+                                                                                                                                    "@adNotReadyYet": {
+                                                                                                                                      "description": "Message displayed when an ad is not ready to be shown"
+                                                                                                                                    },
+                                                                                                                                    "settings": "Settings",
+                                                                                                                                    "@settings": {
+                                                                                                                                      "description": "Label for the settings section"
+                                                                                                                                    },
+                                                                                                                                    "reportsAndAnalytics": "Reports & Analytics",
+                                                                                                                                    "@reportsAndAnalytics": {
+                                                                                                                                      "description": "Label for the reports and analytics section"
+                                                                                                                                    },
+                                                                                                                                    "futureProjections": "Future Projections",
+                                                                                                                                    "@futureProjections": {
+                                                                                                                                      "description": "Label for the future projections section"
+                                                                                                                                    },
+                                                                                                                                    "viewFinancialForecastsAndTrends": "View financial forecasts and trends",
+                                                                                                                                    "@viewFinancialForecastsAndTrends": {
+                                                                                                                                      "description": "Message prompting the user to view financial forecasts and trends"
+                                                                                                                                    },
+                                                                                                                                    "pastPerformance": "Past Performance",
+                                                                                                                                    "@pastPerformance": {
+                                                                                                                                      "description": "Label for the past performance section"
+                                                                                                                                    },
+                                                                                                                                    "historicalFinancialAnalysis": "Historical financial analysis",
+                                                                                                                                    "@historicalFinancialAnalysis": {
+                                                                                                                                      "description": "Label for analyzing historical financial data"
+                                                                                                                                    },
+                                                                                                                                    "incomeAndExpenseAnalysis": "Income & Expense Analysis",
+                                                                                                                                    "@incomeAndExpenseAnalysis": {
+                                                                                                                                      "description": "Label for the income and expense analysis section"
+                                                                                                                                    },
+                                                                                                                                    "compareIncomeExpensesAndSavings": "Compare income, expenses and savings",
+                                                                                                                                    "@compareIncomeExpensesAndSavings": {
+                                                                                                                                      "description": "Message prompting the user to compare income, expenses, and savings"
+                                                                                                                                    },
+                                                                                                                                    "budgetVsActual": "Budget vs Actual",
+                                                                                                                                    "@budgetVsActual": {
+                                                                                                                                      "description": "Label for the budget vs actual performance section"
+                                                                                                                                    },
+                                                                                                                                    "trackBudgetPerformance": "Track budget performance",
+                                                                                                                                    "@trackBudgetPerformance": {
+                                                                                                                                      "description": "Message prompting the user to track budget performance"
+                                                                                                                                    },
+                                                                                                                                    "downloadReports": "Download Reports",
+                                                                                                                                    "@downloadReports": {
+                                                                                                                                      "description": "Button text for downloading financial reports"
+                                                                                                                                    },
+                                                                                                                                    "exportFinancialReports": "Export financial reports",
+                                                                                                                                    "@exportFinancialReports": {
+                                                                                                                                      "description": "Button text for exporting financial reports"
+                                                                                                                                    },
+                                                                                                                                    "appPreferences": "App Preferences",
+                                                                                                                                    "@appPreferences": {
+                                                                                                                                      "description": "Label for the app preferences section"
+                                                                                                                                    },
+                                                                                                                                    "currency": "Currency",
+                                                                                                                                    "@currency": {
+                                                                                                                                      "description": "Label for the currency settings section"
+                                                                                                                                    },
+                                                                                                                                    "setYourPreferredCurrency": "Set your preferred currency",
+                                                                                                                                    "@setYourPreferredCurrency": {
+                                                                                                                                      "description": "Message prompting the user to set their preferred currency"
+                                                                                                                                    },
+                                                                                                                                    "appTheme": "App Theme",
+                                                                                                                                    "@appTheme": {
+                                                                                                                                      "description": "Label for the app theme settings section"
+                                                                                                                                    },
+                                                                                                                                    "darkMode": "Dark Mode",
+                                                                                                                                    "@darkMode": {
+                                                                                                                                      "description": "Label for the dark mode theme option"
+                                                                                                                                    },
+                                                                                                                                    "lightMode": "Light Mode",
+                                                                                                                                    "@lightMode": {
+                                                                                                                                      "description": "Label for the light mode theme option"
+                                                                                                                                    },
+                                                                                                                                    "language": "Language",
+                                                                                                                                    "@language": {
+                                                                                                                                      "description": "Label for the language settings section"
+                                                                                                                                    },
+                                                                                                                                    "chooseYourPreferredLanguage": "Choose your preferred language",
+                                                                                                                                    "@chooseYourPreferredLanguage": {
+                                                                                                                                      "description": "Message prompting the user to choose their preferred language"
+                                                                                                                                    },
+                                                                                                                                    "notifications": "Notifications",
+                                                                                                                                    "@notifications": {
+                                                                                                                                      "description": "Label for the notifications section"
+                                                                                                                                    },
+                                                                                                                                    "budgetLimits": "Budget Limits",
+                                                                                                                                    "@budgetLimits": {
+                                                                                                                                      "description": "Label for the budget limits section"
+                                                                                                                                    },
+                                                                                                                                    "getAlertsWhenNearingBudgetLimits": "Get alerts when nearing budget limits",
+                                                                                                                                    "@getAlertsWhenNearingBudgetLimits": {
+                                                                                                                                      "description": "Message prompting the user to enable alerts for nearing budget limits"
+                                                                                                                                    },
+                                                                                                                                    "billPaymentReminders": "Bill Payment Reminders",
+                                                                                                                                    "@billPaymentReminders": {
+                                                                                                                                      "description": "Label for the bill payment reminders section"
+                                                                                                                                    },
+                                                                                                                                    "neverMissAPaymentDeadline": "Never miss a payment deadline",
+                                                                                                                                    "@neverMissAPaymentDeadline": {
+                                                                                                                                      "description": "Message encouraging the user to set up bill payment reminders"
+                                                                                                                                    },
+                                                                                                                                    "planningAndFinancialGoals": "Planning & Financial Goals",
+                                                                                                                                    "@planningAndFinancialGoals": {
+                                                                                                                                      "description": "Label for the planning and financial goals section"
+                                                                                                                                    },
+                                                                                                                                    "savingsGoals": "Savings Goals",
+                                                                                                                                    "@savingsGoals": {
+                                                                                                                                      "description": "Label for the savings goals section"
+                                                                                                                                    },
+                                                                                                                                    "setAndTrackSavingsTargets": "Set and track savings targets",
+                                                                                                                                    "@setAndTrackSavingsTargets": {
+                                                                                                                                      "description": "Message prompting the user to set and track savings targets"
+                                                                                                                                    },
+                                                                                                                                    "debtRepaymentPlan": "Debt Repayment Plan",
+                                                                                                                                    "@debtRepaymentPlan": {
+                                                                                                                                      "description": "Label for the debt repayment plan section"
+                                                                                                                                    },
+                                                                                                                                    "manageAndTrackDebtPayments": "Manage and track debt payments",
+                                                                                                                                    "@manageAndTrackDebtPayments": {
+                                                                                                                                      "description": "Message prompting the user to manage and track debt payments"
+                                                                                                                                    },
+                                                                                                                                    "retirementPlanning": "Retirement Planning",
+                                                                                                                                    "@retirementPlanning": {
+                                                                                                                                      "description": "Label for the retirement planning section"
+                                                                                                                                    },
+                                                                                                                                    "planForYourRetirement": "Plan for your retirement",
+                                                                                                                                    "@planForYourRetirement": {
+                                                                                                                                      "description": "Message encouraging the user to plan for their retirement"
+                                                                                                                                    },
+                                                                                                                                    "financialCalculator": "Financial Calculator",
+                                                                                                                                    "@financialCalculator": {
+                                                                                                                                      "description": "Label for the financial calculator section"
+                                                                                                                                    },
+                                                                                                                                    "calculateLoansInvestmentsAndMore": "Calculate loans, investments & more",
+                                                                                                                                    "@calculateLoansInvestmentsAndMore": {
+                                                                                                                                      "description": "Message prompting the user to use the financial calculator for various calculations"
+                                                                                                                                    },
+                                                                                                                                    "accountSettings": "Account Settings",
+                                                                                                                                    "@accountSettings": {
+                                                                                                                                      "description": "Label for the account settings section"
+                                                                                                                                    },
+                                                                                                                                    "profile": "Profile",
+                                                                                                                                    "@profile": {
+                                                                                                                                      "description": "Label for the profile section"
+                                                                                                                                    },
+                                                                                                                                    "managePersonalInformation": "Manage personal information",
+                                                                                                                                    "@managePersonalInformation": {
+                                                                                                                                      "description": "Message prompting the user to manage their personal information"
+                                                                                                                                    },
+                                                                                                                                    "subscriptionPlan": "Subscription Plan",
+                                                                                                                                    "@subscriptionPlan": {
+                                                                                                                                      "description": "Label for the subscription plan section"
+                                                                                                                                    },
+                                                                                                                                    "manageYourSubscription": "Manage your subscription",
+                                                                                                                                    "@manageYourSubscription": {
+                                                                                                                                      "description": "Message prompting the user to manage their subscription"
+                                                                                                                                    },
+                                                                                                                                    "security": "Security",
+                                                                                                                                    "@security": {
+                                                                                                                                      "description": "Label for the security section"
+                                                                                                                                    },
+                                                                                                                                    "appLockBiometricsAndBackup": "App lock, biometrics & backup",
+                                                                                                                                    "@appLockBiometricsAndBackup": {
+                                                                                                                                      "description": "Message describing security features like app lock, biometrics, and backup"
+                                                                                                                                    },
+                                                                                                                                    "dataBackupAndSync": "Data Backup & Sync",
+                                                                                                                                    "@dataBackupAndSync": {
+                                                                                                                                      "description": "Label for the data backup and sync section"
+                                                                                                                                    },
+                                                                                                                                    "manageYourDataAcrossDevices": "Manage your data across devices",
+                                                                                                                                    "@manageYourDataAcrossDevices": {
+                                                                                                                                      "description": "Message prompting the user to manage their data across devices"
+                                                                                                                                    },
+                                                                                                                                    "more": "More",
+                                                                                                                                    "@more": {
+                                                                                                                                      "description": "Label for the more section"
+                                                                                                                                    },
+                                                                                                                                    "helpAndSupport": "Help & Support",
+                                                                                                                                    "@helpAndSupport": {
+                                                                                                                                      "description": "Label for the help and support section"
+                                                                                                                                    },
+                                                                                                                                    "faqContactAndSupport": "FAQ, Contact & Support",
+                                                                                                                                    "@faqContactAndSupport": {
+                                                                                                                                      "description": "Message describing FAQ, contact, and support options"
+                                                                                                                                    },
+                                                                                                                                    "termsAndPrivacy": "Terms & Privacy",
+                                                                                                                                    "@termsAndPrivacy": {
+                                                                                                                                      "description": "Label for the terms and privacy section"
+                                                                                                                                    },
+                                                                                                                                    "termsOfService": "Terms of Service",
+                                                                                                                                    "@termsOfService": {
+                                                                                                                                      "description": "Label for the terms of service section"
+                                                                                                                                    },
+                                                                                                                                    "privacyPolicy": "Privacy Policy",
+                                                                                                                                    "@privacyPolicy": {
+                                                                                                                                      "description": "Label for the privacy policy section"
+                                                                                                                                    },
+                                                                                                                                    "aboutApp": "About App",
+                                                                                                                                    "@aboutApp": {
+                                                                                                                                      "description": "Label for the about app section"
+                                                                                                                                    },
+                                                                                                                                    "comprehensiveFinanceTrackingApp": "A comprehensive finance tracking application to manage your expenses, budgets, and financial portfolio.",
+                                                                                                                                    "@comprehensiveFinanceTrackingApp": {
+                                                                                                                                      "description": "Message describing the purpose of the application"
+                                                                                                                                    },
+                                                                                                                                    "signOut": "Sign Out",
+                                                                                                                                    "@signOut": {
+                                                                                                                                      "description": "Label for the sign-out action"
+                                                                                                                                    },
+                                                                                                                                    "supportTheApp": "Support the App",
+                                                                                                                                    "@supportTheApp": {
+                                                                                                                                      "description": "Label for supporting the app"
+                                                                                                                                    },
+                                                                                                                                    "donate": "Donate",
+                                                                                                                                    "@donate": {
+                                                                                                                                      "description": "Label for the donate action"
+                                                                                                                                    },
+                                                                                                                                    "watchAd": "Watch Ad",
+                                                                                                                                    "@watchAd": {
+                                                                                                                                      "description": "Label for the watch ad action"
+                                                                                                                                    },
+                                                                                                                                    "areYouSureYouWantToSignOut": "Are you sure you want to sign out?",
+                                                                                                                                    "@areYouSureYouWantToSignOut": {
+                                                                                                                                      "description": "Confirmation message for signing out"
+                                                                                                                                    },
+                                                                                                                                    "errorSigningOut": "Error signing out",
+                                                                                                                                    "@errorSigningOut": {
+                                                                                                                                      "description": "Message displayed when there is an error signing out"
+                                                                                                                                    },
+                                                                                                                                    "helpAndSupport": "Help & Support",
+                                                                                                                                    "@helpAndSupport": {
+                                                                                                                                      "description": "Label for the help and support section"
+                                                                                                                                    },
+                                                                                                                                    "frequentlyAskedQuestions": "Frequently Asked Questions",
+                                                                                                                                    "@frequentlyAskedQuestions": {
+                                                                                                                                      "description": "Label for the FAQ section"
+                                                                                                                                    },
+                                                                                                                                    "contactSupport": "Contact Support",
+                                                                                                                                    "@contactSupport": {
+                                                                                                                                      "description": "Label for contacting support"
+                                                                                                                                    },
+                                                                                                                                    "liveChatSupport": "Live Chat Support",
+                                                                                                                                    "@liveChatSupport": {
+                                                                                                                                      "description": "Label for live chat support"
+                                                                                                                                    },
+                                                                                                                                    "close": "Close",
+                                                                                                                                    "@close": {
+                                                                                                                                      "description": "Label for the close action"
+                                                                                                                                    },
+                                                                                                                                    "termsAndPrivacy": "Terms & Privacy",
+                                                                                                                                    "@termsAndPrivacy": {
+                                                                                                                                      "description": "Label for the terms and privacy section"
+                                                                                                                                    },
+                                                                                                                                    "termsOfService": "Terms of Service",
+                                                                                                                                    "@termsOfService": {
+                                                                                                                                      "description": "Label for the terms of service section"
+                                                                                                                                    },
+                                                                                                                                    "privacyPolicy": "Privacy Policy",
+                                                                                                                                    "@privacyPolicy": {
+                                                                                                                                      "description": "Label for the privacy policy section"
+                                                                                                                                    },
+                                                                                                                                    "dataUsage": "Data Usage",
+                                                                                                                                    "@dataUsage": {
+                                                                                                                                      "description": "Label for the data usage section"
+                                                                                                                                    },
+                                                                                                                                    "scanToDonate": "Scan to Donate",
+                                                                                                                                    "@scanToDonate": {
+                                                                                                                                      "description": "Label for the scan to donate action"
+                                                                                                                                    },
+                                                                                                                                    "cardDetails": "Card Details",
+                                                                                                                                    "@cardDetails": {
+                                                                                                                                      "description": "Label for the card details section"
+                                                                                                                                    },
+                                                                                                                                    "type": "Type",
+                                                                                                                                    "@type": {
+                                                                                                                                      "description": "Label for the type field"
+                                                                                                                                    },
+                                                                                                                                    "name": "Name",
+                                                                                                                                    "@name": {
+                                                                                                                                      "description": "Label for the name field"
+                                                                                                                                    },
+                                                                                                                                    "number": "Number",
+                                                                                                                                    "@number": {
+                                                                                                                                      "description": "Label for the number field"
+                                                                                                                                    },
+                                                                                                                                    "balance": "Balance",
+                                                                                                                                    "@balance": {
+                                                                                                                                      "description": "Label for the balance field"
+                                                                                                                                    },
+                                                                                                                                    "deleteCard": "Delete Card",
+                                                                                                                                    "@deleteCard": {
+                                                                                                                                      "description": "Label for the delete card action"
+                                                                                                                                    },
+                                                                                                                                    "areYouSureYouWantToDeleteThisCard": "Are you sure you want to delete this card?",
+                                                                                                                                    "@areYouSureYouWantToDeleteThisCard": {
+                                                                                                                                      "description": "Confirmation message for deleting a card"
+                                                                                                                                    },
+                                                                                                                                    "deleted": "Deleted",
+                                                                                                                                    "@deleted": {
+                                                                                                                                      "description": "Label for deleted status"
+                                                                                                                                    },
+                                                                                                                                    "delete": "Delete",
+                                                                                                                                    "@delete": {
+                                                                                                                                      "description": "Label for the delete action"
+                                                                                                                                    },
+                                                                                                                                    "cardDeletedSuccessfully": "Card deleted successfully",
+                                                                                                                                    "@cardDeletedSuccessfully": {
+                                                                                                                                      "description": "Message displayed when a card is successfully deleted"
+                                                                                                                                    },
+                                                                                                                                    "transferMoney": "Transfer Money",
+                                                                                                                                    "@transferMoney": {
+                                                                                                                                      "description": "Label for transferring money"
+                                                                                                                                    },
+                                                                                                                                    "fromAccount": "From Account",
+                                                                                                                                    "@fromAccount": {
+                                                                                                                                      "description": "Label for selecting the source account"
+                                                                                                                                    },
+                                                                                                                                    "pleaseSelectAnAccount": "Please select an account",
+                                                                                                                                    "@pleaseSelectAnAccount": {
+                                                                                                                                      "description": "Message prompting the user to select an account"
+                                                                                                                                    },
+                                                                                                                                    "toAccount": "To Account",
+                                                                                                                                    "@toAccount": {
+                                                                                                                                      "description": "Label for selecting the destination account"
+                                                                                                                                    },
+                                                                                                                                    "insufficientBalance": "Insufficient balance",
+                                                                                                                                    "@insufficientBalance": {
+                                                                                                                                      "description": "Message displayed when the account has insufficient balance"
+                                                                                                                                    },
+                                                                                                                                    "noteOptional": "Note (Optional)",
+                                                                                                                                    "@noteOptional": {
+                                                                                                                                      "description": "Label for an optional note field"
+                                                                                                                                    },
+                                                                                                                                    "transfer": "Transfer",
+                                                                                                                                    "@transfer": {
+                                                                                                                                      "description": "Label for the transfer action"
+                                                                                                                                    },
+                                                                                                                                    "transferCompletedSuccessfully": "Transfer completed successfully",
+                                                                                                                                    "@transferCompletedSuccessfully": {
+                                                                                                                                      "description": "Message displayed when a transfer is successfully completed"
+                                                                                                                                    },
+                                                                                                                                    "welcomeBack": "Welcome Back",
+                                                                                                                                    "@welcomeBack": {
+                                                                                                                                      "description": "Greeting message for returning users"
+                                                                                                                                    },
+                                                                                                                                    "emailAddress": "Email address",
+                                                                                                                                    "@emailAddress": {
+                                                                                                                                      "description": "Label for the email address field"
+                                                                                                                                    },
+                                                                                                                                    "pleaseEnterYourEmail": "Please enter your email",
+                                                                                                                                    "@pleaseEnterYourEmail": {
+                                                                                                                                      "description": "Message prompting the user to enter their email"
+                                                                                                                                    },
+                                                                                                                                    "pleaseEnterAValidEmail": "Please enter a valid email",
+                                                                                                                                    "@pleaseEnterAValidEmail": {
+                                                                                                                                      "description": "Message prompting the user to enter a valid email"
+                                                                                                                                    },
+                                                                                                                                    "password": "Password",
+                                                                                                                                    "@password": {
+                                                                                                                                      "description": "Label for the password field"
+                                                                                                                                    },
+                                                                                                                                    "pleaseEnterYourPassword": "Please enter your password",
+                                                                                                                                    "@pleaseEnterYourPassword": {
+                                                                                                                                      "description": "Message prompting the user to enter their password"
+                                                                                                                                    },
+                                                                                                                                    "passwordMustBeAtLeast6Characters": "Password must be at least 6 characters",
+                                                                                                                                    "@passwordMustBeAtLeast6Characters": {
+                                                                                                                                      "description": "Message indicating the password length requirement"
+                                                                                                                                    },
+                                                                                                                                    "forgotPassword": "Forgot password?",
+                                                                                                                                    "@forgotPassword": {
+                                                                                                                                      "description": "Label for the forgot password action"
+                                                                                                                                    },
+                                                                                                                                    "dontHaveAccount": "Don't have account?",
+                                                                                                                                    "@dontHaveAccount": {
+                                                                                                                                      "description": "Message prompting the user to sign up if they don't have an account"
+                                                                                                                                    },
+                                                                                                                                    "signUp": "Sign up",
+                                                                                                                                    "@signUp": {
+                                                                                                                                      "description": "Label for the sign-up action"
+                                                                                                                                    },
+                                                                                                                                    "forgotPassword": "Forgot Password?",
+                                                                                                                                    "@forgotPassword": {
+                                                                                                                                      "description": "Label for the forgot password action"
+                                                                                                                                    },
+                                                                                                                                    "sent": "Sent",
+                                                                                                                                    "@sent": {
+                                                                                                                                      "description": "Label for indicating an action has been sent"
+                                                                                                                                    },
+                                                                                                                                    "passwordResetEmailSent": "Password reset email sent. Please check your inbox.",
+                                                                                                                                    "@passwordResetEmailSent": {
+                                                                                                                                      "description": "Message indicating that a password reset email has been sent"
+                                                                                                                                    },
+                                                                                                                                    "pleaseEnterYourEmailAddress": "Please enter your email address.",
+                                                                                                                                    "@pleaseEnterYourEmailAddress": {
+                                                                                                                                      "description": "Message prompting the user to enter their email address"
+                                                                                                                                    },
+                                                                                                                                    "resetLinkSent": "Reset link has been sent to your email.",
+                                                                                                                                    "@resetLinkSent": {
+                                                                                                                                      "description": "Message indicating that a reset link has been sent to the user's email"
+                                                                                                                                    },
+                                                                                                                                    "sendResetLink": "Send Reset Link",
+                                                                                                                                    "@sendResetLink": {
+                                                                                                                                      "description": "Button text for sending a password reset link"
+                                                                                                                                    },
+                                                                                                                                    "backToLogin": "Back to Login",
+                                                                                                                                    "@backToLogin": {
+                                                                                                                                      "description": "Button text for navigating back to the login screen"
+                                                                                                                                    },
+                                                                                                                                    "welcomeBack": "Welcome Back",
+                                                                                                                                    "@welcomeBack": {
+                                                                                                                                      "description": "Greeting message for returning users"
+                                                                                                                                    },
+                                                                                                                                    "emailAddress": "Email address",
+                                                                                                                                    "@emailAddress": {
+                                                                                                                                      "description": "Label for the email address field"
+                                                                                                                                    },
+                                                                                                                                    "pleaseEnterYourEmail": "Please enter your email",
+                                                                                                                                    "@pleaseEnterYourEmail": {
+                                                                                                                                      "description": "Message prompting the user to enter their email"
+                                                                                                                                    },
+                                                                                                                                    "pleaseEnterAValidEmail": "Please enter a valid email",
+                                                                                                                                    "@pleaseEnterAValidEmail": {
+                                                                                                                                      "description": "Message prompting the user to enter a valid email"
+                                                                                                                                    },
+                                                                                                                                    "password": "Password",
+                                                                                                                                    "@password": {
+                                                                                                                                      "description": "Label for the password field"
+                                                                                                                                    },
+                                                                                                                                    "pleaseEnterYourPassword": "Please enter your password",
+                                                                                                                                    "@pleaseEnterYourPassword": {
+                                                                                                                                      "description": "Message prompting the user to enter their password"
+                                                                                                                                    },
+                                                                                                                                    "passwordMustBeAtLeast6Characters": "Password must be at least 6 characters",
+                                                                                                                                    "@passwordMustBeAtLeast6Characters": {
+                                                                                                                                      "description": "Message indicating the password length requirement"
+                                                                                                                                    },
+                                                                                                                                    "forgotPassword": "Forgot password?",
+                                                                                                                                    "@forgotPassword": {
+                                                                                                                                      "description": "Label for the forgot password action"
+                                                                                                                                    },
+                                                                                                                                    "login": "Login",
+                                                                                                                                    "@login": {
+                                                                                                                                      "description": "Label for the login action"
+                                                                                                                                    },
+                                                                                                                                    "dontHaveAccount": "Don't have account?",
+                                                                                                                                    "@dontHaveAccount": {
+                                                                                                                                      "description": "Message prompting the user to sign up if they don't have an account"
+                                                                                                                                    },
+                                                                                                                                    "signUp": "Sign up",
+                                                                                                                                    "@signUp": {
+                                                                                                                                      "description": "Label for the sign-up action"
+                                                                                                                                    },
+                                                                                                                                    "alreadyHaveAnAccount": "Already have an account?",
+                                                                                                                                    "@alreadyHaveAnAccount": {
+                                                                                                                                      "description": "Message prompting the user to log in if they already have an account"
+                                                                                                                                    },
+                                                                                                                                    "orSignUpWith": "Or Sign Up With",
+                                                                                                                                    "@orSignUpWith": {
+                                                                                                                                      "description": "Label for the alternative sign-up options section"
+                                                                                                                                    },
+                                                                                                                                    "agreeToTerms": "I agree to Terms & Conditions",
+                                                                                                                                    "@agreeToTerms": {
+                                                                                                                                      "description": "Message indicating agreement to terms and conditions"
+                                                                                                                                    },
+                                                                                                                                    "createYourAccount": "Create your account",
+                                                                                                                                    "@createYourAccount": {
+                                                                                                                                      "description": "Label for the account creation section"
+                                                                                                                                    },
+                                                                                                                                    "validationFailed": "Validation Failed",
+                                                                                                                                    "@validationFailed": {
+                                                                                                                                      "description": "Message indicating that validation has failed"
+                                                                                                                                    },
+                                                                                                                                    "pleaseAgreeToTerms": "Please agree to Terms & Conditions",
+                                                                                                                                    "@pleaseAgreeToTerms": {
+                                                                                                                                      "description": "Message prompting the user to agree to terms and conditions"
+                                                                                                                                    }
 
 
 

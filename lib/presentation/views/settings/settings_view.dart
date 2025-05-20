@@ -18,6 +18,7 @@ import 'package:finance_tracker/presentation/views/settings/widgets/subscription
 import 'package:finance_tracker/viewmodels/auth_viewmodel.dart';
 import 'package:finance_tracker/viewmodels/theme_provider.dart';
 import 'package:finance_tracker/widgets/shared_app_bar.dart';
+import 'package:finance_tracker/widgets/shared_dynamic_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -322,14 +323,17 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                   SettingsTile(
                     title: 'About App',
-                    subtitle: 'Version 1.0.0',
+                    subtitle: 'Version 1.0.0+1',
                     leading: _buildIconContainer(context, Icons.info_outline),
                     onTap: () {
                       showAboutDialog(
                         context: context,
-                        applicationName: 'Finance Tracker',
-                        applicationVersion: '1.0.0',
-                        applicationIcon: const FlutterLogo(size: 32),
+                        applicationName: 'NetWorth+',
+                        applicationVersion: '1.0.0+1',
+                        applicationIcon: const SharedDynamicIcon(
+                            'assets/icons/app_logo.jpg',
+                            weight: 32,
+                            height: 32),
                         children: const [
                           Text(
                             'A comprehensive finance tracking application to manage your expenses, budgets, and financial portfolio.',

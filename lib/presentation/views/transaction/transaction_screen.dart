@@ -24,11 +24,16 @@ class _TransactionScreenState extends State<TransactionScreen> {
   DateTime _focusedDay = DateTime.now();
   int _selectedTabIndex = 0;
 
-  final List<String> _tabs = ['Transactions', 'Report', 'Settle Up'];
+  late List<String> _tabs;
 
   @override
   void initState() {
     super.initState();
+    _tabs = [
+      AppLocalizations.of(context).transactionsTitle,
+      AppLocalizations.of(context).report,
+      AppLocalizations.of(context).settleUp
+    ];
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context
           .read<TransactionViewModel>()

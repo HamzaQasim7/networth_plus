@@ -1,3 +1,4 @@
+import 'package:finance_tracker/core/utils/motion_toast.dart';
 import 'package:finance_tracker/presentation/views/auth/login_view.dart';
 import 'package:finance_tracker/presentation/views/auth/widgets/or_sign_up_line.dart';
 import 'package:finance_tracker/presentation/views/auth/widgets/social_button.dart';
@@ -55,9 +56,10 @@ class _SignupViewContentState extends State<SignupViewContent> {
   // Handle sign up with email/password
   Future<void> _handleSignUp(BuildContext context) async {
     if (!_agreedToTerms) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please agree to Terms & Conditions')),
-      );
+      ToastUtils.showErrorToast(context,
+          title: 'Validation Failed',
+          description: 'Please agree to Terms & Conditions');
+
       return;
     }
 
@@ -233,7 +235,7 @@ class _SignupViewContentState extends State<SignupViewContent> {
                     text: TextSpan(
                       style: Theme.of(context).textTheme.titleMedium,
                       children: [
-                        const TextSpan(text: "Don't have account? "),
+                        const TextSpan(text: "Already have an account? "),
                         TextSpan(
                           text: 'Login',
                           style: TextStyle(

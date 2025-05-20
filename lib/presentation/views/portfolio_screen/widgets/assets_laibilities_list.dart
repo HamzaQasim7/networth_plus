@@ -1,4 +1,5 @@
 import 'package:finance_tracker/core/utils/helpers.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../viewmodels/asset_liability_viewmodel.dart';
@@ -14,18 +15,18 @@ class AssetLiabilitiesList extends StatelessWidget {
         final isDarkMode = Theme.of(context).brightness == Brightness.dark;
         final topAssets = viewModel.assets.take(3).toList();
         final topLiabilities = viewModel.liabilities.take(3).toList();
-
+        final local = AppLocalizations.of(context);
         return Padding(
           padding: const EdgeInsets.only(left: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildSectionTitle('Top Assets:', topAssets, isDarkMode),
+              _buildSectionTitle('${local.topAssets}:', topAssets, isDarkMode),
               const SizedBox(height: 8),
               ..._buildListItems(topAssets, context),
               const SizedBox(height: 16),
               _buildSectionTitle(
-                  'Top Liabilities:', topLiabilities, isDarkMode),
+                  '${local.topLiabilities}:', topLiabilities, isDarkMode),
               const SizedBox(height: 8),
               ..._buildListItems(topLiabilities, context),
             ],

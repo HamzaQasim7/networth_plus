@@ -243,6 +243,7 @@ class CardDetailsScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         title: const Text('Delete Card'),
         content: const Text('Are you sure you want to delete this card?'),
         actions: [

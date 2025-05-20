@@ -1,4 +1,5 @@
 import 'package:finance_tracker/core/utils/helpers.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/widgets/app_header_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class OverviewHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context);
     return Consumer<AssetLiabilityViewModel>(
       builder: (context, viewModel, child) {
         final isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -37,7 +39,7 @@ class OverviewHeader extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        'Financial health: ',
+                        '${local.financialHealth} ',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: isDarkMode
                                   ? ThemeConstants.textSecondaryDark
@@ -72,7 +74,7 @@ class OverviewHeader extends StatelessWidget {
 
   void _showReportDialog(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
+    final local = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -91,7 +93,7 @@ class OverviewHeader extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const AppHeaderText(text: 'Portfolio Analysis', fontSize: 20),
+                  AppHeaderText(text: local.portfolioAnalysis, fontSize: 20),
                   IconButton(
                     icon: const Icon(Icons.close),
                     onPressed: () => Navigator.pop(context),
@@ -113,8 +115,8 @@ class OverviewHeader extends StatelessWidget {
                       },
                       child: _buildReportSection(
                         context,
-                        'Net Worth Trend',
-                        'Track your net worth changes over time',
+                        local.netWorthTrend,
+                        local.trackNetWorthChanges,
                         Icons.trending_up,
                       ),
                     ),
@@ -126,8 +128,8 @@ class OverviewHeader extends StatelessWidget {
                       },
                       child: _buildReportSection(
                         context,
-                        'Asset Performance',
-                        'Analyze your assets growth and distribution',
+                        local.assetPerformance,
+                        local.analyzeAssetsGrowth,
                         Icons.pie_chart,
                       ),
                     ),
@@ -139,8 +141,8 @@ class OverviewHeader extends StatelessWidget {
                       },
                       child: _buildReportSection(
                         context,
-                        'Liability Analysis',
-                        'Monitor your debt and repayment progress',
+                        local.liabilityAnalysis,
+                        local.monitorDebtProgress,
                         Icons.show_chart,
                       ),
                     ),
@@ -152,8 +154,8 @@ class OverviewHeader extends StatelessWidget {
                       },
                       child: _buildReportSection(
                         context,
-                        'Financial Insights',
-                        'Get personalized recommendations',
+                        local.financialInsights,
+                        local.personalizedRecommendations,
                         Icons.lightbulb_outline,
                       ),
                     ),
@@ -173,7 +175,7 @@ class OverviewHeader extends StatelessWidget {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final netWorthData = viewModel.netWorthHistory;
     final currencyFormat = NumberFormat.currency(symbol: '₹', decimalDigits: 0);
-
+    final local = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -192,7 +194,7 @@ class OverviewHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Net Worth Trends',
+                    local.netWorthTrends,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -219,7 +221,7 @@ class OverviewHeader extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              'Current Net Worth',
+                              local.currentNetWorth,
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                             const SizedBox(height: 8),
@@ -241,7 +243,7 @@ class OverviewHeader extends StatelessWidget {
                               children: [
                                 _buildMetricCard(
                                   context,
-                                  '1M Growth',
+                                  local.oneMonthGrowth,
                                   '${viewModel.oneMonthGrowth.toStringAsFixed(1)}%',
                                   viewModel.oneMonthGrowth >= 0
                                       ? Colors.green
@@ -249,7 +251,7 @@ class OverviewHeader extends StatelessWidget {
                                 ),
                                 _buildMetricCard(
                                   context,
-                                  '6M Growth',
+                                  local.sixMonthGrowth,
                                   '${viewModel.sixMonthGrowth.toStringAsFixed(1)}%',
                                   viewModel.sixMonthGrowth >= 0
                                       ? Colors.green
@@ -257,7 +259,7 @@ class OverviewHeader extends StatelessWidget {
                                 ),
                                 _buildMetricCard(
                                   context,
-                                  '1Y Growth',
+                                  local.oneYearGrowth,
                                   '${viewModel.oneYearGrowth.toStringAsFixed(1)}%',
                                   viewModel.oneYearGrowth >= 0
                                       ? Colors.green
@@ -271,7 +273,7 @@ class OverviewHeader extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     Text(
-                      'Net Worth History',
+                      local.netWorthHistory,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -289,7 +291,7 @@ class OverviewHeader extends StatelessWidget {
                                 reservedSize: 40,
                                 getTitlesWidget: (value, meta) {
                                   return Text(
-                                    '₹${(value / 1000).toStringAsFixed(0)}K',
+                                    '${Helpers.storeCurrency(context)}${(value / 1000).toStringAsFixed(0)}K',
                                     style: TextStyle(
                                       color: isDarkMode
                                           ? Colors.grey[400]
@@ -350,8 +352,8 @@ class OverviewHeader extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    const AppHeaderText(
-                        text: 'Monthly Breakdown',
+                    AppHeaderText(
+                        text: local.monthlyBreakdown,
                         fontSize: 16,
                         fontWeight: FontWeight.bold),
                     const SizedBox(height: 16),
@@ -388,7 +390,7 @@ class OverviewHeader extends StatelessWidget {
           assets.fold(0.0, (sum, asset) => sum + asset.currentValue);
       typeDistribution[type] = (typeTotal / totalAssetsValue) * 100;
     });
-
+    final local = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -409,7 +411,7 @@ class OverviewHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Asset Performance',
+                    local.assetPerformance,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -443,7 +445,7 @@ class OverviewHeader extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Asset Distribution',
+                              local.assetDistribution,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -553,7 +555,7 @@ class OverviewHeader extends StatelessWidget {
           liabilities.fold(0.0, (sum, liability) => sum + liability.amount);
       typeDistribution[type] = (typeTotal / totalLiabilitiesValue) * 100;
     });
-
+    final local = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -574,7 +576,7 @@ class OverviewHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Liability Analysis',
+                    local.liabilityAnalysis,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -607,7 +609,7 @@ class OverviewHeader extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              'Total Liabilities',
+                              local.totalLiabilities,
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                             const SizedBox(height: 8),
@@ -625,11 +627,11 @@ class OverviewHeader extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                _buildMetricCard(context, 'Monthly EMIs',
+                                _buildMetricCard(context, local.monthlyEmis,
                                     '25,000', Colors.red),
                                 _buildMetricCard(
                                     context,
-                                    'Debt Ratio',
+                                    local.debtRatio,
                                     '${viewModel.debtToAssetRatio.toStringAsFixed(1)}%',
                                     Colors.orange),
                               ],
@@ -654,7 +656,7 @@ class OverviewHeader extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Debt Distribution',
+                              local.debtDistribution,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -710,7 +712,7 @@ class OverviewHeader extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Loan Details',
+                              local.loanDetails,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -738,7 +740,7 @@ class OverviewHeader extends StatelessWidget {
     final viewModel =
         Provider.of<AssetLiabilityViewModel>(context, listen: false);
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
+    final local = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -757,7 +759,7 @@ class OverviewHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Financial Insights',
+                    local.financialInsights,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -785,8 +787,8 @@ class OverviewHeader extends StatelessWidget {
                           padding: const EdgeInsets.all(16),
                           child: Column(
                             children: [
-                              const AppHeaderText(
-                                  text: 'Financial Health Score',
+                              AppHeaderText(
+                                  text: local.financialHealthScore,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500),
                               const SizedBox(height: 16),
@@ -849,8 +851,8 @@ class OverviewHeader extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const AppHeaderText(
-                                text: 'Key Metrics',
+                            AppHeaderText(
+                                text: local.keyMetrics,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500),
                             const SizedBox(height: 16),
@@ -872,8 +874,8 @@ class OverviewHeader extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const AppHeaderText(
-                                text: 'Recommendations',
+                            AppHeaderText(
+                                text: local.recommendations,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500),
                             const SizedBox(height: 16),
@@ -1029,7 +1031,7 @@ class OverviewHeader extends StatelessWidget {
   List<Widget> _buildLoanDetailsList(
       BuildContext context, List<AssetLiabilityModel> liabilities) {
     final currencyFormat = NumberFormat.currency(symbol: '₹', decimalDigits: 0);
-
+    final local = AppLocalizations.of(context);
     return liabilities
         .map((liability) => Container(
               padding: const EdgeInsets.symmetric(vertical: 12),
@@ -1066,15 +1068,15 @@ class OverviewHeader extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'EMI: ${currencyFormat.format(liability.emi)}',
+                        '${local.emiLabel}: ${currencyFormat.format(liability.emi)}',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
-                        'Interest: ${liability.interestRate}%',
+                        '${local.interestLabel}: ${liability.interestRate}%',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
-                        'Remaining: ${liability.calculateLoanTermInMonths()} months',
+                        '${local.remainingLabel}: ${liability.calculateLoanTermInMonths()} months',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
@@ -1088,7 +1090,7 @@ class OverviewHeader extends StatelessWidget {
   List<Widget> _buildKeyMetricsList(BuildContext context) {
     final viewModel =
         Provider.of<AssetLiabilityViewModel>(context, listen: false);
-
+    final local = AppLocalizations.of(context);
     final metrics = [
       {
         'name': 'Savings Rate',
@@ -1165,7 +1167,7 @@ class OverviewHeader extends StatelessWidget {
   List<Widget> _buildRecommendationsList(BuildContext context) {
     final viewModel =
         Provider.of<AssetLiabilityViewModel>(context, listen: false);
-    final recommendations = _generateRecommendations(viewModel);
+    final recommendations = _generateRecommendations(context, viewModel);
 
     return recommendations
         .map((rec) => Container(
@@ -1218,49 +1220,48 @@ class OverviewHeader extends StatelessWidget {
 
   // Helper method to generate recommendations based on financial data
   List<Map<String, String>> _generateRecommendations(
-      AssetLiabilityViewModel viewModel) {
+      BuildContext context, AssetLiabilityViewModel viewModel) {
     final List<Map<String, String>> recommendations = [];
-
+    final local = AppLocalizations.of(context);
     // Add recommendations based on financial health
     if (viewModel.financialHealthScore < 0.6) {
       recommendations.add({
-        'title': 'Build Emergency Fund',
-        'description': 'Increase emergency fund to cover 6 months of expenses',
-        'priority': 'High',
+        'title': local.buildEmergencyFund,
+        'description': local.increaseEmergencyFund,
+        'priority': local.high,
       });
     }
 
     if (viewModel.debtToAssetRatio > 0.5) {
       recommendations.add({
-        'title': 'Reduce Debt',
-        'description':
-            'Focus on paying down high-interest debt to improve financial health',
-        'priority': 'High',
+        'title': local.reduceDebt,
+        'description': local.focusOnHighInterestDebt,
+        'priority': local.high,
       });
     }
 
     if (viewModel.totalAssets < viewModel.totalLiabilities * 2) {
       recommendations.add({
-        'title': 'Increase Savings',
+        'title': local.increaseSavings,
         'description': 'Save more to build a stronger financial foundation',
-        'priority': 'Medium',
+        'priority': local.medium,
       });
     }
 
     if (viewModel.investmentRate < 0.15) {
       recommendations.add({
-        'title': 'Optimize Investments',
-        'description': 'Consider diversifying your investment portfolio',
-        'priority': 'Medium',
+        'title': local.optimizeInvestments,
+        'description': local.considerDiversifyingInvestments,
+        'priority': local.medium,
       });
     }
 
     // Add a default recommendation if no specific issues are found
     if (recommendations.isEmpty) {
       recommendations.add({
-        'title': 'Maintain Financial Health',
-        'description': 'Continue good financial habits to stay on track',
-        'priority': 'Low',
+        'title': local.maintainFinancialHealth,
+        'description': local.continueGoodHabits,
+        'priority': local.low,
       });
     }
 

@@ -1,4 +1,5 @@
 import 'package:finance_tracker/data/models/account_card_model.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -75,7 +76,7 @@ class _CardsScreenState extends State<CardsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Your Cards & Accounts',
+                  AppLocalizations.of(context).yourCardsAndAccounts,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: isDarkMode

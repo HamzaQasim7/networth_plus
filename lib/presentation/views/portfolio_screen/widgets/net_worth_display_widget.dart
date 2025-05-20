@@ -1,4 +1,5 @@
 import 'package:finance_tracker/core/utils/helpers.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/widgets/app_header_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -10,6 +11,7 @@ class NetWorthDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context);
     return Consumer<AssetLiabilityViewModel>(
       builder: (context, viewModel, child) {
         final oneMonth = viewModel.oneMonthGrowth;
@@ -24,11 +26,11 @@ class NetWorthDisplay extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildGrowthChip('1M', oneMonth),
+                _buildGrowthChip(local.oneMonthGrowth, oneMonth),
                 const SizedBox(width: 8),
-                _buildGrowthChip('6M', sixMonth),
+                _buildGrowthChip(local.sixMonthGrowth, sixMonth),
                 const SizedBox(width: 8),
-                _buildGrowthChip('1Y', oneYear),
+                _buildGrowthChip(local.oneYearGrowth, oneYear),
               ],
             ),
             const Gap(20),

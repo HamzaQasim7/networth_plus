@@ -1,6 +1,7 @@
 import 'package:currency_picker/currency_picker.dart';
 import 'package:finance_tracker/core/services/session_manager.dart';
 import 'package:finance_tracker/widgets/custom_button.dart';
+import 'package:finance_tracker/widgets/shared_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -61,8 +62,8 @@ class _CurrencyPickerScreenState extends State<CurrencyPickerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: widget.isFromSettings
-          ? AppBar(
-              title: const Text('Change Currency'),
+          ? const SharedAppbar(
+              title: 'Change Currency',
             )
           : null,
       body: SafeArea(

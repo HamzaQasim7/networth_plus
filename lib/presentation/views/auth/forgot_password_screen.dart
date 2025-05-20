@@ -1,3 +1,4 @@
+import 'package:finance_tracker/core/utils/motion_toast.dart';
 import 'package:finance_tracker/core/utils/validators.dart';
 import 'package:finance_tracker/presentation/views/auth/signup_view.dart';
 import 'package:flutter/material.dart';
@@ -27,23 +28,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Future<void> _handleResetPassword() async {
     if (_formKey.currentState?.validate() ?? false) {
       final viewModel = context.read<AuthViewModel>();
-      
+
       viewModel.setResetEmail(_emailController.text);
       final success = await viewModel.sendPasswordResetEmail();
-      
+
       if (success && mounted) {
         setState(() {
           _isEmailSent = true;
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Password reset email sent. Please check your inbox.'),
-          ),
-        );
+        ToastUtils.showSuccessToast(context,
+            title: 'Sent',
+            description: 'Password reset email sent. Please check your inbox.');
       } else if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(viewModel.errorMessage)),
-        );
+        ToastUtils.showErrorToast(context,
+            title: 'Error', description: viewModel.errorMessage);
       }
     }
   }
@@ -113,19 +111,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                 const SizedBox(height: 20),
                 CustomButton(
-                  onPressed: viewModel.isLoading 
-                    ? (){} 
-                    : _handleResetPassword,
+                  onPressed: viewModel.isLoading ? () {} : _handleResetPassword,
                   child: viewModel.isLoading
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text(
-                        'Send Reset Link',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          'Send Reset Link',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
                 ),
                 const SizedBox(height: 20),
                 if (_isEmailSent)
