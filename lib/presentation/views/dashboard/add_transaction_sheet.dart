@@ -2,6 +2,7 @@ import 'package:finance_tracker/core/constants/categories_list.dart';
 import 'package:finance_tracker/core/constants/theme_constants.dart';
 import 'package:finance_tracker/core/constants/validator.dart';
 import 'package:finance_tracker/data/models/transaction_model.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/viewmodels/transaction_viewmodel.dart';
 import 'package:finance_tracker/widgets/custom_button.dart';
 import 'package:finance_tracker/widgets/custom_text_field.dart';
@@ -54,7 +55,8 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   String? selectedPaymentMethod;
   DateTime selectedDate = DateTime.now();
   double? availableBudget;
-
+  String? fromAccount;
+  String? toAccount;
   // Recurring Transaction State
   bool isRecurring = false;
   String recurringFrequency = 'Monthly';
@@ -84,13 +86,6 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
     FontAwesome.phone_solid,
     FontAwesome.futbol_solid,
     FontAwesome.palette_solid,
-  ];
-
-  static const _paymentMethods = [
-    'Debit Card',
-    'Credit Card',
-    'Cash Wallet',
-    'EWallet',
   ];
 
   static const _recurringFrequencies = ['Daily', 'Weekly', 'Monthly', 'Yearly'];
@@ -137,12 +132,13 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   // UI Building Methods
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context);
     return Material(
       child: Consumer<TransactionViewModel>(
         builder: (context, viewModel, child) {
-          if (viewModel.error == 'Unauthorized') {
-            return const Center(
-              child: Text('Unauthorized'),
+          if (viewModel.error == local.unauthorized) {
+            return Center(
+              child: Text(local.unauthorized),
             );
           }
           if (viewModel.isLoading) {
@@ -193,11 +189,12 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   }
 
   Widget _buildHeader() {
+    final local = AppLocalizations.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          isTransfer ? 'Transfer Money' : 'Add Transaction',
+          isTransfer ? local.transferMoney : local.addTransaction,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -211,10 +208,11 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   }
 
   Widget _buildTransactionTypeSelector() {
+    final local = AppLocalizations.of(context);
     return Row(
       children: [
         _buildTypeChip(
-          label: 'Expense',
+          label: local.expense,
           isSelected: !isIncome && !isTransfer,
           color: Colors.red[400]!,
           onSelected: (_) => setState(() {
@@ -225,7 +223,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
         ),
         const Gap(8),
         _buildTypeChip(
-          label: 'Income',
+          label: local.income,
           isSelected: isIncome && !isTransfer,
           color: ThemeConstants.primaryColor,
           onSelected: (_) => setState(() {
@@ -236,7 +234,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
         ),
         const Gap(8),
         _buildTypeChip(
-          label: 'Transfer',
+          label: local.transfer,
           isSelected: isTransfer,
           color: Theme.of(context).colorScheme.primary,
           onSelected: (_) => setState(() {
@@ -295,17 +293,115 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   }
 
   Widget _buildTransferForm() {
+    final accountViewModel = context.watch<AccountCardViewModel>();
+    final local = AppLocalizations.of(context);
     return Column(
       children: [
-        _buildAccountDropdown('From Account'),
+        DropdownButtonFormField<String>(
+          decoration: InputDecoration(
+            labelText: local.fromAccount,
+            prefixIcon: const Icon(Icons.account_balance_wallet),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          value: fromAccount,
+          items: [
+            ...accountViewModel.accountCards.map((card) => DropdownMenuItem(
+                  value: card.id,
+                  child: Row(
+                    children: [
+                      Icon(card.icon, color: card.color),
+                      const SizedBox(width: 8),
+                      Text(card.name),
+                      const SizedBox(width: 8),
+                      Text('(${card.balance.toStringAsFixed(2)})'),
+                    ],
+                  ),
+                )),
+          ],
+          onChanged: (value) {
+            if (value == toAccount) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content:
+                      Text('Cannot select the same account for both fields'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+              return;
+            }
+            setState(() => fromAccount = value);
+          },
+          validator: (value) =>
+              value == null ? 'Please select source account' : null,
+        ),
         const Gap(16),
-        _buildAccountDropdown('To Account'),
+        DropdownButtonFormField<String>(
+          decoration: InputDecoration(
+            labelText: local.toAccount,
+            prefixIcon: const Icon(Icons.account_balance_wallet),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          value: toAccount,
+          items: [
+            ...accountViewModel.accountCards.map((card) => DropdownMenuItem(
+                  value: card.id,
+                  child: Row(
+                    children: [
+                      Icon(card.icon, color: card.color),
+                      const SizedBox(width: 8),
+                      Text(card.name),
+                      const SizedBox(width: 8),
+                      Text('(${card.balance.toStringAsFixed(2)})'),
+                    ],
+                  ),
+                )),
+          ],
+          onChanged: (value) {
+            if (value == fromAccount) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content:
+                      Text('Cannot select the same account for both fields'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+              return;
+            }
+            setState(() => toAccount = value);
+          },
+          validator: (value) =>
+              value == null ? 'Please select destination account' : null,
+        ),
         const Gap(16),
-        const CustomTextField(
-          labelText: 'Transfer Amount',
-          hintText: 'Enter amount to transfer',
+        CustomTextField(
+          controller: _amountController,
+          labelText: local.transferAmount,
+          hintText: local.enterAmountToTransfer,
           icon: Iconsax.money_2_bold,
           keyboardType: TextInputType.number,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return local.pleaseEnterAnAmount;
+            }
+            final amount = double.tryParse(value);
+            if (amount == null || amount <= 0) {
+              return local.pleaseEnterAValidAmount;
+            }
+
+            // Get the source account balance
+            if (fromAccount != null) {
+              final sourceAccount = accountViewModel.accountCards.firstWhere(
+                (card) => card.id == fromAccount,
+                orElse: () => throw Exception('Account not found'),
+              );
+
+              if (amount > sourceAccount.balance) {
+                return local.insufficientBalance;
+              }
+            }
+
+            return null;
+          },
         ),
         const Gap(16),
         _buildDescriptionField(),
@@ -315,25 +411,9 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
     );
   }
 
-  Widget _buildAccountDropdown(String label) {
-    return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: const Icon(Icons.account_balance_wallet),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-      ),
-      items: _paymentMethods
-          .map((method) => DropdownMenuItem(
-                value: method,
-                child: Text(method),
-              ))
-          .toList(),
-      onChanged: (value) => setState(() => selectedPaymentMethod = value),
-    );
-  }
-
   // Helper Methods for UI Components
   Widget _buildCategorySelector() {
+    final local = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -341,7 +421,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
           readOnly: true,
           controller: TextEditingController(text: selectedCategory),
           decoration: InputDecoration(
-            labelText: 'Category',
+            labelText: local.categoryLabel,
             prefixIcon: Icon(_getSelectedIcon()),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             suffixIcon: const Icon(Iconsax.arrow_down_1_bold),
@@ -353,7 +433,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
           Padding(
             padding: const EdgeInsets.only(left: 12),
             child: Text(
-              'Available Budget: ${Helpers.storeCurrency(context)}${availableBudget!.toStringAsFixed(2)}',
+              '${local.availableBudget}: ${Helpers.storeCurrency(context)}${availableBudget!.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: availableBudget! < 0
                         ? Colors.red
@@ -372,26 +452,27 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   }
 
   Widget _buildAmountField() {
+    final local = AppLocalizations.of(context);
     final viewModel = context.read<TransactionViewModel>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomTextField(
           controller: _amountController,
-          labelText: 'Amount',
-          hintText: 'Enter amount',
+          labelText: local.amount,
+          hintText: local.enterAmount,
           icon: Iconsax.money_2_bold,
           keyboardType: TextInputType.number,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter an amount';
+              return local.pleaseEnterAnAmount;
             }
             final amount = double.tryParse(value);
             if (amount == null || amount <= 0) {
-              return 'Please enter a valid amount';
+              return local.pleaseEnterAValidAmount;
             }
             if (!isIncome && amount > viewModel.availableBalance == 0) {
-              return 'Please add income first!';
+              return local.pleaseAddIncomeFirst;
             }
             // if (!isIncome && amount > viewModel.availableBalance) {
             //   return 'Amount exceeds available balance';
@@ -404,7 +485,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
           Padding(
             padding: const EdgeInsets.only(left: 12),
             child: Text(
-              'Available Balance: ${Helpers.storeCurrency(context)}${availableBudget?.toStringAsFixed(2)}' ??
+              '${local.availableBalance}: ${Helpers.storeCurrency(context)}${availableBudget?.toStringAsFixed(2)}' ??
                   '',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context)
@@ -422,10 +503,11 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   }
 
   Widget _buildDescriptionField() {
+    final local = AppLocalizations.of(context);
     return CustomTextField(
       controller: _descriptionController,
-      labelText: 'Description',
-      hintText: 'Enter description',
+      labelText: local.description,
+      hintText: local.enterDescription,
       icon: Iconsax.note_1_bold,
       maxLines: 3,
     );
@@ -447,11 +529,12 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   }
 
   Widget _buildDateField() {
+    final local = AppLocalizations.of(context);
     return TextFormField(
       controller: _dateController,
       readOnly: true,
       decoration: InputDecoration(
-        labelText: 'Date',
+        labelText: local.date,
         prefixIcon: const Icon(Iconsax.calendar_1_bold),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
       ),
@@ -481,11 +564,12 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   }
 
   Widget _buildTimeField() {
+    final local = AppLocalizations.of(context);
     return TextFormField(
       controller: _timeController,
       readOnly: true,
       decoration: InputDecoration(
-        labelText: 'Time',
+        labelText: local.time,
         prefixIcon: const Icon(Iconsax.clock_bold),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
       ),
@@ -512,6 +596,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   }
 
   Widget _buildPaymentMethodField() {
+    final local = AppLocalizations.of(context);
     final accountViewModel = context.watch<AccountCardViewModel>();
 
     return Column(
@@ -519,23 +604,23 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
       children: [
         DropdownButtonFormField<String>(
           decoration: InputDecoration(
-            labelText: 'Payment Method',
+            labelText: local.paymentMethod,
             prefixIcon: const Icon(Icons.payment_rounded),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
           ),
-          value: selectedPaymentMethod ?? 'Cash Wallet',
+          value: selectedPaymentMethod ?? local.cashWallet,
           items: [
-            const DropdownMenuItem(
-                value: 'Cash Wallet', child: Text('Cash Wallet')),
+            DropdownMenuItem(
+                value: local.cashWallet, child: Text(local.cashWallet)),
             ...accountViewModel.accountCards.map((card) =>
                 DropdownMenuItem(value: card.name, child: Text(card.name))),
-            const DropdownMenuItem(
+            DropdownMenuItem(
               value: 'add_new',
               child: Row(
                 children: [
-                  Icon(Icons.add),
-                  Gap(8),
-                  Text('Add New Account'),
+                  const Icon(Icons.add),
+                  const Gap(8),
+                  Text(local.addNewAccount),
                 ],
               ),
             ),
@@ -551,24 +636,25 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
               ).then((_) {
                 // Reset to previous selection or Cash Wallet
                 setState(() => selectedPaymentMethod =
-                    selectedPaymentMethod ?? 'Cash Wallet');
+                    selectedPaymentMethod ?? local.cashWallet);
               });
             } else {
               setState(() => selectedPaymentMethod = value);
             }
           },
           validator: (value) =>
-              value == null ? 'Please select a payment method' : null,
+              value == null ? local.pleaseSelectAPaymentMethod : null,
         ),
       ],
     );
   }
 
   Widget _buildRecurringSection() {
+    final local = AppLocalizations.of(context);
     return Column(
       children: [
         SwitchListTile(
-          title: const Text('Recurring Transaction'),
+          title: Text(local.recurringTransaction),
           value: isRecurring,
           onChanged: (value) => setState(() => isRecurring = value),
         ),
@@ -576,7 +662,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
           const Gap(8),
           DropdownButtonFormField<String>(
             decoration: InputDecoration(
-              labelText: 'Frequency',
+              labelText: local.frequency,
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             ),
@@ -597,10 +683,11 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   }
 
   Widget _buildSplitSection() {
+    final local = AppLocalizations.of(context);
     return Column(
       children: [
         SwitchListTile(
-          title: const Text('Split Transaction'),
+          title: Text(local.splitTransaction),
           value: isSplitTransaction,
           onChanged: (value) => setState(() => isSplitTransaction = value),
         ),
@@ -615,63 +702,134 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   }
 
   Widget _buildSubmitButton() {
+    final local = AppLocalizations.of(context);
     return CustomButton(
       onPressed: _handleSubmit,
       child: Text(
         widget.isEditing
-            ? 'Update Transaction'
-            : (isTransfer ? 'Transfer Money' : 'Save Transaction'),
+            ? local.updateTransaction
+            : (isTransfer ? local.transferMoney : local.saveTransaction),
       ),
     );
   }
 
   // Action Methods
   void _handleSubmit() async {
+    final local = AppLocalizations.of(context);
     if (_formKey.currentState?.validate() ?? false) {
       final viewModel = context.read<TransactionViewModel>();
-      console('Handle button Testing', type: DebugType.info);
+      final accountViewModel = context.read<AccountCardViewModel>();
+
       try {
-        final transaction = TransactionModel(
-          id: widget.isEditing ? widget.transaction!.id : const Uuid().v4(),
-          userId: viewModel.currentUserId ?? '',
-          amount: double.tryParse(_amountController.text) ?? 0.0,
-          type: isIncome ? TransactionType.income : TransactionType.expense,
-          category: selectedCategory ?? 'Uncategorized',
-          description: _descriptionController.text,
-          date: selectedDate,
-          paymentMethod: selectedPaymentMethod ?? 'Cash Wallet',
-          isRecurring: isRecurring,
-          recurringFrequency: isRecurring ? recurringFrequency : null,
-          splitWith: isSplitTransaction ? splitWith : null,
-        );
-        console('Transaction: ${transaction.description}',
-            type: DebugType.response);
-        bool success;
-        if (widget.isEditing) {
-          success = await viewModel.updateTransaction(transaction);
+        if (isTransfer) {
+          // Handle transfer between accounts
+          final sourceAccount = accountViewModel.accountCards.firstWhere(
+            (card) => card.id == fromAccount,
+            orElse: () => throw Exception('Source account not found'),
+          );
+
+          final destinationAccount = accountViewModel.accountCards.firstWhere(
+            (card) => card.id == toAccount,
+            orElse: () => throw Exception('Destination account not found'),
+          );
+
+          final amount = double.tryParse(_amountController.text) ?? 0.0;
+
+          // Create withdrawal transaction for source account
+          final withdrawalTransaction = TransactionModel(
+            id: const Uuid().v4(),
+            userId: viewModel.currentUserId ?? '',
+            amount: amount,
+            type: TransactionType.expense,
+            category: local.transfer,
+            description: 'Transfer to ${destinationAccount.name}',
+            date: selectedDate,
+            paymentMethod: sourceAccount.name,
+            isRecurring: false,
+          );
+
+          // Create deposit transaction for destination account
+          final depositTransaction = TransactionModel(
+            id: const Uuid().v4(),
+            userId: viewModel.currentUserId ?? '',
+            amount: amount,
+            type: TransactionType.income,
+            category: local.transfer,
+            description: 'Transfer from ${sourceAccount.name}',
+            date: selectedDate,
+            paymentMethod: destinationAccount.name,
+            isRecurring: false,
+          );
+
+          // Update account balances
+          await accountViewModel.updateAccountCard(
+            sourceAccount.copyWith(balance: sourceAccount.balance - amount),
+          );
+
+          await accountViewModel.updateAccountCard(
+            destinationAccount.copyWith(
+                balance: destinationAccount.balance + amount),
+          );
+
+          // Save both transactions
+          await viewModel.addTransaction(withdrawalTransaction);
+          await viewModel.addTransaction(depositTransaction);
+
+          if (mounted) {
+            Navigator.pop(context);
+            ToastUtils.showSuccessToast(
+              context,
+              title: local.success,
+              description: local.transferCompletedSuccessfully,
+            );
+          }
         } else {
-          success = await viewModel.addTransaction(transaction);
-        }
+          // Handle regular transaction (existing code)
+          final transaction = TransactionModel(
+            id: widget.isEditing ? widget.transaction!.id : const Uuid().v4(),
+            userId: viewModel.currentUserId ?? '',
+            amount: double.tryParse(_amountController.text) ?? 0.0,
+            type: isIncome ? TransactionType.income : TransactionType.expense,
+            category: selectedCategory ?? 'Uncategorized',
+            description: _descriptionController.text,
+            date: selectedDate,
+            paymentMethod: selectedPaymentMethod ?? local.cashWallet,
+            isRecurring: isRecurring,
+            recurringFrequency: isRecurring ? recurringFrequency : null,
+            splitWith: isSplitTransaction ? splitWith : null,
+          );
+          console('Transaction: ${transaction.description}',
+              type: DebugType.response);
+          bool success;
+          if (widget.isEditing) {
+            success = await viewModel.updateTransaction(transaction);
+          } else {
+            success = await viewModel.addTransaction(transaction);
+          }
 
-        if (success && !isIncome && selectedCategory != null) {
-          await Provider.of<BudgetProvider>(context, listen: false)
-              .addSpendingToCategory(selectedCategory!,
-                  double.tryParse(_amountController.text) ?? 0.0);
-        }
+          if (success && !isIncome && selectedCategory != null) {
+            await Provider.of<BudgetProvider>(context, listen: false)
+                .addSpendingToCategory(selectedCategory!,
+                    double.tryParse(_amountController.text) ?? 0.0);
+          }
 
-        if (success && mounted) {
-          Navigator.pop(context);
-          ToastUtils.showSuccessToast(context,
-              title: 'Success',
-              description: widget.isEditing
-                  ? 'Transaction updated successfully'
-                  : 'Transaction added successfully');
+          if (success && mounted) {
+            Navigator.pop(context);
+            ToastUtils.showSuccessToast(context,
+                title: local.success,
+                description: widget.isEditing
+                    ? local.transactionUpdatedSuccessfully
+                    : local.transactionAddedSuccessfully);
+          }
         }
       } catch (e) {
         if (mounted) {
           console('$e', type: DebugType.error);
-          ToastUtils.showErrorToast(context,
-              title: 'Failed', description: 'Error: ${e.toString()}');
+          ToastUtils.showErrorToast(
+            context,
+            title: local.operationFailed,
+            description: 'Error: ${e.toString()}',
+          );
         }
       }
     }
@@ -692,6 +850,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   }
 
   void _showCategoryBottomSheet() {
+    final local = AppLocalizations.of(context);
     final baseCategories = isIncome
         ? CategoryList.categories.sublist(0, 9)
         : CategoryList.categories.sublist(9);
@@ -714,7 +873,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Select Category',
+                  local.selectCategory,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -725,7 +884,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
                     _showAddCategoryDialog();
                   },
                   icon: const Icon(Icons.add),
-                  label: const Text('New Category'),
+                  label: Text(local.newCategory),
                 ),
               ],
             ),
@@ -793,6 +952,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   }
 
   void _showAddCategoryDialog() {
+    final local = AppLocalizations.of(context);
     final formKey = GlobalKey<FormState>();
     String categoryName = '';
     IconData selectedIcon = FontAwesome.tag_solid; // Default icon
@@ -803,19 +963,16 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        title: const Text('Add New Category'),
+        title: Text(local.addNewCategory),
         content: Form(
           key: formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Category Name',
-                  border: OutlineInputBorder(),
-                ),
+              CustomTextField(
+                labelText: local.categoryName,
                 validator: (value) =>
-                    value?.isEmpty ?? true ? 'Please enter a name' : null,
+                    value?.isEmpty ?? true ? local.pleaseEnterAName : null,
                 onChanged: (value) => categoryName = value,
               ),
               const Gap(16),
@@ -856,7 +1013,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(local.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -875,7 +1032,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
                 _showCategoryBottomSheet(); // Reopen category selector
               }
             },
-            child: const Text('Add'),
+            child: Text(local.add),
           ),
         ],
       ),
@@ -896,79 +1053,35 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
     });
   }
 
-  void _showAddAccountDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add New Account'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'Account Name',
-              ),
-            ),
-            const Gap(16),
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
-                labelText: 'Account Type',
-              ),
-              items: ['Bank Account', 'Credit Card', 'Cash']
-                  .map((type) => DropdownMenuItem(
-                        value: type,
-                        child: Text(type),
-                      ))
-                  .toList(),
-              onChanged: (value) {},
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Add account logic here
-              Navigator.pop(context);
-            },
-            child: const Text('Add'),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _showAddSplitMemberDialog() {
+    final local = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        title: const Text('Add Person to Split'),
+        title: Text(local.addPersonToSplit),
         content: Column(
           spacing: 8,
           mainAxisSize: MainAxisSize.min,
           children: [
             CustomTextField(
               controller: _splitNameController,
-              labelText: 'Name',
+              labelText: local.name,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a name';
+                  return local.pleaseEnterAName;
                 }
                 return null;
               },
             ),
             CustomTextField(
               controller: _splitEmailController,
-              labelText: 'Email',
+              labelText: local.email,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter the email';
+                  return local.pleaseEnterTheEmail;
                 }
                 return null;
               },
@@ -978,7 +1091,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(local.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -992,7 +1105,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
               });
               Navigator.pop(context);
             },
-            child: const Text('Add'),
+            child: Text(local.add),
           ),
         ],
       ),
@@ -1000,11 +1113,12 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   }
 
   Widget _buildSplitTypeSelector() {
+    final local = AppLocalizations.of(context);
     return Row(
       children: [
         Expanded(
           child: ChoiceChip(
-            label: const Text('Split Equally'),
+            label: Text(local.splitEqually),
             selected: splitType == 'Equal',
             onSelected: (selected) => setState(() => splitType = 'Equal'),
           ),
@@ -1012,7 +1126,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
         const Gap(8),
         Expanded(
           child: ChoiceChip(
-            label: const Text('Custom Split'),
+            label: Text(local.customSplit),
             selected: splitType == 'Custom',
             onSelected: (selected) => setState(() => splitType = 'Custom'),
           ),
@@ -1022,12 +1136,13 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   }
 
   Widget _buildSplitMembersList() {
+    final local = AppLocalizations.of(context);
     return Column(
       children: [
         ElevatedButton.icon(
           onPressed: _showAddSplitMemberDialog,
           icon: const Icon(Icons.person_add),
-          label: const Text('Add Person to Split'),
+          label: Text(local.addPersonToSplit),
         ),
         if (splitWith.isNotEmpty) ...[
           const Gap(8),

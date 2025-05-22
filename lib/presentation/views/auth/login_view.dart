@@ -1,4 +1,5 @@
 import 'package:finance_tracker/core/utils/validators.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/presentation/views/auth/widgets/or_sign_up_line.dart';
 import 'package:finance_tracker/presentation/views/auth/widgets/social_button.dart';
 import 'package:finance_tracker/presentation/views/dashboard/dashboard_view.dart';
@@ -90,7 +91,7 @@ class _LoginViewContentState extends State<LoginViewContent> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<AuthViewModel>();
-
+    final local = AppLocalizations.of(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -103,25 +104,23 @@ class _LoginViewContentState extends State<LoginViewContent> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Gap(20),
-                  const SharedDynamicIcon(
-                    'assets/icons/finance_app_logo.png',
-                    height: 100,
-                  ),
+                  Image.asset('assets/icons/app_logo.jpg',
+                      width: 100, height: 100),
                   const Gap(30),
-                  const AppHeaderText(text: 'Welcome Back'),
+                  AppHeaderText(text: local.welcomeBack),
                   const Gap(30),
                   CustomTextField(
                     controller: _emailController,
                     textCapitalization: TextCapitalization.none,
-                    hintText: 'Email address',
+                    hintText: local.emailAddress,
                     icon: Icons.email_outlined,
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
-                        return 'Please enter your email';
+                        return local.pleaseEnterYourEmail;
                       }
                       if (!Validators.isValidEmail(value!)) {
-                        return 'Please enter a valid email';
+                        return local.pleaseEnterAValidEmail;
                       }
                       return null;
                     },
@@ -130,7 +129,7 @@ class _LoginViewContentState extends State<LoginViewContent> {
                   CustomTextField(
                     controller: _passwordController,
                     textCapitalization: TextCapitalization.none,
-                    hintText: 'Password',
+                    hintText: local.password,
                     icon: Icons.lock_outline,
                     obscureText: _obscurePassword,
                     suffixIcon: IconButton(
@@ -147,10 +146,10 @@ class _LoginViewContentState extends State<LoginViewContent> {
                     ),
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
-                        return 'Please enter your password';
+                        return local.pleaseEnterYourPassword;
                       }
                       if (!Validators.isValidPassword(value!)) {
-                        return 'Password must be at least 6 characters';
+                        return local.passwordMustBeAtLeast6Characters;
                       }
                       return null;
                     },
@@ -165,7 +164,7 @@ class _LoginViewContentState extends State<LoginViewContent> {
                         Navigator.pushNamed(context, Routes.forgotScreen);
                       },
                       child: Text(
-                        'Forgot password?',
+                        local.forgotPassword,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                         ),
@@ -201,9 +200,9 @@ class _LoginViewContentState extends State<LoginViewContent> {
                     text: TextSpan(
                       style: Theme.of(context).textTheme.titleMedium,
                       children: [
-                        const TextSpan(text: "Don't have account? "),
+                        TextSpan(text: local.dontHaveAccount),
                         TextSpan(
-                          text: 'Sign up',
+                          text: local.signUp,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                             decoration: TextDecoration.underline,

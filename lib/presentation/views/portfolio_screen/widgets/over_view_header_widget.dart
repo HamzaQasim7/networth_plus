@@ -1243,7 +1243,7 @@ class OverviewHeader extends StatelessWidget {
     if (viewModel.totalAssets < viewModel.totalLiabilities * 2) {
       recommendations.add({
         'title': local.increaseSavings,
-        'description': 'Save more to build a stronger financial foundation',
+        'description': local.saveMoreToBuildFoundation,
         'priority': local.medium,
       });
     }

@@ -1,3 +1,4 @@
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class OrSignUpWithWidget extends StatelessWidget {
@@ -17,7 +18,7 @@ class OrSignUpWithWidget extends StatelessWidget {
         ),
         // Text
         Text(
-          text ?? 'Or Sign Up With',
+          text ?? AppLocalizations.of(context).orSignUpWith,
           style: TextStyle(
             color: Colors.grey.shade600,
             fontSize: 14,

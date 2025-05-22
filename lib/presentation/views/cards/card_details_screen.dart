@@ -1,4 +1,6 @@
+import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:finance_tracker/core/utils/motion_toast.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/widgets/app_header_text.dart';
 import 'package:finance_tracker/widgets/shared_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +43,7 @@ class CardDetailsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildCardPreview(),
-            _buildCardDetails(),
+            _buildCardDetails(context),
             // _buildRecentTransactions(),
           ],
         ),
@@ -104,18 +106,21 @@ class CardDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCardDetails() {
+  Widget _buildCardDetails(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const AppHeaderText(text: 'Card Details', fontSize: 20),
+          AppHeaderText(
+              text: AppLocalizations.of(context).cardDetails, fontSize: 20),
           const SizedBox(height: 16),
-          _buildDetailRow('Type', card.type),
-          _buildDetailRow('Name', card.name),
-          _buildDetailRow('Number', card.number),
-          _buildDetailRow('Balance', '₹${card.balance.toStringAsFixed(2)}'),
+          _buildDetailRow(localizations.typeLabel, card.type),
+          _buildDetailRow(localizations.name, card.name),
+          _buildDetailRow(localizations.number, card.number),
+          _buildDetailRow(localizations.balanceLabel,
+              '${Helpers.storeCurrency(context)}${card.balance.toStringAsFixed(2)}'),
         ],
       ),
     );
@@ -239,29 +244,48 @@ class CardDetailsScreen extends StatelessWidget {
 
   void _deleteCard(BuildContext context) {
     final viewModel = context.read<AccountCardViewModel>();
-
+    final localizations = AppLocalizations.of(context);
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: const Text('Delete Card'),
-        content: const Text('Are you sure you want to delete this card?'),
+        title: Text(localizations.deleteCard),
+        content: Text(localizations.areYouSureYouWantToDeleteThisCard),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(localizations.cancel),
           ),
           TextButton(
             onPressed: () async {
-              Navigator.pop(context); // Close dialog
-              await viewModel.deleteAccountCard(card.id);
-              Navigator.pop(context);
-              ToastUtils.showSuccessToast(context,
-                  title: 'Deleted', description: 'Card deleted successfully');
+              // First pop the dialog
+              Navigator.pop(dialogContext);
+
+              try {
+                // Delete the card
+                await viewModel.deleteAccountCard(card.id);
+
+                // Check if the widget is still mounted before showing toast and popping
+                if (context.mounted) {
+                  // Show success toast
+                  ToastUtils.showSuccessToast(context,
+                      title: localizations.deleted,
+                      description: localizations.cardDeletedSuccessfully);
+
+                  // Pop the card details screen
+                  Navigator.pop(context);
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  ToastUtils.showErrorToast(context,
+                      title: localizations.error,
+                      description: 'Failed to delete card: ${e.toString()}');
+                }
+              }
             },
-            child: const Text(
-              'Delete',
-              style: TextStyle(color: Colors.red),
+            child: Text(
+              localizations.delete,
+              style: const TextStyle(color: Colors.red),
             ),
           ),
         ],

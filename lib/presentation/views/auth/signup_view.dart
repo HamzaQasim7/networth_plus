@@ -1,4 +1,5 @@
 import 'package:finance_tracker/core/utils/motion_toast.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/presentation/views/auth/login_view.dart';
 import 'package:finance_tracker/presentation/views/auth/widgets/or_sign_up_line.dart';
 import 'package:finance_tracker/presentation/views/auth/widgets/social_button.dart';
@@ -105,7 +106,7 @@ class _SignupViewContentState extends State<SignupViewContent> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<AuthViewModel>();
-
+    final local = AppLocalizations.of(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -118,22 +119,20 @@ class _SignupViewContentState extends State<SignupViewContent> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Gap(20),
-                  const SharedDynamicIcon(
-                    'assets/icons/finance_app_logo.png',
-                    height: 100,
-                  ),
+                  Image.asset('assets/icons/app_logo.jpg',
+                      width: 100, height: 100),
                   const Gap(30),
-                  const AppHeaderText(text: 'Create your account'),
+                  AppHeaderText(text: local.createYourAccount),
                   const Gap(30),
                   CustomTextField(
                     controller: _nameController,
                     textCapitalization: TextCapitalization.sentences,
-                    hintText: 'Name',
+                    hintText: local.name,
                     icon: Icons.person_3_outlined,
                     keyboardType: TextInputType.name,
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
-                        return 'Please enter your name';
+                        return local.pleaseEnterAName;
                       }
                       return null;
                     },
@@ -142,15 +141,15 @@ class _SignupViewContentState extends State<SignupViewContent> {
                   CustomTextField(
                     controller: _emailController,
                     textCapitalization: TextCapitalization.none,
-                    hintText: 'Email address',
+                    hintText: local.emailAddress,
                     icon: Icons.email_outlined,
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
-                        return 'Please enter your email';
+                        return local.pleaseEnterYourEmail;
                       }
                       if (!Validators.isValidEmail(value!)) {
-                        return 'Please enter a valid email';
+                        return local.pleaseEnterAValidEmail;
                       }
                       return null;
                     },
@@ -159,7 +158,7 @@ class _SignupViewContentState extends State<SignupViewContent> {
                   CustomTextField(
                     controller: _passwordController,
                     textCapitalization: TextCapitalization.none,
-                    hintText: 'Password',
+                    hintText: local.password,
                     obscureText: _obscurePassword,
                     icon: Icons.lock_outline,
                     suffixIcon: IconButton(
@@ -176,10 +175,10 @@ class _SignupViewContentState extends State<SignupViewContent> {
                     ),
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
-                        return 'Please enter your password';
+                        return local.pleaseEnterYourPassword;
                       }
                       if (!Validators.isValidPassword(value!)) {
-                        return 'Password must be at least 6 characters';
+                        return local.passwordMustBeAtLeast6Characters;
                       }
                       return null;
                     },
@@ -197,7 +196,7 @@ class _SignupViewContentState extends State<SignupViewContent> {
                       ),
                       Expanded(
                         child: Text(
-                          'I agree to Terms & Conditions',
+                          local.agreeToTerms,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
@@ -210,9 +209,9 @@ class _SignupViewContentState extends State<SignupViewContent> {
                         : () => _handleSignUp(context),
                     child: viewModel.isLoading
                         ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text(
-                            'Sign up',
-                            style: TextStyle(
+                        : Text(
+                            local.signUp,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -235,7 +234,7 @@ class _SignupViewContentState extends State<SignupViewContent> {
                     text: TextSpan(
                       style: Theme.of(context).textTheme.titleMedium,
                       children: [
-                        const TextSpan(text: "Already have an account? "),
+                        TextSpan(text: local.alreadyHaveAnAccount),
                         TextSpan(
                           text: 'Login',
                           style: TextStyle(

@@ -333,7 +333,7 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
                       : isDarkMode
                           ? ThemeConstants.textPrimaryDark
                           : ThemeConstants.textPrimaryLight,
-                  fontSize: 11),
+                  fontSize: 10),
             ),
           ],
         ),

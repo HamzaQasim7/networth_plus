@@ -330,9 +330,9 @@ class _SettingsViewState extends State<SettingsView> {
                         context: context,
                         applicationName: 'NetWorth+',
                         applicationVersion: '1.0.0+1',
-                        applicationIcon: const SharedDynamicIcon(
+                        applicationIcon: Image.asset(
                             'assets/icons/app_logo.jpg',
-                            weight: 32,
+                            width: 32,
                             height: 32),
                         children: const [
                           Text(

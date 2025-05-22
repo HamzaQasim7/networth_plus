@@ -1,5 +1,6 @@
 import 'package:finance_tracker/core/utils/motion_toast.dart';
 import 'package:finance_tracker/core/utils/validators.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/presentation/views/auth/signup_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,7 +50,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<AuthViewModel>();
-
+    final local = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       body: SafeArea(
@@ -60,13 +61,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SharedDynamicIcon(
-                  'assets/icons/finance_app_logo.png',
-                  height: 100,
-                ),
+                Image.asset('assets/icons/app_logo.jpg',
+                    width: 100, height: 100),
                 const SizedBox(height: 30),
                 Text(
-                  'Forget Password?',
+                  local.forgotPassword,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
@@ -75,7 +74,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Please enter your email address',
+                  local.pleaseEnterYourEmail,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontSize: 14,
                         color: Colors.grey,
@@ -85,17 +84,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 const SizedBox(height: 30),
                 TextFormField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
-                    hintText: 'Email address',
-                    prefixIcon: Icon(Icons.email_outlined),
+                  decoration: InputDecoration(
+                    hintText: local.emailAddress,
+                    prefixIcon: const Icon(Icons.email_outlined),
                   ),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
-                      return 'Please enter your email';
+                      return local.pleaseEnterTheEmail;
                     }
                     if (!Validators.isValidEmail(value!)) {
-                      return 'Please enter a valid email';
+                      return local.pleaseEnterAValidEmail;
                     }
                     return null;
                   },
