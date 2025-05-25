@@ -1,4 +1,5 @@
 import 'package:finance_tracker/core/constants/categories_list.dart';
+import 'package:finance_tracker/core/services/local_notification_service.dart';
 import 'package:finance_tracker/core/utils/motion_toast.dart';
 import 'package:finance_tracker/data/models/budget_model.dart';
 import 'package:finance_tracker/presentation/views/budget/widgets/budget_components.dart';
@@ -500,6 +501,7 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
     }
 
     final viewModel = Provider.of<BudgetViewModel>(context, listen: false);
+    final notificationService = ScheduledNotificationService();
 
     if (viewModel.isLoading) {
       return;
@@ -566,6 +568,48 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
               viewModel.error ?? 'Failed to save budget. Please try again.',
         );
         return;
+      }
+
+      // Schedule notifications for budget alerts
+      if (success) {
+        // Cancel existing notifications if editing
+        if (widget.existingBudget != null) {
+          await notificationService.cancelNotification(widget.existingBudget!.hashCode);
+        }
+
+        // Schedule new notifications for each alert threshold
+        for (final alert in _alerts) {
+          if (alert == 'exceeded') {
+            // Schedule notification for when budget is exceeded
+            await notificationService.scheduleBudgetAlert(
+              id: budget.hashCode + 100, // Offset to avoid conflicts
+              category: budget.category,
+              amount: budget.amount,
+              threshold: 100,
+              scheduledDate: budget.startDate,
+            );
+          } else {
+            // Schedule notifications for percentage thresholds
+            final threshold = int.tryParse(alert.replaceAll('%', ''));
+            if (threshold != null) {
+              await notificationService.scheduleBudgetAlert(
+                id: budget.hashCode + threshold, // Unique ID for each threshold
+                category: budget.category,
+                amount: budget.amount * (threshold / 100),
+                threshold: threshold.toDouble(),
+                scheduledDate: budget.startDate,
+              );
+            }
+          }
+        }
+
+        // Schedule monthly summary notification
+        if (_isRecurring) {
+          await notificationService.scheduleMonthlyBudgetSummary(
+            id: budget.hashCode + 1000, // Offset for summary notification
+            scheduledDate: budget.endDate,
+          );
+        }
       }
 
       if (mounted && success) {

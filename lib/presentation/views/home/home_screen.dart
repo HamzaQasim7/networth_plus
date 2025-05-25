@@ -8,8 +8,36 @@ import 'package:finance_tracker/presentation/views/home/widgets/upcoming_card_wi
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../../../viewmodels/transaction_viewmodel.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadTransactions();
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadTransactions();
+  }
+
+  void _loadTransactions() {
+    final viewModel = context.read<TransactionViewModel>();
+    if (!viewModel.isLoading) {
+      viewModel.loadTransactions();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,13 @@ import 'package:finance_tracker/core/constants/categories_list.dart';
 
 enum TransactionType { income, expense }
 
+enum RecurringPattern {
+  daily,
+  weekly,
+  monthly,
+  yearly,
+}
+
 class TransactionModel {
   final String id;
   final String userId;

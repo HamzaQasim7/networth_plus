@@ -369,6 +369,9 @@
   "agreeToTerms": "أوافق على الشروط والأحكام",
   "createYourAccount": "إنشاء حسابك",
   "validationFailed": "فشل التحقق",
-  "pleaseAgreeToTerms": "الرجاء الموافقة على الشروط والأحكام"
+  "pleaseAgreeToTerms": "الرجاء الموافقة على الشروط والأحكام",
+    "deleteSettlement": "حذف التسوية",
+  "confirmDeleteSettlement": "هل أنت متأكد من رغبتك في حذف هذه التسوية؟",
+  "settlementDeletedSuccessfully": "تم حذف التسوية بنجاح"
 
 } 

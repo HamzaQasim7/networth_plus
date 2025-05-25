@@ -1472,5 +1472,18 @@
   "typeLabel": "Type",
   "@typeLabel": {
     "description": "Label for selecting the type of card or account"
+  },
+
+  "deleteSettlement": "Delete Settlement",
+  "@deleteSettlement": {
+    "description": "Title for the delete settlement dialog"
+  },
+  "confirmDeleteSettlement": "Are you sure you want to delete this settlement?",
+  "@confirmDeleteSettlement": {
+    "description": "Confirmation message for deleting a settlement"
+  },
+  "settlementDeletedSuccessfully": "Settlement deleted successfully",
+  "@settlementDeletedSuccessfully": {
+    "description": "Message displayed when a settlement is successfully deleted"
   }
 }

@@ -370,5 +370,8 @@
   "agreeToTerms": "Acepto los Términos y Condiciones",
   "createYourAccount": "Crear su Cuenta",
   "validationFailed": "Validación Fallida",
-  "pleaseAgreeToTerms": "Por favor, acepte los Términos y Condiciones"
+  "pleaseAgreeToTerms": "Por favor, acepte los Términos y Condiciones",
+  "deleteSettlement" : "Eliminar Liquidación",
+"confirmDeleteSettlement" : "¿Está seguro de que desea eliminar esta liquidación?",
+"settlementDeletedSuccessfully" : "Liquidación eliminada exitosamente"
 }

@@ -1,6 +1,7 @@
 import 'package:finance_tracker/core/routes/routes.dart';
 import 'package:finance_tracker/core/services/session_manager.dart';
 import 'package:finance_tracker/core/utils/motion_toast.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/presentation/views/on_boardings/currency_picker_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/budget_vs_actual_screen.dart';
 import 'package:finance_tracker/presentation/views/settings/widgets/debt_repayment_screen.dart';
@@ -53,11 +54,12 @@ class _SettingsViewState extends State<SettingsView> {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDarkMode = themeProvider.isDarkMode;
 
     return Scaffold(
-      appBar: const SharedAppbar(title: 'Settings'),
+      appBar: SharedAppbar(title: local.settings),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
@@ -68,11 +70,11 @@ class _SettingsViewState extends State<SettingsView> {
               _buildSupportSection(context),
               const SizedBox(height: 16),
               _SettingsSection(
-                title: 'Reports & Analytics',
+                title: local.reportsAndAnalytics,
                 children: [
                   SettingsTile(
-                    title: 'Future Projections',
-                    subtitle: 'View financial forecasts and trends',
+                    title: local.futureProjections,
+                    subtitle: local.viewFinancialForecastsAndTrends,
                     leading: _buildIconContainer(context, Icons.trending_up),
                     onTap: () {
                       Navigator.push(
@@ -84,8 +86,8 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsTile(
-                    title: 'Past Performance',
-                    subtitle: 'Historical financial analysis',
+                    title: local.pastPerformance,
+                    subtitle: local.historicalFinancialAnalysis,
                     leading: _buildIconContainer(context, Icons.history),
                     onTap: () {
                       Navigator.push(
@@ -97,8 +99,8 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsTile(
-                    title: 'Income & Expense Analysis',
-                    subtitle: 'Compare income, expenses and savings',
+                    title: local.incomeAndExpenseAnalysis,
+                    subtitle: local.compareIncomeExpensesAndSavings,
                     leading: _buildIconContainer(context, Icons.analytics),
                     onTap: () {
                       Navigator.push(
@@ -111,8 +113,8 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsTile(
-                    title: 'Budget vs Actual',
-                    subtitle: 'Track budget performance',
+                    title: local.budgetVsActual,
+                    subtitle: local.trackBudgetPerformance,
                     leading: _buildIconContainer(context, Icons.compare_arrows),
                     onTap: () {
                       Navigator.push(
@@ -124,8 +126,8 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsTile(
-                    title: 'Download Reports',
-                    subtitle: 'Export financial reports',
+                    title: local.downloadReports,
+                    subtitle: local.exportFinancialReports,
                     leading: _buildIconContainer(context, Icons.download),
                     onTap: () {
                       Navigator.push(
@@ -139,13 +141,13 @@ class _SettingsViewState extends State<SettingsView> {
                 ],
               ),
               _SettingsSection(
-                title: 'App Preferences',
+                title: local.appPreferences,
                 children: [
                   SettingsTile(
-                    title: 'Currency',
+                    title: local.currency,
                     subtitle:
                         Provider.of<SessionManager>(context).selectedCurrency ??
-                            'Set your preferred currency',
+                            local.setYourPreferredCurrency,
                     leading:
                         _buildIconContainer(context, Icons.currency_exchange),
                     onTap: () {
@@ -158,8 +160,8 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsTile(
-                    title: 'App Theme',
-                    subtitle: isDarkMode ? 'Dark Mode' : 'Light Mode',
+                    title: local.appTheme,
+                    subtitle: isDarkMode ? local.darkMode : local.lightMode,
                     leading: _buildIconContainer(
                         context,
                         isDarkMode
@@ -172,8 +174,8 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                   ),
                   SettingsTile(
-                    title: 'Language',
-                    subtitle: 'Choose your preferred language',
+                    title: local.language,
+                    subtitle: local.chooseYourPreferredLanguage,
                     leading: _buildIconContainer(context, Icons.language),
                     onTap: () {
                       Navigator.push(
@@ -192,28 +194,28 @@ class _SettingsViewState extends State<SettingsView> {
                 ],
               ),
               _SettingsSection(
-                title: 'Notifications',
+                title: local.notifications,
                 children: [
                   SettingsTile(
-                    title: 'Budget Limits',
-                    subtitle: 'Get alerts when nearing budget limits',
+                    title: local.budgetLimits,
+                    subtitle: local.getAlertsWhenNearingBudgetLimits,
                     leading: _buildIconContainer(context, Icons.warning_amber),
                     trailing: const NotificationToggle(),
                   ),
                   SettingsTile(
-                    title: 'Bill Payment Reminders',
-                    subtitle: 'Never miss a payment deadline',
+                    title: local.billPaymentReminders,
+                    subtitle: local.neverMissAPaymentDeadline,
                     leading: _buildIconContainer(context, Icons.calendar_today),
                     trailing: const NotificationToggle(),
                   ),
                 ],
               ),
               _SettingsSection(
-                title: 'Planning & Financial Goals',
+                title: local.planningAndFinancialGoals,
                 children: [
                   SettingsTile(
-                    title: 'Savings Goals',
-                    subtitle: 'Set and track savings targets',
+                    title: local.savingsGoals,
+                    subtitle: local.setAndTrackSavingsTargets,
                     leading: _buildIconContainer(context, Icons.savings),
                     onTap: () {
                       Navigator.push(
@@ -225,8 +227,8 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsTile(
-                    title: 'Debt Repayment Plan',
-                    subtitle: 'Manage and track debt payments',
+                    title: local.debtRepaymentPlan,
+                    subtitle: local.manageAndTrackDebtPayments,
                     leading:
                         _buildIconContainer(context, Icons.account_balance),
                     onTap: () {
@@ -239,8 +241,8 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsTile(
-                    title: 'Retirement Planning',
-                    subtitle: 'Plan for your retirement',
+                    title: local.retirementPlanning,
+                    subtitle: local.planForYourRetirement,
                     leading: _buildIconContainer(context, Icons.beach_access),
                     onTap: () {
                       Navigator.push(
@@ -253,8 +255,8 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsTile(
-                    title: 'Financial Calculator',
-                    subtitle: 'Calculate loans, investments & more',
+                    title: local.financialCalculator,
+                    subtitle: local.calculateLoansInvestmentsAndMore,
                     leading: _buildIconContainer(context, Icons.calculate),
                     onTap: () => Navigator.push(
                       context,
@@ -266,11 +268,11 @@ class _SettingsViewState extends State<SettingsView> {
                 ],
               ),
               _SettingsSection(
-                title: 'Account Settings',
+                title: local.accountSettings,
                 children: [
                   SettingsTile(
-                    title: 'Profile',
-                    subtitle: 'Manage personal information',
+                    title: local.profile,
+                    subtitle: local.managePersonalInformation,
                     leading: _buildIconContainer(context, Icons.person_outline),
                     onTap: () => Navigator.push(
                       context,
@@ -280,8 +282,8 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                   ),
                   SettingsTile(
-                    title: 'Subscription Plan',
-                    subtitle: 'Manage your subscription',
+                    title: local.subscriptionPlan,
+                    subtitle: local.manageYourSubscription,
                     leading:
                         _buildIconContainer(context, Icons.card_membership),
                     onTap: () => Navigator.push(
@@ -292,37 +294,37 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                   ),
                   SettingsTile(
-                    title: 'Security',
-                    subtitle: 'App lock, biometrics & backup',
+                    title: local.security,
+                    subtitle: local.appLockBiometricsAndBackup,
                     leading: _buildIconContainer(context, Icons.security),
                     onTap: () {},
                   ),
                   SettingsTile(
-                    title: 'Data Backup & Sync',
-                    subtitle: 'Manage your data across devices',
+                    title: local.dataBackupAndSync,
+                    subtitle: local.manageYourDataAcrossDevices,
                     leading: _buildIconContainer(context, Icons.sync),
                     onTap: () {},
                   ),
                 ],
               ),
               _SettingsSection(
-                title: 'More',
+                title: local.more,
                 children: [
                   SettingsTile(
-                    title: 'Help & Support',
-                    subtitle: 'FAQ, Contact & Support',
+                    title: local.helpAndSupport,
+                    subtitle: local.faqContactAndSupport,
                     leading: _buildIconContainer(context, Icons.help_outline),
                     onTap: () => _showHelpSupportDialog(context),
                   ),
                   SettingsTile(
-                    title: 'Terms & Privacy',
-                    subtitle: 'Terms of Service, Privacy Policy',
+                    title: local.termsAndPrivacy,
+                    subtitle: local.termsOfService,
                     leading: _buildIconContainer(
                         context, Icons.privacy_tip_outlined),
                     onTap: () => _showTermsPrivacyDialog(context),
                   ),
                   SettingsTile(
-                    title: 'About App',
+                    title: local.aboutApp,
                     subtitle: 'Version 1.0.0+1',
                     leading: _buildIconContainer(context, Icons.info_outline),
                     onTap: () {
@@ -343,7 +345,7 @@ class _SettingsViewState extends State<SettingsView> {
                     },
                   ),
                   SettingsTile(
-                    title: 'Sign Out',
+                    title: local.signOut,
                     textColor: Colors.red,
                     leading: Container(
                       padding: const EdgeInsets.all(8),
@@ -368,6 +370,7 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   Widget _buildSupportSection(BuildContext context) {
+    final local = AppLocalizations.of(context);
     return Column(
       children: [
         Card(
@@ -383,7 +386,7 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'Support the App',
+                      local.supportTheApp,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -397,7 +400,7 @@ class _SettingsViewState extends State<SettingsView> {
                       child: ElevatedButton.icon(
                         onPressed: () => _showDonationDialog(context),
                         icon: const Icon(Icons.favorite_outline),
-                        label: const Text('Donate'),
+                        label: Text(local.donate),
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
@@ -410,7 +413,7 @@ class _SettingsViewState extends State<SettingsView> {
                       child: OutlinedButton.icon(
                         onPressed: () => _showAdIfLoaded(),
                         icon: const Icon(Icons.play_circle_outline),
-                        label: const Text('Watch Ad'),
+                        label: Text(local.watchAd),
                         style: OutlinedButton.styleFrom(
                           foregroundColor:
                               Theme.of(context).colorScheme.primary,
@@ -442,21 +445,22 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   Future<void> _handleSignOut(BuildContext context) async {
+    final local = AppLocalizations.of(context);
     // Show confirmation dialog
     final shouldLogout = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Sign Out'),
-        content: const Text('Are you sure you want to sign out?'),
+        title: Text(local.signOut),
+        content: Text(local.areYouSureYouWantToSignOut),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(local.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             child: Text(
-              'Sign Out',
+              local.signOut,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.error,
               ),
@@ -545,17 +549,18 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   void _showHelpSupportDialog(BuildContext context) {
+    final local = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Help & Support'),
+        title: Text(local.helpAndSupport),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildHelpSection(
-                'Frequently Asked Questions',
+                local.frequentlyAskedQuestions,
                 Icons.question_answer_outlined,
                 () {
                   Navigator.pop(context);
@@ -564,7 +569,7 @@ class _SettingsViewState extends State<SettingsView> {
               ),
               const Divider(),
               _buildHelpSection(
-                'Contact Support',
+                local.contactSupport,
                 Icons.email_outlined,
                 () {
                   // Launch email client
@@ -574,7 +579,7 @@ class _SettingsViewState extends State<SettingsView> {
               ),
               const Divider(),
               _buildHelpSection(
-                'Live Chat Support',
+                local.liveChatSupport,
                 Icons.chat_outlined,
                 () {
                   Navigator.pop(context);
@@ -587,7 +592,7 @@ class _SettingsViewState extends State<SettingsView> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(local.close),
           ),
         ],
       ),
@@ -604,17 +609,18 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   void _showTermsPrivacyDialog(BuildContext context) {
+    final local = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Terms & Privacy'),
+        title: Text(local.termsAndPrivacy),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildHelpSection(
-                'Terms of Service',
+                local.termsOfService,
                 Icons.description_outlined,
                 () {
                   Navigator.pop(context);
@@ -623,7 +629,7 @@ class _SettingsViewState extends State<SettingsView> {
               ),
               const Divider(),
               _buildHelpSection(
-                'Privacy Policy',
+                local.privacyPolicy,
                 Icons.privacy_tip_outlined,
                 () {
                   Navigator.pop(context);
@@ -632,7 +638,7 @@ class _SettingsViewState extends State<SettingsView> {
               ),
               const Divider(),
               _buildHelpSection(
-                'Data Usage',
+                local.dataUsage,
                 Icons.data_usage_outlined,
                 () {
                   Navigator.pop(context);
@@ -645,7 +651,7 @@ class _SettingsViewState extends State<SettingsView> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(local.close),
           ),
         ],
       ),
@@ -653,10 +659,11 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   void _showDonationDialog(BuildContext context) {
+    final local = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Scan to Donate'),
+        title: Text(local.scanToDonate),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -670,7 +677,7 @@ class _SettingsViewState extends State<SettingsView> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(local.close),
           ),
         ],
       ),

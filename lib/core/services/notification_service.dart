@@ -3,6 +3,10 @@ import 'package:finance_tracker/core/constants/console.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:io';
+import 'dart:convert';
+import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 class NotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -20,6 +24,11 @@ class NotificationService {
 
   NotificationService() {
     _initLocalNotifications();
+    _initTimeZones();
+  }
+
+  void _initTimeZones() {
+    tz.initializeTimeZones();
   }
 
   Future<void> initialize() async {
@@ -137,19 +146,29 @@ class NotificationService {
   }
 
   void _handleNotificationNavigation(Map<String, dynamic> data) {
-    // Implement navigation logic based on the notification data
     String? screenName = data['screen'];
     String? itemId = data['id'];
 
-    // Example navigation logic
-    if (screenName == 'transaction_details' && itemId != null) {
-      // Navigate to transaction details screen with the specific ID
-      // Navigator.pushNamed(context, '/transaction/$itemId');
-      print('Should navigate to transaction details for ID: $itemId');
-    } else if (screenName == 'budget_alert') {
-      // Navigate to budget overview screen
-      // Navigator.pushNamed(context, '/budget');
-      print('Should navigate to budget screen');
+    // Add asset/liability navigation cases
+    switch (screenName) {
+      case 'transaction_details':
+        if (itemId != null) {
+          print('Should navigate to transaction details for ID: $itemId');
+        }
+        break;
+      case 'budget_alert':
+        print('Should navigate to budget screen');
+        break;
+      case 'asset_details':
+        if (itemId != null) {
+          print('Should navigate to asset details for ID: $itemId');
+        }
+        break;
+      case 'liability_details':
+        if (itemId != null) {
+          print('Should navigate to liability details for ID: $itemId');
+        }
+        break;
     }
   }
 
@@ -161,5 +180,74 @@ class NotificationService {
   // Unsubscribe from a topic
   Future<void> unsubscribeFromTopic(String topic) async {
     await _firebaseMessaging.unsubscribeFromTopic(topic);
+  }
+
+  // Add methods for asset/liability notifications
+  Future<void> scheduleAssetLiabilityNotification({
+    required int id,
+    required String title,
+    required String body,
+    required DateTime scheduledDate,
+    required String itemId,
+    required String type, // 'asset' or 'liability'
+  }) async {
+    await _localNotifications.zonedSchedule(
+      id,
+      title,
+      body,
+      tz.TZDateTime.from(scheduledDate, tz.local),
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          _androidChannel.id,
+          _androidChannel.name,
+          channelDescription: _androidChannel.description,
+          importance: Importance.high,
+          priority: Priority.high,
+        ),
+        iOS: const DarwinNotificationDetails(
+          categoryIdentifier: 'ASSET_LIABILITY_ALERT',
+        ),
+      ),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      payload: json.encode({
+        'screen': '${type}_details',
+        'id': itemId,
+      }),
+    );
+  }
+
+  // Add method to send push notifications for assets/liabilities
+  Future<void> sendAssetLiabilityPushNotification({
+    required String title,
+    required String body,
+    required String topic,
+    required String itemId,
+    required String type,
+    Map<String, dynamic>? additionalData,
+  }) async {
+    try {
+      await subscribeToTopic(topic);
+      
+      // In a real app, you would send this to your backend
+      // which would then use Firebase Admin SDK to send the notification
+      final message = {
+        'notification': {
+          'title': title,
+          'body': body,
+        },
+        'data': {
+          'screen': '${type}_details',
+          'id': itemId,
+          ...?additionalData,
+        },
+        'topic': topic,
+      };
+      
+      console('Push notification payload: $message', type: DebugType.info);
+    } catch (e) {
+      console('Error sending push notification: $e', type: DebugType.error);
+    }
   }
 }

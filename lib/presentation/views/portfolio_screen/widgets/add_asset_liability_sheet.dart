@@ -1,4 +1,5 @@
 import 'package:finance_tracker/core/constants/app_constants.dart';
+import 'package:finance_tracker/core/services/local_notification_service.dart';
 import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:finance_tracker/core/utils/motion_toast.dart';
 import 'package:finance_tracker/widgets/custom_text_field.dart';
@@ -673,7 +674,7 @@ class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
     }
   }
 
-  void _saveAssetLiability() {
+  void _saveAssetLiability() async {
     if (!_validateCurrentStep()) {
       return;
     }
@@ -720,8 +721,11 @@ class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
         isActive: true,
       );
 
-      viewModel.createAssetLiability(newItem).then((success) {
-        if (mounted && success) {
+      final success = await viewModel.createAssetLiability(newItem);
+
+      if (success) {
+        // Notifications will be handled by the ViewModel
+        if (mounted) {
           Navigator.pop(context);
           ToastUtils.showSuccessToast(
             context,
@@ -729,7 +733,25 @@ class _AddAssetLiabilitySheetState extends State<AddAssetLiabilitySheet> {
             description: '${widget.isAsset ? "Asset" : "Liability"} added successfully',
           );
         }
-      });
+      }
+    }
+  }
+
+ 
+
+  double _calculatePaymentAmount() {
+    if (_interestRate == null || _amount <= 0) return 0;
+    // Simple interest calculation
+    final annualInterest = _amount * (_interestRate! / 100);
+    switch (_paymentSchedule) {
+      case 'Monthly':
+        return annualInterest / 12;
+      case 'Quarterly':
+        return annualInterest / 4;
+      case 'Yearly':
+        return annualInterest;
+      default:
+        return 0;
     }
   }
 

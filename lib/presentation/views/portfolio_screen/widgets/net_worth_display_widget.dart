@@ -23,8 +23,9 @@ class NetWorthDisplay extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Gap(10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            Wrap(
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              runSpacing: 8,
               children: [
                 _buildGrowthChip(local.oneMonthGrowth, oneMonth),
                 const SizedBox(width: 8),

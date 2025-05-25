@@ -9,6 +9,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../../viewmodels/dashboard_viewmodel.dart';
+import '../../../viewmodels/transaction_viewmodel.dart';
 import '../budget/add_budget_sheet.dart';
 import '../budget/budget_screen.dart';
 import '../dashboard/add_transaction_sheet.dart';
@@ -53,14 +54,6 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
     'Budget',
     'Portfolio',
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    // Future.microtask(
-    //   () => context.read<DashboardViewModel>().loadDashboardData('userId'),
-    // );
-  }
 
   @override
   Widget build(BuildContext context) {

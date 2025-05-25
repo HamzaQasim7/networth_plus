@@ -92,7 +92,7 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
                   itemCount: viewModel.settlements.length,
                   itemBuilder: (context, index) {
                     final settlement = viewModel.settlements[index];
-                    return _buildSettlementCard(settlement, context);
+                    return _buildDismissibleSettlementCard(settlement, context);
                   },
                 ),
               ),
@@ -100,6 +100,53 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
         ),
         if (viewModel.isLoading) const CustomLoadingOverlay(),
       ],
+    );
+  }
+
+  Widget _buildDismissibleSettlementCard(
+      SettlementModel settlement, BuildContext context) {
+    final local = AppLocalizations.of(context);
+    return Dismissible(
+      key: Key(settlement.id),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 20),
+        color: Colors.red,
+        child: const Icon(
+          Icons.delete,
+          color: Colors.white,
+        ),
+      ),
+      confirmDismiss: (direction) async {
+        return await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(local.deleteSettlement),
+              content: Text(local.confirmDeleteSettlement),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text(local.cancelButton),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: Text(local.delete),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      onDismissed: (direction) {
+        final viewModel = context.read<SettlementViewModel>();
+        viewModel.deleteSettlement(settlement.id);
+        ToastUtils.showSuccessToast(context,
+            title: local.deleted,
+            description: local.settlementDeletedSuccessfully);
+      },
+      child: _buildSettlementCard(settlement, context),
     );
   }
 
@@ -148,117 +195,121 @@ class _SettleUpViewTabState extends State<SettleUpViewTab> {
             right: 24,
             top: 24,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    local.addNewSettlement,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close),
-                  ),
-                ],
-              ),
-              const Gap(24),
-              CustomTextField(
-                  controller: nameController,
-                  keyboardType: TextInputType.text,
-                  labelText: local.personName,
-                  icon: Icons.person_outline),
-              const Gap(16),
-              CustomTextField(
-                controller: amountController,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
-                ],
-                labelText: local.amountLabel,
-                icon: Icons.currency_rupee,
-              ),
-              const Gap(16),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildChip(
-                      label: local.theyOweMe,
-                      isSelected: !isYouOwe,
-                      onSelected: (selected) {
-                        setState(() => isYouOwe = !selected);
-                      },
-                      selectedColor: Colors.green.withOpacity(0.2),
-                      labelColor: !isYouOwe ? Colors.green : null,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      local.addNewSettlement,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
-                  ),
-                  const Gap(8),
-                  Expanded(
-                    child: _buildChip(
-                      label: local.iOweThem,
-                      isSelected: isYouOwe,
-                      onSelected: (selected) {
-                        setState(() => isYouOwe = selected);
-                      },
-                      selectedColor: Colors.red.withOpacity(0.2),
-                      labelColor: isYouOwe ? Colors.red : null,
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.close),
                     ),
-                  ),
-                ],
-              ),
-              const Gap(24),
-              ElevatedButton(
-                onPressed: () async {
-                  if (nameController.text.isEmpty) {
-                    ToastUtils.showErrorToast(
-                      context,
-                      title: local.invalidInput,
-                      description: local.pleaseEnterAName,
-                    );
-                    return;
-                  }
-
-                  final amountText = amountController.text.replaceAll(',', '.');
-                  final amount = double.tryParse(amountText);
-
-                  if (amount == null || amount <= 0) {
-                    ToastUtils.showErrorToast(
-                      context,
-                      title: local.invalidAmount,
-                      description: local.pleaseEnterAValidNumber,
-                    );
-                    return;
-                  }
-
-                  final success = await viewModel.addSettlement(
-                    title: nameController.text,
-                    amount: amount,
-                    isOwed: isYouOwe,
-                    participants: [],
-                  );
-
-                  if (success && context.mounted) {
-                    ToastUtils.showSuccessToast(
-                      context,
-                      title: local.success,
-                      description: local.settlementAddedSuccessfully,
-                    );
-                    Navigator.pop(context);
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 45),
+                  ],
                 ),
-                child: Text(local.addSettlement),
-              ),
-              const Gap(16),
-            ],
+                const Gap(24),
+                CustomTextField(
+                    controller: nameController,
+                    keyboardType: TextInputType.text,
+                    labelText: local.personName,
+                    icon: Icons.person_outline),
+                const Gap(16),
+                CustomTextField(
+                  controller: amountController,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d+\.?\d{0,2}')),
+                  ],
+                  labelText: local.amountLabel,
+                  icon: Icons.currency_rupee,
+                ),
+                const Gap(16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildChip(
+                        label: local.theyOweMe,
+                        isSelected: !isYouOwe,
+                        onSelected: (selected) {
+                          setState(() => isYouOwe = !selected);
+                        },
+                        selectedColor: Colors.green.withOpacity(0.2),
+                        labelColor: !isYouOwe ? Colors.green : null,
+                      ),
+                    ),
+                    const Gap(8),
+                    Expanded(
+                      child: _buildChip(
+                        label: local.iOweThem,
+                        isSelected: isYouOwe,
+                        onSelected: (selected) {
+                          setState(() => isYouOwe = selected);
+                        },
+                        selectedColor: Colors.red.withOpacity(0.2),
+                        labelColor: isYouOwe ? Colors.red : null,
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(24),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (nameController.text.isEmpty) {
+                      ToastUtils.showErrorToast(
+                        context,
+                        title: local.invalidInput,
+                        description: local.pleaseEnterAName,
+                      );
+                      return;
+                    }
+
+                    final amountText =
+                        amountController.text.replaceAll(',', '.');
+                    final amount = double.tryParse(amountText);
+
+                    if (amount == null || amount <= 0) {
+                      ToastUtils.showErrorToast(
+                        context,
+                        title: local.invalidAmount,
+                        description: local.pleaseEnterAValidNumber,
+                      );
+                      return;
+                    }
+
+                    final success = await viewModel.addSettlement(
+                      title: nameController.text,
+                      amount: amount,
+                      isOwed: isYouOwe,
+                      participants: [],
+                    );
+
+                    if (success && context.mounted) {
+                      ToastUtils.showSuccessToast(
+                        context,
+                        title: local.success,
+                        description: local.settlementAddedSuccessfully,
+                      );
+                      Navigator.pop(context);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 45),
+                  ),
+                  child: Text(local.addSettlement),
+                ),
+                const Gap(16),
+              ],
+            ),
           ),
         ),
       ),

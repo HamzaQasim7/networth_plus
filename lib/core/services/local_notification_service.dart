@@ -69,6 +69,69 @@ class ScheduledNotificationService {
     );
   }
 
+  Future<void> scheduleBudgetAlert({
+    required int id,
+    required String category,
+    required double amount,
+    required double threshold,
+    required DateTime scheduledDate,
+  }) async {
+    await _notifications.zonedSchedule(
+      id,
+      'Budget Alert',
+      'You have reached ${threshold}% of your $category budget (${amount.toStringAsFixed(2)})',
+      tz.TZDateTime.from(scheduledDate, tz.local),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'budget_alerts',
+          'Budget Alerts',
+          channelDescription: 'Notifications for budget thresholds',
+          importance: Importance.high,
+          priority: Priority.high,
+        ),
+        iOS: DarwinNotificationDetails(
+          categoryIdentifier: 'BUDGET_ALERT',
+        ),
+      ),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      payload: '{"screen": "budget_alert", "category": "$category"}',
+    );
+  }
+
+  Future<void> scheduleAssetLiabilityNotification({
+    required int id,
+    required String title,
+    required String body,
+    required DateTime scheduledDate,
+    required String itemId,
+    required String type, // 'asset' or 'liability'
+  }) async {
+    await _notifications.zonedSchedule(
+      id,
+      title,
+      body,
+      tz.TZDateTime.from(scheduledDate, tz.local),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'asset_liability_alerts',
+          'Asset & Liability Alerts',
+          channelDescription: 'Notifications for assets and liabilities',
+          importance: Importance.high,
+          priority: Priority.high,
+        ),
+        iOS: DarwinNotificationDetails(
+          categoryIdentifier: 'ASSET_LIABILITY_ALERT',
+        ),
+      ),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      payload: '{"screen": "${type}_details", "id": "$itemId"}',
+    );
+  }
+
   Future<void> cancelNotification(int id) async {
     await _notifications.cancel(id);
   }

@@ -2,6 +2,7 @@ import 'package:finance_tracker/core/constants/theme_constants.dart';
 import 'package:finance_tracker/core/utils/helpers.dart';
 import 'package:finance_tracker/data/models/asset_liability_model.dart';
 import 'package:finance_tracker/data/models/transaction_model.dart';
+import 'package:finance_tracker/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../../../viewmodels/transaction_viewmodel.dart';
 import '../../../../viewmodels/budget_viewmodel.dart';
 import '../../../../viewmodels/asset_liability_viewmodel.dart';
+import '../../../../widgets/custom_text_field.dart';
 
 class ActivitySearchScreen extends StatefulWidget {
   const ActivitySearchScreen({super.key});
@@ -107,7 +109,7 @@ class _ActivitySearchScreenState extends State<ActivitySearchScreen> {
   Widget build(BuildContext context) {
     final results = _filterResults(_getCombinedResults(context));
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
+    final local = AppLocalizations.of(context);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -117,18 +119,16 @@ class _ActivitySearchScreenState extends State<ActivitySearchScreen> {
                 size: 20, color: ThemeConstants.primaryColor),
             onPressed: () => Navigator.pop(context),
           ),
-          title: TextField(
+          title: CustomTextField(
             controller: _searchController,
-            decoration: InputDecoration(
-              hintText: 'Search across all activities...',
-              border: InputBorder.none,
-              suffixIcon: IconButton(
-                icon: const Icon(Iconsax.close_circle_bold),
-                onPressed: () {
-                  _searchController.clear();
-                  setState(() => _searchQuery = '');
-                },
-              ),
+            hintText: 'Search across all activities...',
+            border: InputBorder.none,
+            suffixIcon: IconButton(
+              icon: const Icon(Iconsax.close_circle_bold),
+              onPressed: () {
+                _searchController.clear();
+                setState(() => _searchQuery = '');
+              },
             ),
             onChanged: (value) => setState(() => _searchQuery = value),
           ),
@@ -137,10 +137,10 @@ class _ActivitySearchScreenState extends State<ActivitySearchScreen> {
             dividerHeight: 0,
             onTap: (index) => setState(() => _selectedTabIndex = index),
             indicatorColor: ThemeConstants.primaryColor,
-            tabs: const [
-              Tab(text: 'Transactions'),
-              Tab(text: 'Budgets'),
-              Tab(text: 'Portfolio'),
+            tabs: [
+              Tab(text: local.transactionsTitle),
+              Tab(text: local.budgetTitle),
+              Tab(text: local.portfolio),
             ],
           ),
         ),

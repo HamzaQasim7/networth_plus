@@ -29,16 +29,22 @@ class _TransactionScreenState extends State<TransactionScreen> {
   @override
   void initState() {
     super.initState();
-    _tabs = [
-      AppLocalizations.of(context).transactionsTitle,
-      AppLocalizations.of(context).report,
-      AppLocalizations.of(context).settleUp
-    ];
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context
           .read<TransactionViewModel>()
           .loadTransactionsForMonth(_focusedDay);
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _tabs = [
+      AppLocalizations.of(context).transactionsTitle,
+      AppLocalizations.of(context).report,
+      AppLocalizations.of(context).settleUp,
+    ];
   }
 
   @override

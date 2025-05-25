@@ -91,21 +91,21 @@ flutter_launcher_icons:
     generate: false
 
 # Splash Screen Configuration   dart run flutter_native_splash:create
-#flutter_native_splash:
-#  color: "#FFFFFF"
-#  image: assets/icons/app_logo.jpg
-#  color_dark: "#121212"
-#  image_dark: assets/icons/app_logo.jpg
-#
-#  android_12:
-#    image: assets/icons/app_logo.jpg
-#    icon_background_color: "#FFFFFF"
-#    image_dark: assets/icons/app_logo.jpg
-#    icon_background_color_dark: "#121212"
-#
-#  web: false
-#  ios: true
-#  android: true
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/icons/app_logo.jpg
+  color_dark: "#121212"
+  image_dark: assets/icons/app_logo.jpg
+
+  android_12:
+    image: assets/icons/app_logo.jpg
+    icon_background_color: "#FFFFFF"
+    image_dark: assets/icons/app_logo.jpg
+    icon_background_color_dark: "#121212"
+
+  web: false
+  ios: false
+  android: false
 
 flutter:
   uses-material-design: true

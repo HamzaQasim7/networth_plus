@@ -1,6 +1,7 @@
 import 'package:finance_tracker/core/constants/categories_list.dart';
 import 'package:finance_tracker/core/constants/theme_constants.dart';
 import 'package:finance_tracker/core/constants/validator.dart';
+import 'package:finance_tracker/core/services/local_notification_service.dart';
 import 'package:finance_tracker/data/models/transaction_model.dart';
 import 'package:finance_tracker/generated/l10n.dart';
 import 'package:finance_tracker/viewmodels/transaction_viewmodel.dart';
@@ -812,7 +813,9 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
                 .addSpendingToCategory(selectedCategory!,
                     double.tryParse(_amountController.text) ?? 0.0);
           }
-
+if (isRecurring) {
+    await _scheduleRecurringNotification(transaction);
+  }
           if (success && mounted) {
             Navigator.pop(context);
             ToastUtils.showSuccessToast(context,
@@ -1174,4 +1177,34 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
       ],
     );
   }
+  Future<void> _scheduleRecurringNotification(TransactionModel transaction) async {
+  final notificationService = ScheduledNotificationService();
+  final nextOccurrence = _calculateNextOccurrence(selectedDate, recurringFrequency);
+  
+  // Schedule notification 1 day before the next occurrence
+  final notificationDate = nextOccurrence.subtract(const Duration(days: 1));
+  
+  await notificationService.scheduleBillReminder(
+    id: transaction.hashCode,
+    title: 'Recurring Transaction Reminder',
+    body: 'Your recurring ${transaction.type == TransactionType.income ? 'income' : 'expense'} of ${Helpers.storeCurrency(context)}${transaction.amount} for ${transaction.category} is due tomorrow',
+    scheduledDate: notificationDate,
+    billId: transaction.id,
+  );
+}
+
+DateTime _calculateNextOccurrence(DateTime currentDate, String frequency) {
+  switch (frequency) {
+    case 'Daily':
+      return currentDate.add(const Duration(days: 1));
+    case 'Weekly':
+      return currentDate.add(const Duration(days: 7));
+    case 'Monthly':
+      return DateTime(currentDate.year, currentDate.month + 1, currentDate.day);
+    case 'Yearly':
+      return DateTime(currentDate.year + 1, currentDate.month, currentDate.day);
+    default:
+      return currentDate;
+  }
+}
 }

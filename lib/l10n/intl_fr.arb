@@ -370,5 +370,8 @@
   "agreeToTerms": "J'accepte les Conditions Générales",
   "createYourAccount": "Créez Votre Compte",
   "validationFailed": "Échec de la Validation",
-  "pleaseAgreeToTerms": "Veuillez accepter les Conditions Générales"
+  "pleaseAgreeToTerms": "Veuillez accepter les Conditions Générales",
+  "deleteSettlement":"Supprimer le Règlement",
+"confirmDeleteSettlement" : "Êtes-vous sûr de vouloir supprimer ce règlement ?",
+"settlementDeletedSuccessfully" : "Règlement supprimé avec succès"
 }

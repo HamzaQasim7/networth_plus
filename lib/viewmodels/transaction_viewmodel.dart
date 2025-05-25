@@ -1,3 +1,4 @@
+import 'package:finance_tracker/core/services/recurring_transaction_notification_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../data/repositories/transaction_repository.dart';
@@ -8,6 +9,7 @@ import '../viewmodels/auth_viewmodel.dart';
 class TransactionViewModel extends ChangeNotifier {
   final TransactionRepository _repository;
   final AuthViewModel _authViewModel;
+  final RecurringTransactionNotificationService _notificationService;
   
   List<TransactionModel> _transactions = [];
   bool _isLoading = false;
@@ -36,8 +38,10 @@ class TransactionViewModel extends ChangeNotifier {
   TransactionViewModel({
     required AuthViewModel authViewModel,
     TransactionRepository? repository,
+    RecurringTransactionNotificationService? notificationService,
   })  : _authViewModel = authViewModel,
-        _repository = repository ?? TransactionRepository() {
+        _repository = repository ?? TransactionRepository(),
+        _notificationService = notificationService ?? RecurringTransactionNotificationService() {
     _init();
   }
 
@@ -259,7 +263,7 @@ class TransactionViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Add new transaction with total updates
+  // Override addTransaction to handle recurring notifications
   Future<bool> addTransaction(TransactionModel transaction) async {
     if (currentUserId == null) return false;
 
@@ -280,6 +284,12 @@ class TransactionViewModel extends ChangeNotifier {
       _availableBalance = _totalIncome - _totalExpense;
       
       _transactions.insert(0, newTransaction);
+
+      // Schedule notifications if it's a recurring transaction
+      if (transaction.isRecurring) {
+        await _notificationService.scheduleRecurringTransactionNotifications(newTransaction);
+      }
+
       notifyListeners();
       return true;
     } catch (e) {
@@ -291,7 +301,7 @@ class TransactionViewModel extends ChangeNotifier {
     }
   }
 
-  // Update existing transaction with total recalculation
+  // Override updateTransaction to handle notification updates
   Future<bool> updateTransaction(TransactionModel transaction) async {
     try {
       _setLoading(true);
@@ -306,6 +316,14 @@ class TransactionViewModel extends ChangeNotifier {
       if (index != -1) {
         _transactions[index] = transaction;
       }
+
+      // Update notifications if it's a recurring transaction
+      if (transaction.isRecurring) {
+        await _notificationService.updateRecurringNotifications(transaction);
+      } else {
+        // Cancel notifications if it's no longer recurring
+        await _notificationService.cancelRecurringNotifications(transaction.id!);
+      }
       
       notifyListeners();
       return true;
@@ -318,16 +336,16 @@ class TransactionViewModel extends ChangeNotifier {
     }
   }
 
-  // Delete transaction with total recalculation
+  // Override deleteTransaction to handle notification cleanup
   Future<bool> deleteTransaction(String id) async {
     try {
       _setLoading(true);
       _error = null;
 
-      await _repository.deleteTransaction(id);
-      
       // Find the transaction before removing it
       final deletedTransaction = _transactions.firstWhere((t) => t.id == id);
+      
+      await _repository.deleteTransaction(id);
       
       // Update totals based on deleted transaction
       if (deletedTransaction.type == TransactionType.income) {
@@ -338,6 +356,12 @@ class TransactionViewModel extends ChangeNotifier {
       _availableBalance = _totalIncome - _totalExpense;
       
       _transactions.removeWhere((t) => t.id == id);
+
+      // Cancel notifications if it was a recurring transaction
+      if (deletedTransaction.isRecurring) {
+        await _notificationService.cancelRecurringNotifications(id);
+      }
+
       notifyListeners();
       return true;
     } catch (e) {
@@ -461,9 +485,67 @@ class TransactionViewModel extends ChangeNotifier {
     );
   }
 
+  // Add method to process recurring transactions
+  Future<bool> processRecurringTransaction(TransactionModel recurringTransaction) async {
+    if (!recurringTransaction.isRecurring) return false;
+
+    try {
+      // Create new transaction from recurring template
+      final newTransaction = recurringTransaction.copyWith(
+        id: null, // Will be generated
+        date: DateTime.now(),
+        isRecurring: false,
+        recurringFrequency: null,
+      );
+
+      final success = await addTransaction(newTransaction);
+
+      if (success) {
+        // Send notification about processed transaction
+        await _notificationService.sendRecurringTransactionProcessedNotification(newTransaction);
+      }
+
+      return success;
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  // Add method to get notification statistics
+  Future<Map<String, dynamic>> getNotificationStats() async {
+    try {
+      final pendingNotifications = await _notificationService.getPendingNotifications();
+      final recurringTransactions = await getRecurringTransactions();
+
+      return {
+        'pendingNotifications': pendingNotifications.length,
+        'recurringTransactions': recurringTransactions.length,
+        'scheduledReminders': pendingNotifications.where(
+          (n) => n['payload']?.contains('recurring_reminder') ?? false
+        ).length,
+        'scheduledProcessing': pendingNotifications.where(
+          (n) => n['payload']?.contains('recurring_processed') ?? false
+        ).length,
+      };
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+      return {};
+    }
+  }
+
+  // Add method to check and process due recurring transactions
+  Future<void> checkAndProcessDueTransactions() async {
+    await _notificationService.checkAndProcessDueTransactions();
+  }
+
   @override
   void dispose() {
     _disposed = true;
+    // Cancel all recurring notifications when view model is disposed
+    _notificationService.cancelAllRecurringNotifications();
     super.dispose();
   }
 }

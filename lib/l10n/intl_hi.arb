@@ -371,5 +371,8 @@
   "agreeToTerms": "मैं नियम और शर्तों से सहमत हूं",
   "createYourAccount": "अपना खाता बनाएं",
   "validationFailed": "सत्यापन विफल",
-  "pleaseAgreeToTerms": "कृपया नियम और शर्तों से सहमत हों"
+  "pleaseAgreeToTerms": "कृपया नियम और शर्तों से सहमत हों",
+  "deleteSettlement": "निपटान हटाएं",
+  "confirmDeleteSettlement": "क्या आप वाकई इस निपटान को हटाना चाहते हैं?",
+  "settlementDeletedSuccessfully": "निपटान सफलतापूर्वक हटा दिया गया"
 } 
