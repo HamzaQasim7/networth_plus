@@ -26,24 +26,29 @@ class RecurringTransactionNotificationService {
   }
 
   Future<void> _initializeNotifications() async {
-    const AndroidInitializationSettings androidInit =
-        AndroidInitializationSettings('@mipmap/launcher_icon');
+    try {
+      const AndroidInitializationSettings androidInit =
+          AndroidInitializationSettings('@mipmap/launcher_icon');
 
-    const DarwinInitializationSettings iosInit = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
-    );
+      const DarwinInitializationSettings iosInit = DarwinInitializationSettings(
+        requestAlertPermission: true,
+        requestBadgePermission: true,
+        requestSoundPermission: true,
+      );
 
-    const InitializationSettings initSettings = InitializationSettings(
-      android: androidInit,
-      iOS: iosInit,
-    );
+      const InitializationSettings initSettings = InitializationSettings(
+        android: androidInit,
+        iOS: iosInit,
+      );
 
-    await _localNotifications.initialize(initSettings);
+      await _localNotifications.initialize(initSettings);
 
-    // Create notification channels
-    await _createNotificationChannels();
+      // Create notification channels
+      await _createNotificationChannels();
+    } catch (e) {
+      print('Error initializing notifications: $e');
+      // You might want to rethrow or handle this error differently
+    }
   }
 
   Future<void> _createNotificationChannels() async {
@@ -81,147 +86,169 @@ class RecurringTransactionNotificationService {
   // Schedule notifications for recurring transactions
   Future<void> scheduleRecurringTransactionNotifications(
       TransactionModel transaction) async {
-    if (!transaction.isRecurring) return;
+    try {
+      if (!transaction.isRecurring) return;
 
-    final userId = _auth.currentUser?.uid;
-    if (userId == null) return;
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) {
+        print('User not authenticated');
+        return;
+      }
 
-    // Schedule reminder notification (1 day before due)
-    await _scheduleReminderNotification(transaction);
+      // Schedule reminder notification (1 day before due)
+      await _scheduleReminderNotification(transaction);
 
-    // Schedule processing notification (on due date)
-    await _scheduleProcessingNotification(transaction);
+      // Schedule processing notification (on due date)
+      await _scheduleProcessingNotification(transaction);
 
-    // Store scheduled notification info in Firestore
-    await _storeScheduledNotificationInfo(transaction);
+      // Store scheduled notification info in Firestore
+      await _storeScheduledNotificationInfo(transaction);
+    } catch (e) {
+      print('Error scheduling recurring transaction notifications: $e');
+    }
   }
 
   Future<void> _scheduleReminderNotification(
       TransactionModel transaction) async {
-    final nextDueDate = _calculateNextDueDate(transaction);
-    final reminderDate = nextDueDate.subtract(const Duration(days: 1));
+    try {
+      final nextDueDate = _calculateNextDueDate(transaction);
+      final reminderDate = nextDueDate.subtract(const Duration(days: 1));
 
-    // Only schedule if reminder date is in the future
-    if (reminderDate.isAfter(DateTime.now())) {
-      final notificationId =
-          _generateNotificationId(transaction.id!, 'reminder');
+      // Only schedule if reminder date is in the future
+      if (reminderDate.isAfter(DateTime.now())) {
+        final notificationId =
+            _generateNotificationId(transaction.id!, 'reminder');
 
-      await _localNotifications.zonedSchedule(
-        notificationId,
-        '📅 Recurring Transaction Reminder',
-        '${transaction.description} (${transaction.amount.toStringAsFixed(2)}) is due tomorrow',
-        tz.TZDateTime.from(reminderDate, tz.local),
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            'transaction_reminders',
-            'Transaction Reminders',
-            channelDescription: 'Reminders for upcoming recurring transactions',
-            importance: Importance.high,
-            priority: Priority.high,
-            icon: '@mipmap/launcher_icon',
-            color: transaction.type == TransactionType.income
-                ? const Color(0xFF4CAF50)
-                : const Color(0xFFF44336),
-            styleInformation: BigTextStyleInformation(
-              '${transaction.description} (${_formatCurrency(transaction.amount)}) is scheduled for tomorrow. Make sure you have sufficient funds.',
-              contentTitle: '📅 Recurring Transaction Reminder',
+        await _localNotifications.zonedSchedule(
+          notificationId,
+          '📅 Recurring Transaction Reminder',
+          '${transaction.description} (${transaction.amount.toStringAsFixed(2)}) is due tomorrow',
+          tz.TZDateTime.from(reminderDate, tz.local),
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              'transaction_reminders',
+              'Transaction Reminders',
+              channelDescription: 'Reminders for upcoming recurring transactions',
+              importance: Importance.high,
+              priority: Priority.high,
+              icon: '@mipmap/launcher_icon',
+              color: transaction.type == TransactionType.income
+                  ? const Color(0xFF4CAF50)
+                  : const Color(0xFFF44336),
+              styleInformation: BigTextStyleInformation(
+                '${transaction.description} (${_formatCurrency(transaction.amount)}) is scheduled for tomorrow. Make sure you have sufficient funds.',
+                contentTitle: '📅 Recurring Transaction Reminder',
+              ),
+            ),
+            iOS: DarwinNotificationDetails(
+              categoryIdentifier: 'RECURRING_REMINDER',
+              threadIdentifier: 'recurring_${transaction.id}',
+              subtitle: transaction.category,
             ),
           ),
-          iOS: DarwinNotificationDetails(
-            categoryIdentifier: 'RECURRING_REMINDER',
-            threadIdentifier: 'recurring_${transaction.id}',
-            subtitle: transaction.category,
-          ),
-        ),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        payload: jsonEncode({
-          'type': 'recurring_reminder',
-          'transactionId': transaction.id,
-          'screen': 'transaction_details',
-          'action': 'view_recurring'
-        }),
-      );
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          payload: jsonEncode({
+            'type': 'recurring_reminder',
+            'transactionId': transaction.id,
+            'screen': 'transaction_details',
+            'action': 'view_recurring'
+          }),
+        );
+      }
+    } catch (e) {
+      print('Error scheduling reminder notification: $e');
     }
   }
 
   Future<void> _scheduleProcessingNotification(
       TransactionModel transaction) async {
-    final nextDueDate = _calculateNextDueDate(transaction);
+    try {
+      final nextDueDate = _calculateNextDueDate(transaction);
 
-    // Only schedule if due date is in the future
-    if (nextDueDate.isAfter(DateTime.now())) {
-      final notificationId =
-          _generateNotificationId(transaction.id!, 'process');
+      // Only schedule if due date is in the future
+      if (nextDueDate.isAfter(DateTime.now())) {
+        final notificationId =
+            _generateNotificationId(transaction.id!, 'process');
 
-      await _localNotifications.zonedSchedule(
-        notificationId,
-        '💰 Recurring Transaction Processed',
-        '${transaction.description} has been automatically processed',
-        tz.TZDateTime.from(nextDueDate, tz.local),
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            'recurring_transactions',
-            'Recurring Transactions',
-            channelDescription:
-                'Notifications for recurring transaction processing',
-            importance: Importance.high,
-            priority: Priority.high,
-            icon: '@mipmap/launcher_icon',
-            color: transaction.type == TransactionType.income
-                ? const Color(0xFF4CAF50)
-                : const Color(0xFFF44336),
-            styleInformation: BigTextStyleInformation(
-              '${transaction.description} (${_formatCurrency(transaction.amount)}) has been automatically added to your ${transaction.type.name}.',
-              contentTitle: '💰 Recurring Transaction Processed',
+        await _localNotifications.zonedSchedule(
+          notificationId,
+          '💰 Recurring Transaction Processed',
+          '${transaction.description} has been automatically processed',
+          tz.TZDateTime.from(nextDueDate, tz.local),
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              'recurring_transactions',
+              'Recurring Transactions',
+              channelDescription:
+                  'Notifications for recurring transaction processing',
+              importance: Importance.high,
+              priority: Priority.high,
+              icon: '@mipmap/launcher_icon',
+              color: transaction.type == TransactionType.income
+                  ? const Color(0xFF4CAF50)
+                  : const Color(0xFFF44336),
+              styleInformation: BigTextStyleInformation(
+                '${transaction.description} (${_formatCurrency(transaction.amount)}) has been automatically added to your ${transaction.type.name}.',
+                contentTitle: '💰 Recurring Transaction Processed',
+              ),
+              actions: [
+                AndroidNotificationAction(
+                  'view_transaction',
+                  'View Details',
+                  icon: DrawableResourceAndroidBitmap('@drawable/ic_view'),
+                ),
+                AndroidNotificationAction(
+                  'edit_recurring',
+                  'Edit Recurring',
+                  icon: DrawableResourceAndroidBitmap('@drawable/ic_edit'),
+                ),
+              ],
             ),
-            actions: [
-              AndroidNotificationAction(
-                'view_transaction',
-                'View Details',
-                icon: DrawableResourceAndroidBitmap('@drawable/ic_view'),
-              ),
-              AndroidNotificationAction(
-                'edit_recurring',
-                'Edit Recurring',
-                icon: DrawableResourceAndroidBitmap('@drawable/ic_edit'),
-              ),
-            ],
+            iOS: DarwinNotificationDetails(
+              categoryIdentifier: 'RECURRING_PROCESSED',
+              threadIdentifier: 'recurring_${transaction.id}',
+              subtitle: transaction.category,
+            ),
           ),
-          iOS: DarwinNotificationDetails(
-            categoryIdentifier: 'RECURRING_PROCESSED',
-            threadIdentifier: 'recurring_${transaction.id}',
-            subtitle: transaction.category,
-          ),
-        ),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        payload: jsonEncode({
-          'type': 'recurring_processed',
-          'transactionId': transaction.id,
-          'screen': 'transaction_details',
-          'action': 'view_processed'
-        }),
-      );
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          payload: jsonEncode({
+            'type': 'recurring_processed',
+            'transactionId': transaction.id,
+            'screen': 'transaction_details',
+            'action': 'view_processed'
+          }),
+        );
+      }
+    } catch (e) {
+      print('Error scheduling processing notification: $e');
     }
   }
 
   // Send immediate notification when recurring transaction is processed
   Future<void> sendRecurringTransactionProcessedNotification(
       TransactionModel processedTransaction) async {
-    final userId = _auth.currentUser?.uid;
-    if (userId == null) return;
+    try {
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) {
+        print('User not authenticated');
+        return;
+      }
 
-    // Send local notification
-    await _sendLocalProcessedNotification(processedTransaction);
+      // Send local notification
+      await _sendLocalProcessedNotification(processedTransaction);
 
-    // Send push notification via FCM (if backend is configured)
-    await _sendPushNotification(processedTransaction);
+      // Send push notification via FCM (if backend is configured)
+      await _sendPushNotification(processedTransaction);
 
-    // Store notification in Firestore
-    await _storeProcessedNotificationInFirestore(processedTransaction);
+      // Store notification in Firestore
+      await _storeProcessedNotificationInFirestore(processedTransaction);
+    } catch (e) {
+      print('Error sending processed notification: $e');
+    }
   }
 
   Future<void> _sendLocalProcessedNotification(
@@ -277,15 +304,16 @@ class RecurringTransactionNotificationService {
   }
 
   Future<void> _sendPushNotification(TransactionModel transaction) async {
-    final userId = _auth.currentUser?.uid;
-    if (userId == null) return;
-
     try {
-      final fcmToken = await _messaging.getToken();
-      if (fcmToken == null) return;
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) return;
 
-      // This would typically call your backend API to send FCM message
-      // For now, we'll store the notification data for backend processing
+      final fcmToken = await _messaging.getToken();
+      if (fcmToken == null) {
+        print('FCM token not available');
+        return;
+      }
+
       await _firestore.collection('notification_queue').add({
         'userId': userId,
         'fcmToken': fcmToken,
@@ -302,29 +330,33 @@ class RecurringTransactionNotificationService {
         'processed': false,
       });
     } catch (e) {
-      print('Error queuing push notification: $e');
+      print('Error sending push notification: $e');
     }
   }
 
   Future<void> _storeProcessedNotificationInFirestore(
       TransactionModel transaction) async {
-    final notification = AppNotification(
-      id: '',
-      title: 'Recurring Transaction Processed',
-      body:
-          '${transaction.description} (${_formatCurrency(transaction.amount)}) has been automatically processed',
-      type: 'recurring_processed',
-      isRead: false,
-      timestamp: DateTime.now(),
-      data: {
-        'transactionId': transaction.id,
-        'transactionType': transaction.type.name,
-        'amount': transaction.amount,
-        'category': transaction.category,
-      },
-    );
+    try {
+      final notification = AppNotification(
+        id: '',
+        title: 'Recurring Transaction Processed',
+        body:
+            '${transaction.description} (${_formatCurrency(transaction.amount)}) has been automatically processed',
+        type: 'recurring_processed',
+        isRead: false,
+        timestamp: DateTime.now(),
+        data: {
+          'transactionId': transaction.id,
+          'transactionType': transaction.type.name,
+          'amount': transaction.amount,
+          'category': transaction.category,
+        },
+      );
 
-    await _storageService.storeNotification(notification);
+      await _storageService.storeNotification(notification);
+    } catch (e) {
+      print('Error storing notification in Firestore: $e');
+    }
   }
 
   Future<void> _storeScheduledNotificationInfo(
@@ -349,23 +381,27 @@ class RecurringTransactionNotificationService {
 
   // Cancel notifications for a recurring transaction
   Future<void> cancelRecurringNotifications(String transactionId) async {
-    final reminderNotificationId =
-        _generateNotificationId(transactionId, 'reminder');
-    final processNotificationId =
-        _generateNotificationId(transactionId, 'process');
+    try {
+      final reminderNotificationId =
+          _generateNotificationId(transactionId, 'reminder');
+      final processNotificationId =
+          _generateNotificationId(transactionId, 'process');
 
-    await _localNotifications.cancel(reminderNotificationId);
-    await _localNotifications.cancel(processNotificationId);
+      await _localNotifications.cancel(reminderNotificationId);
+      await _localNotifications.cancel(processNotificationId);
 
-    // Remove from Firestore
-    final userId = _auth.currentUser?.uid;
-    if (userId != null) {
-      await _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('scheduled_notifications')
-          .doc(transactionId)
-          .delete();
+      // Remove from Firestore
+      final userId = _auth.currentUser?.uid;
+      if (userId != null) {
+        await _firestore
+            .collection('users')
+            .doc(userId)
+            .collection('scheduled_notifications')
+            .doc(transactionId)
+            .delete();
+      }
+    } catch (e) {
+      print('Error cancelling recurring notifications: $e');
     }
   }
 
@@ -383,11 +419,10 @@ class RecurringTransactionNotificationService {
 
   // Check and process due recurring transactions
   Future<void> checkAndProcessDueTransactions() async {
-    final userId = _auth.currentUser?.uid;
-    if (userId == null) return;
-
     try {
-      // Get all recurring transactions
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) return;
+
       final recurringSnapshot = await _firestore
           .collection('users')
           .doc(userId)
@@ -396,29 +431,32 @@ class RecurringTransactionNotificationService {
           .get();
 
       for (var doc in recurringSnapshot.docs) {
-        final transaction = TransactionModel.fromJson(doc.data());
-        final nextDueDate = _calculateNextDueDate(transaction);
+        try {
+          final transaction = TransactionModel.fromJson(doc.data());
+          final nextDueDate = _calculateNextDueDate(transaction);
+          final now = DateTime.now();
+          final timeDiff = nextDueDate.difference(now).inMinutes;
 
-        // Check if transaction is due (within 1 hour of due time)
-        final now = DateTime.now();
-        final timeDiff = nextDueDate.difference(now).inMinutes;
-
-        if (timeDiff <= 60 && timeDiff >= -60) {
-          // Process the recurring transaction
-          await _processRecurringTransaction(transaction);
+          if (timeDiff <= 60 && timeDiff >= -60) {
+            // Process the recurring transaction
+            await _processRecurringTransaction(transaction);
+          }
+        } catch (e) {
+          print('Error processing individual recurring transaction: $e');
+          // Continue processing other transactions
         }
       }
     } catch (e) {
-      print('Error checking due recurring transactions: $e');
+      print('Error checking and processing due transactions: $e');
     }
   }
 
   Future<void> _processRecurringTransaction(
       TransactionModel recurringTransaction) async {
-    final userId = _auth.currentUser?.uid;
-    if (userId == null) return;
-
     try {
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) return;
+
       // Create new transaction from recurring template
       final newTransaction = recurringTransaction.copyWith(
         id: null, // Will be generated
@@ -446,23 +484,27 @@ class RecurringTransactionNotificationService {
 
   Future<void> _updateRecurringTransactionNextDue(
       TransactionModel recurringTransaction) async {
-    final userId = _auth.currentUser?.uid;
-    if (userId == null) return;
+    try {
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) return;
 
-    final nextDueDate = _calculateNextDueDate(recurringTransaction);
+      final nextDueDate = _calculateNextDueDate(recurringTransaction);
 
-    await _firestore
-        .collection('users')
-        .doc(userId)
-        .collection('transactions')
-        .doc(recurringTransaction.id)
-        .update({
-      'lastProcessed': FieldValue.serverTimestamp(),
-      'nextDueDate': Timestamp.fromDate(nextDueDate),
-    });
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('transactions')
+          .doc(recurringTransaction.id)
+          .update({
+        'lastProcessed': FieldValue.serverTimestamp(),
+        'nextDueDate': Timestamp.fromDate(nextDueDate),
+      });
 
-    // Reschedule notifications for the next occurrence
-    await scheduleRecurringTransactionNotifications(recurringTransaction);
+      // Reschedule notifications for the next occurrence
+      await scheduleRecurringTransactionNotifications(recurringTransaction);
+    } catch (e) {
+      print('Error updating recurring transaction next due date: $e');
+    }
   }
 
   DateTime _calculateNextDueDate(TransactionModel transaction) {
