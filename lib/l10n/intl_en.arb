@@ -1317,9 +1317,14 @@
   "@addPayment": {
     "description": "Title for add payment dialog"
   },
-  "currentBalance": "Current Balance:",
+  "currentBalance": "Current Balance: {amount}",
   "@currentBalance": {
-    "description": "Label for current balance"
+    "description": "Label for current balance",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
   },
   "paymentAmount": "Payment Amount",
   "@paymentAmount": {
@@ -1381,9 +1386,14 @@
   "@desiredMonthlyIncome": {
     "description": "Label for desired monthly income"
   },
-  "fundingProgress": "Funding Progress:",
+  "fundingProgress": "Funding Progress: {percentage}%",
   "@fundingProgress": {
-    "description": "Label for funding progress percentage"
+    "description": "Label for funding progress percentage",
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
   },
   "recommendationIncreaseContribution": "Consider increasing your monthly contribution to reach your retirement goal.",
   "@recommendationIncreaseContribution": {
@@ -1629,9 +1639,14 @@
   "@currentPlan": {
     "description": "Title for current plan section"
   },
-  "daysRemaining": "days remaining",
+  "daysRemaining": "{days} days remaining",
   "@daysRemaining": {
-    "description": "Label for days remaining in subscription"
+    "description": "Label for days remaining in subscription",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
   },
   "expired": "Expired",
   "@expired": {
@@ -1708,5 +1723,14 @@
   "subscriptionUpdated": "Subscription updated successfully",
   "@subscriptionUpdated": {
     "description": "Success message when subscription is updated"
+  },
+  "errorGeneratingReport": "Error generating report: {error}",
+  "@errorGeneratingReport": {
+    "description": "Error message when report generation fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -3340,13 +3340,13 @@ class AppLocalizations {
     );
   }
 
-  /// `Current Balance:`
-  String get currentBalance {
+  /// `Current Balance: {amount}`
+  String currentBalance(String amount) {
     return Intl.message(
-      'Current Balance:',
+      'Current Balance: $amount',
       name: 'currentBalance',
       desc: 'Label for current balance',
-      args: [],
+      args: [amount],
     );
   }
 
@@ -3500,13 +3500,13 @@ class AppLocalizations {
     );
   }
 
-  /// `Funding Progress:`
-  String get fundingProgress {
+  /// `Funding Progress: {percentage}%`
+  String fundingProgress(int percentage) {
     return Intl.message(
-      'Funding Progress:',
+      'Funding Progress: $percentage%',
       name: 'fundingProgress',
       desc: 'Label for funding progress percentage',
-      args: [],
+      args: [percentage],
     );
   }
 
@@ -4091,13 +4091,13 @@ class AppLocalizations {
     );
   }
 
-  /// `days remaining`
-  String get daysRemaining {
+  /// `{days} days remaining`
+  String daysRemaining(int days) {
     return Intl.message(
-      'days remaining',
+      '$days days remaining',
       name: 'daysRemaining',
       desc: 'Label for days remaining in subscription',
-      args: [],
+      args: [days],
     );
   }
 
@@ -4278,6 +4278,16 @@ class AppLocalizations {
       name: 'subscriptionUpdated',
       desc: 'Success message when subscription is updated',
       args: [],
+    );
+  }
+
+  /// `Error generating report: {error}`
+  String errorGeneratingReport(String error) {
+    return Intl.message(
+      'Error generating report: $error',
+      name: 'errorGeneratingReport',
+      desc: 'Error message when report generation fails',
+      args: [error],
     );
   }
 }
