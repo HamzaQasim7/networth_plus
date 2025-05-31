@@ -31,6 +31,7 @@ import 'core/routes/routes.dart';
 import 'core/services/localization_service.dart';
 import 'core/services/notification_service.dart';
 import 'core/services/session_manager.dart';
+import 'core/services/notification_settings_service.dart';
 import 'firebase_options.dart';
 import 'presentation/views/session_wrapper.dart';
 
@@ -58,22 +59,35 @@ void main() async {
   );
   // Initialize SharedPreferences
   final prefs = await SharedPreferences.getInstance();
+  // Initialize notification settings service
+  final notificationSettingsService = NotificationSettingsService(prefs);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   // Initialize notification service
   final notificationService = NotificationService();
   await notificationService.initialize();
-  runApp(MyApp(prefs: prefs));
+  runApp(MyApp(
+    prefs: prefs,
+    notificationSettingsService: notificationSettingsService,
+  ));
 }
 
 class MyApp extends StatelessWidget {
   final SharedPreferences prefs;
+  final NotificationSettingsService notificationSettingsService;
 
-  const MyApp({super.key, required this.prefs});
+  const MyApp({
+    super.key,
+    required this.prefs,
+    required this.notificationSettingsService,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider<NotificationSettingsService>(
+          create: (_) => notificationSettingsService,
+        ),
         Provider<SessionManager>(
           create: (_) => SessionManager(prefs: prefs),
         ),
@@ -85,10 +99,21 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => LocaleViewModel()),
-        ChangeNotifierProvider(create: (_) => SessionManager(prefs: prefs)),
         ChangeNotifierProvider(
-            create: (_) =>
-                TransactionViewModel(authViewModel: AuthViewModel())),
+            create: (_) => NotificationSettingsService(prefs)),
+        ChangeNotifierProvider(create: (_) => SessionManager(prefs: prefs)),
+        ChangeNotifierProxyProvider<AuthViewModel, TransactionViewModel>(
+          create: (context) => TransactionViewModel(
+            authViewModel: context.read<AuthViewModel>(),
+            settingsService: notificationSettingsService,
+          ),
+          update: (context, authVM, transactionVM) =>
+              transactionVM ??
+              TransactionViewModel(
+                authViewModel: authVM,
+                settingsService: notificationSettingsService,
+              ),
+        ),
         ChangeNotifierProxyProvider<AuthViewModel, AssetLiabilityViewModel>(
           create: (context) => AssetLiabilityViewModel(
             authViewModel: context.read<AuthViewModel>(),
@@ -99,16 +124,19 @@ class MyApp extends StatelessWidget {
           ),
         ),
         ChangeNotifierProvider(create: (_) => BudgetProvider()),
-        ChangeNotifierProxyProvider<AuthViewModel, BudgetViewModel>(
+        ChangeNotifierProxyProvider2<AuthViewModel, TransactionViewModel,
+            BudgetViewModel>(
           create: (context) => BudgetViewModel(
             authViewModel: context.read<AuthViewModel>(),
             transactionViewModel: context.read<TransactionViewModel>(),
+            settingsService: notificationSettingsService,
           ),
-          update: (context, authVM, budgetVM) =>
+          update: (context, authVM, transactionVM, budgetVM) =>
               budgetVM ??
               BudgetViewModel(
                 authViewModel: authVM,
-                transactionViewModel: context.read<TransactionViewModel>(),
+                transactionViewModel: transactionVM,
+                settingsService: notificationSettingsService,
               ),
         ),
         ChangeNotifierProxyProvider<AuthViewModel, SettlementViewModel>(

@@ -19,27 +19,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadTransactions();
-    });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _loadTransactions();
-  }
-
-  void _loadTransactions() {
-    final viewModel = context.read<TransactionViewModel>();
-    if (!viewModel.isLoading) {
-      viewModel.loadTransactions();
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return const SafeArea(
       child: SingleChildScrollView(

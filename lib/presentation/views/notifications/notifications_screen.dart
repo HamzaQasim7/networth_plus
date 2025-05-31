@@ -1,6 +1,9 @@
 import 'package:finance_tracker/core/constants/theme_constants.dart';
+import 'package:finance_tracker/data/models/notification_model.dart';
+import 'package:finance_tracker/data/repositories/notification_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -12,6 +15,7 @@ class NotificationsScreen extends StatefulWidget {
 class _NotificationsScreenState extends State<NotificationsScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  final NotificationRepository _repository = NotificationRepository();
 
   @override
   void initState() {
@@ -23,6 +27,90 @@ class _NotificationsScreenState extends State<NotificationsScreen>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  Future<void> _markAllAsRead() async {
+    try {
+      await _repository.markAllAsRead();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('All notifications marked as read'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error marking notifications as read: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _deleteNotification(String notificationId) async {
+    try {
+      await _repository.deleteNotification(notificationId);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Notification removed'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error removing notification: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _markAsRead(AppNotification notification) async {
+    if (!notification.isRead) {
+      try {
+        await _repository.markAsRead(notification.id);
+        // Handle navigation based on notification data
+        if (notification.data != null) {
+          _handleNotificationNavigation(notification);
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error marking notification as read: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  void _handleNotificationNavigation(AppNotification notification) {
+    if (notification.data == null) return;
+
+    final screen = notification.data!['screen'];
+    final action = notification.data!['action'];
+
+    switch (screen) {
+      case 'budget_details':
+        // Navigate to budget details
+        break;
+      case 'transaction_details':
+        // Navigate to transaction details
+        break;
+      // Add more cases as needed
+    }
   }
 
   @override
@@ -44,15 +132,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
           IconButton(
             icon: const Icon(Icons.done_all),
             tooltip: 'Mark all as read',
-            onPressed: () {
-              // Mark all notifications as read
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('All notifications marked as read'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            },
+            onPressed: _markAllAsRead,
           ),
         ],
         bottom: TabBar(
@@ -66,25 +146,43 @@ class _NotificationsScreenState extends State<NotificationsScreen>
           indicatorColor: Theme.of(context).colorScheme.primary,
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildNotificationsList(allNotifications),
-          _buildNotificationsList(
-              allNotifications.where((n) => !n['isRead']).toList()),
-        ],
+      body: StreamBuilder<List<AppNotification>>(
+        stream: _repository.getNotifications(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          }
+
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          final notifications = snapshot.data!;
+          final unreadNotifications = notifications.where((n) => !n.isRead).toList();
+
+          return TabBarView(
+            controller: _tabController,
+            children: [
+              _buildNotificationsList(notifications),
+              _buildNotificationsList(unreadNotifications),
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget _buildNotificationsList(List<Map<String, dynamic>> notifications) {
+  Widget _buildNotificationsList(List<AppNotification> notifications) {
     if (notifications.isEmpty) {
       return const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.notifications_off_outlined,
-                size: 64, color: Colors.grey),
+            Icon(Icons.notifications_off_outlined, size: 64, color: Colors.grey),
             SizedBox(height: 16),
             Text(
               'No notifications',
@@ -107,10 +205,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
     );
   }
 
-  Widget _buildNotificationItem(Map<String, dynamic> notification) {
-    final isRead = notification['isRead'] as bool;
-    final category = notification['category'] as String;
-
+  Widget _buildNotificationItem(AppNotification notification) {
     IconData getIconForCategory(String category) {
       switch (category) {
         case 'transaction':
@@ -146,7 +241,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
     }
 
     return Dismissible(
-      key: Key(notification['id']),
+      key: Key(notification.id),
       background: Container(
         color: Colors.red,
         alignment: Alignment.centerRight,
@@ -154,18 +249,10 @@ class _NotificationsScreenState extends State<NotificationsScreen>
         child: const Icon(Icons.delete, color: Colors.white),
       ),
       direction: DismissDirection.endToStart,
-      onDismissed: (direction) {
-        // Remove notification logic would go here
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Notification removed'),
-            duration: Duration(seconds: 2),
-          ),
-        );
-      },
+      onDismissed: (direction) => _deleteNotification(notification.id),
       child: Container(
         decoration: BoxDecoration(
-          color: isRead ? null : Colors.blue.shade50,
+          color: notification.isRead ? null : Colors.blue.shade50,
           border: Border(
             bottom: BorderSide(color: Colors.grey.shade200),
           ),
@@ -174,28 +261,28 @@ class _NotificationsScreenState extends State<NotificationsScreen>
           leading: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: getColorForCategory(category).withOpacity(0.1),
+              color: getColorForCategory(notification.category).withOpacity(0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(
-              getIconForCategory(category),
-              color: getColorForCategory(category),
+              getIconForCategory(notification.category),
+              color: getColorForCategory(notification.category),
             ),
           ),
           title: Text(
-            notification['title'],
+            notification.title,
             style: TextStyle(
-              fontWeight: isRead ? FontWeight.normal : FontWeight.bold,
+              fontWeight: notification.isRead ? FontWeight.normal : FontWeight.bold,
             ),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 4),
-              Text(notification['message']),
+              Text(notification.message),
               const SizedBox(height: 4),
               Text(
-                notification['time'],
+                timeago.format(notification.timestamp),
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey.shade600,
@@ -204,15 +291,8 @@ class _NotificationsScreenState extends State<NotificationsScreen>
             ],
           ),
           isThreeLine: true,
-          onTap: () {
-            // Mark as read and navigate to relevant screen
-            setState(() {
-              notification['isRead'] = true;
-            });
-
-            // Navigation logic based on notification type would go here
-          },
-          trailing: isRead
+          onTap: () => _markAsRead(notification),
+          trailing: notification.isRead
               ? null
               : Container(
                   width: 12,

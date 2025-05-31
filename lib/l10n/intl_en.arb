@@ -1135,7 +1135,7 @@
   },
   "incomeAndExpenseAnalysis": "Income & Expense Analysis",
   "@incomeAndExpenseAnalysis": {
-    "description": "Label for the income and expense analysis section"
+    "description": "Title for the income and expense analysis screen"
   },
   "compareIncomeExpensesAndSavings": "Compare income, expenses and savings",
   "@compareIncomeExpensesAndSavings": {
@@ -1143,7 +1143,7 @@
   },
   "budgetVsActual": "Budget vs Actual",
   "@budgetVsActual": {
-    "description": "Label for the budget vs actual performance section"
+    "description": "Title for the budget vs actual screen"
   },
   "trackBudgetPerformance": "Track budget performance",
   "@trackBudgetPerformance": {
@@ -1151,7 +1151,7 @@
   },
   "downloadReports": "Download Reports",
   "@downloadReports": {
-    "description": "Button text for downloading financial reports"
+    "description": "Title for the download reports screen"
   },
   "exportFinancialReports": "Export financial reports",
   "@exportFinancialReports": {
@@ -1215,7 +1215,7 @@
   },
   "savingsGoals": "Savings Goals",
   "@savingsGoals": {
-    "description": "Label for the savings goals section"
+    "description": "Title for the savings goals screen"
   },
   "setAndTrackSavingsTargets": "Set and track savings targets",
   "@setAndTrackSavingsTargets": {
@@ -1223,267 +1223,490 @@
   },
   "debtRepaymentPlan": "Debt Repayment Plan",
   "@debtRepaymentPlan": {
-    "description": "Label for the debt repayment plan section"
+    "description": "Title for the debt repayment plan screen"
   },
-  "manageAndTrackDebtPayments": "Manage and track debt payments",
-  "@manageAndTrackDebtPayments": {
-    "description": "Message prompting the user to manage and track debt payments"
+  "debtSummary": "Debt Summary",
+  "@debtSummary": {
+    "description": "Title for debt summary section"
+  },
+  "totalDebt": "Total Debt",
+  "@totalDebt": {
+    "description": "Label for total debt amount"
+  },
+  "monthlyPayment": "Monthly Payment",
+  "@monthlyPayment": {
+    "description": "Label for monthly payment amount"
+  },
+  "avgInterest": "Avg Interest",
+  "@avgInterest": {
+    "description": "Label for average interest rate"
+  },
+  "activeDebts": "Active Debts",
+  "@activeDebts": {
+    "description": "Title for active debts section"
+  },
+  "noActiveDebts": "No active debts",
+  "@noActiveDebts": {
+    "description": "Message shown when there are no active debts"
+  },
+  "paid": " paid",
+  "@paid": {
+    "description": "Label for paid percentage"
+  },
+  "remaining": "remaining",
+  "@remaining": {
+    "description": "Label for remaining amount"
+  },
+  "interestRate": "Interest Rate",
+  "@interestRate": {
+    "description": "Label for interest rate"
+  },
+  "debtAnalysis": "Debt Analysis",
+  "@debtAnalysis": {
+    "description": "Title for debt analysis section"
+  },
+  "recommendedPayoffStrategy": "Recommended Payoff Strategy",
+  "@recommendedPayoffStrategy": {
+    "description": "Title for recommended payoff strategy"
+  },
+  "debtAvalancheMethod": "Debt Avalanche Method: Pay off debts in order of highest to lowest interest rate while maintaining minimum payments on all debts.",
+  "@debtAvalancheMethod": {
+    "description": "Description of the debt avalanche method"
+  },
+  "priorityOrder": "Priority Order:",
+  "@priorityOrder": {
+    "description": "Label for priority order list"
+  },
+  "addNewDebt": "Add New Debt",
+  "@addNewDebt": {
+    "description": "Title for add new debt dialog"
+  },
+  "debtName": "Debt Name",
+  "@debtName": {
+    "description": "Label for debt name field"
+  },
+  "debtType": "Debt Type",
+  "@debtType": {
+    "description": "Label for debt type field"
+  },
+  "totalAmount": "Total Amount",
+  "@totalAmount": {
+    "description": "Label for total amount field"
+  },
+  "interestRatePercent": "Interest Rate",
+  "@interestRatePercent": {
+    "description": "Label for interest rate field"
+  },
+  "minimumMonthlyPayment": "Minimum Monthly Payment",
+  "@minimumMonthlyPayment": {
+    "description": "Label for minimum monthly payment field"
+  },
+  "addDebt": "Add Debt",
+  "@addDebt": {
+    "description": "Label for add debt button"
+  },
+  "editDebt": "Edit Debt",
+  "@editDebt": {
+    "description": "Title for edit debt dialog"
+  },
+  "saveChanges": "Save Changes",
+  "@saveChanges": {
+    "description": "Label for save changes button"
+  },
+  "addPayment": "Add Payment",
+  "@addPayment": {
+    "description": "Title for add payment dialog"
+  },
+  "currentBalance": "Current Balance:",
+  "@currentBalance": {
+    "description": "Label for current balance"
+  },
+  "paymentAmount": "Payment Amount",
+  "@paymentAmount": {
+    "description": "Label for payment amount field"
+  },
+  "deleteDebt": "Delete Debt",
+  "@deleteDebt": {
+    "description": "Title for delete debt confirmation dialog"
+  },
+  "deleteDebtConfirmation": "Are you sure you want to delete? This action cannot be undone.",
+  "@deleteDebtConfirmation": {
+    "description": "Confirmation message for deleting a debt"
   },
   "retirementPlanning": "Retirement Planning",
   "@retirementPlanning": {
-    "description": "Label for the retirement planning section"
+    "description": "Title for the retirement planning screen"
   },
-  "planForYourRetirement": "Plan for your retirement",
-  "@planForYourRetirement": {
-    "description": "Message encouraging the user to plan for their retirement"
+  "createRetirementPlan": "Create Retirement Plan",
+  "@createRetirementPlan": {
+    "description": "Button text for creating a new retirement plan"
+  },
+  "retirementSummary": "Retirement Summary",
+  "@retirementSummary": {
+    "description": "Title for retirement summary section"
+  },
+  "currentAge": "Current Age",
+  "@currentAge": {
+    "description": "Label for current age"
+  },
+  "retirementAge": "Retirement Age",
+  "@retirementAge": {
+    "description": "Label for retirement age"
+  },
+  "yearsUntilRetirement": "Years Until Retirement",
+  "@yearsUntilRetirement": {
+    "description": "Label for years until retirement"
+  },
+  "currentSavings": "Current Savings",
+  "@currentSavings": {
+    "description": "Label for current savings amount"
+  },
+  "monthlyContribution": "Monthly Contribution",
+  "@monthlyContribution": {
+    "description": "Label for monthly contribution amount"
+  },
+  "retirementProjections": "Retirement Projections",
+  "@retirementProjections": {
+    "description": "Title for retirement projections section"
+  },
+  "projectedRetirementSavings": "Projected Retirement Savings",
+  "@projectedRetirementSavings": {
+    "description": "Label for projected retirement savings"
+  },
+  "monthlyRetirementIncome": "Monthly Retirement Income",
+  "@monthlyRetirementIncome": {
+    "description": "Label for monthly retirement income"
+  },
+  "desiredMonthlyIncome": "Desired Monthly Income",
+  "@desiredMonthlyIncome": {
+    "description": "Label for desired monthly income"
+  },
+  "fundingProgress": "Funding Progress:",
+  "@fundingProgress": {
+    "description": "Label for funding progress percentage"
+  },
+  "recommendationIncreaseContribution": "Consider increasing your monthly contribution to reach your retirement goal.",
+  "@recommendationIncreaseContribution": {
+    "description": "Recommendation to increase monthly contribution"
+  },
+  "recommendationDiversifyInvestments": "Your expected return seems conservative. Consider diversifying your investments.",
+  "@recommendationDiversifyInvestments": {
+    "description": "Recommendation to diversify investments"
+  },
+  "recommendationIncreaseSavingsRate": "Your current savings rate might be too low. Aim to save at least 10-15% of your income.",
+  "@recommendationIncreaseSavingsRate": {
+    "description": "Recommendation to increase savings rate"
+  },
+  "recommendationEarlyRetirement": "Early retirement requires more savings. Make sure your plan accounts for a longer retirement period.",
+  "@recommendationEarlyRetirement": {
+    "description": "Recommendation for early retirement planning"
+  },
+  "recommendationOnTrack": "You're on track with your retirement goals!",
+  "@recommendationOnTrack": {
+    "description": "Message indicating the user is on track with their retirement goals"
   },
   "financialCalculator": "Financial Calculator",
   "@financialCalculator": {
-    "description": "Label for the financial calculator section"
+    "description": "Title for the financial calculator screen"
   },
-  "calculateLoansInvestmentsAndMore": "Calculate loans, investments & more",
-  "@calculateLoansInvestmentsAndMore": {
-    "description": "Message prompting the user to use the financial calculator for various calculations"
+  "loanCalculator": "Loan Calculator",
+  "@loanCalculator": {
+    "description": "Title for loan calculator"
   },
-  "accountSettings": "Account Settings",
-  "@accountSettings": {
-    "description": "Label for the account settings section"
+  "loanCalculatorDescription": "Calculate loan payments and total interest",
+  "@loanCalculatorDescription": {
+    "description": "Description for loan calculator"
+  },
+  "investmentCalculator": "Investment Calculator",
+  "@investmentCalculator": {
+    "description": "Title for investment calculator"
+  },
+  "investmentCalculatorDescription": "Calculate investment growth and returns",
+  "@investmentCalculatorDescription": {
+    "description": "Description for investment calculator"
+  },
+  "savingsGoalCalculator": "Savings Goal Calculator",
+  "@savingsGoalCalculator": {
+    "description": "Title for savings goal calculator"
+  },
+  "savingsGoalCalculatorDescription": "Calculate monthly savings needed",
+  "@savingsGoalCalculatorDescription": {
+    "description": "Description for savings goal calculator"
+  },
+  "mortgageCalculator": "Mortgage Calculator",
+  "@mortgageCalculator": {
+    "description": "Title for mortgage calculator"
+  },
+  "mortgageCalculatorDescription": "Calculate mortgage payments and amortization",
+  "@mortgageCalculatorDescription": {
+    "description": "Description for mortgage calculator"
+  },
+  "loanAmount": "Loan Amount",
+  "@loanAmount": {
+    "description": "Label for loan amount field"
+  },
+  "annualInterestRate": "Annual Interest Rate (%)",
+  "@annualInterestRate": {
+    "description": "Label for annual interest rate field"
+  },
+  "loanTerm": "Loan Term (months)",
+  "@loanTerm": {
+    "description": "Label for loan term field"
+  },
+  "calculate": "Calculate",
+  "@calculate": {
+    "description": "Label for calculate button"
+  },
+  "loanCalculationResults": "Loan Calculation Results",
+  "@loanCalculationResults": {
+    "description": "Title for loan calculation results"
+  },
+  "monthlyPayment": "Monthly Payment:",
+  "@monthlyPayment": {
+    "description": "Label for monthly payment result"
+  },
+  "totalInterest": "Total Interest:",
+  "@totalInterest": {
+    "description": "Label for total interest result"
+  },
+  "totalPayment": "Total Payment:",
+  "@totalPayment": {
+    "description": "Label for total payment result"
+  },
+  "initialInvestment": "Initial Investment",
+  "@initialInvestment": {
+    "description": "Label for initial investment field"
+  },
+  "annualReturnRate": "Annual Return Rate",
+  "@annualReturnRate": {
+    "description": "Label for annual return rate field"
+  },
+  "investmentPeriod": "Investment Period (years)",
+  "@investmentPeriod": {
+    "description": "Label for investment period field"
+  },
+  "investmentCalculationResults": "Investment Calculation Results",
+  "@investmentCalculationResults": {
+    "description": "Title for investment calculation results"
+  },
+  "futureValue": "Future Value:",
+  "@futureValue": {
+    "description": "Label for future value result"
+  },
+  "totalContributions": "Total Contributions:",
+  "@totalContributions": {
+    "description": "Label for total contributions result"
+  },
+  "totalEarnings": "Total Earnings:",
+  "@totalEarnings": {
+    "description": "Label for total earnings result"
+  },
+  "goalAmount": "Goal Amount",
+  "@goalAmount": {
+    "description": "Label for goal amount field"
+  },
+  "timeToGoal": "Time to Goal (months)",
+  "@timeToGoal": {
+    "description": "Label for time to goal field"
+  },
+  "initialSavings": "Initial Savings",
+  "@initialSavings": {
+    "description": "Label for initial savings field"
+  },
+  "savingsGoalCalculationResults": "Savings Goal Calculation Results",
+  "@savingsGoalCalculationResults": {
+    "description": "Title for savings goal calculation results"
+  },
+  "requiredMonthlySavings": "Required Monthly Savings:",
+  "@requiredMonthlySavings": {
+    "description": "Label for required monthly savings result"
+  },
+  "totalSavingsNeeded": "Total Savings Needed:",
+  "@totalSavingsNeeded": {
+    "description": "Label for total savings needed result"
+  },
+  "timeToGoalResult": "Time to Goal:",
+  "@timeToGoalResult": {
+    "description": "Label for time to goal result"
+  },
+  "homePrice": "Home Price",
+  "@homePrice": {
+    "description": "Label for home price field"
+  },
+  "downPayment": "Down Payment",
+  "@downPayment": {
+    "description": "Label for down payment field"
+  },
+  "loanTermYears": "Loan Term (years)",
+  "@loanTermYears": {
+    "description": "Label for loan term in years field"
+  },
+  "mortgageCalculationResults": "Mortgage Calculation Results",
+  "@mortgageCalculationResults": {
+    "description": "Title for mortgage calculation results"
+  },
+  "totalCost": "Total Cost:",
+  "@totalCost": {
+    "description": "Label for total cost result"
+  },
+  "downPaymentPercentage": "Down Payment:",
+  "@downPaymentPercentage": {
+    "description": "Label for down payment percentage result"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "Label for OK button"
   },
   "profile": "Profile",
   "@profile": {
-    "description": "Label for the profile section"
+    "description": "Title for the profile screen"
   },
-  "managePersonalInformation": "Manage personal information",
-  "@managePersonalInformation": {
-    "description": "Message prompting the user to manage their personal information"
+  "profileNotAvailable": "Profile not available",
+  "@profileNotAvailable": {
+    "description": "Message shown when profile is not available"
+  },
+  "noName": "No Name",
+  "@noName": {
+    "description": "Default text when user name is not set"
+  },
+  "personalInformation": "Personal Information",
+  "@personalInformation": {
+    "description": "Title for personal information section"
+  },
+  "phone": "Phone",
+  "@phone": {
+    "description": "Label for phone number"
+  },
+  "notSet": "Not set",
+  "@notSet": {
+    "description": "Text shown when a field is not set"
+  },
+  "dateOfBirth": "Date of Birth",
+  "@dateOfBirth": {
+    "description": "Label for date of birth"
+  },
+  "financialInformation": "Financial Information",
+  "@financialInformation": {
+    "description": "Title for financial information section"
+  },
+  "monthlyIncome": "Monthly Income",
+  "@monthlyIncome": {
+    "description": "Label for monthly income"
+  },
+  "preferredCurrency": "Preferred Currency",
+  "@preferredCurrency": {
+    "description": "Label for preferred currency"
+  },
+  "editProfile": "Edit Profile",
+  "@editProfile": {
+    "description": "Title for edit profile dialog"
+  },
+  "name": "Name",
+  "@name": {
+    "description": "Label for name field"
+  },
+  "phoneNumber": "Phone Number",
+  "@phoneNumber": {
+    "description": "Label for phone number field"
+  },
+  "occupation": "Occupation",
+  "@occupation": {
+    "description": "Label for occupation field"
+  },
+  "pleaseEnterName": "Please enter your name",
+  "@pleaseEnterName": {
+    "description": "Validation message for name field"
+  },
+  "saveChanges": "Save Changes",
+  "@saveChanges": {
+    "description": "Label for save changes button"
   },
   "subscriptionPlan": "Subscription Plan",
   "@subscriptionPlan": {
-    "description": "Label for the subscription plan section"
+    "description": "Title for the subscription plan screen"
   },
-  "manageYourSubscription": "Manage your subscription",
-  "@manageYourSubscription": {
-    "description": "Message prompting the user to manage their subscription"
+  "currentPlan": "Current Plan",
+  "@currentPlan": {
+    "description": "Title for current plan section"
   },
-  "security": "Security",
-  "@security": {
-    "description": "Label for the security section"
+  "daysRemaining": "days remaining",
+  "@daysRemaining": {
+    "description": "Label for days remaining in subscription"
   },
-  "appLockBiometricsAndBackup": "App lock, biometrics & backup",
-  "@appLockBiometricsAndBackup": {
-    "description": "Message describing security features like app lock, biometrics, and backup"
+  "expired": "Expired",
+  "@expired": {
+    "description": "Label for expired subscription"
   },
-  "dataBackupAndSync": "Data Backup & Sync",
-  "@dataBackupAndSync": {
-    "description": "Label for the data backup and sync section"
+  "availablePlans": "Available Plans",
+  "@availablePlans": {
+    "description": "Title for available plans section"
   },
-  "manageYourDataAcrossDevices": "Manage your data across devices",
-  "@manageYourDataAcrossDevices": {
-    "description": "Message prompting the user to manage their data across devices"
+  "basicPlan": "Basic Plan",
+  "@basicPlan": {
+    "description": "Title for basic subscription plan"
   },
-  "more": "More",
-  "@more": {
-    "description": "Label for the more section"
+  "basicPlanDescription": "Perfect for personal finance tracking",
+  "@basicPlanDescription": {
+    "description": "Description for basic subscription plan"
   },
-  "helpAndSupport": "Help & Support",
-  "@helpAndSupport": {
-    "description": "Label for the help and support section"
+  "premiumPlan": "Premium Plan",
+  "@premiumPlan": {
+    "description": "Title for premium subscription plan"
   },
-  "faqContactAndSupport": "FAQ, Contact & Support",
-  "@faqContactAndSupport": {
-    "description": "Message describing FAQ, contact, and support options"
+  "premiumPlanDescription": "Advanced features for power users",
+  "@premiumPlanDescription": {
+    "description": "Description for premium subscription plan"
   },
-  "termsAndPrivacy": "Terms & Privacy",
-  "@termsAndPrivacy": {
-    "description": "Label for the terms and privacy section"
+  "unlimitedTransactions": "Unlimited transactions",
+  "@unlimitedTransactions": {
+    "description": "Feature in subscription plan"
   },
-  "termsOfService": "Terms of Service",
-  "@termsOfService": {
-    "description": "Label for the terms of service section"
+  "basicReports": "Basic reports",
+  "@basicReports": {
+    "description": "Feature in subscription plan"
   },
-  "privacyPolicy": "Privacy Policy",
-  "@privacyPolicy": {
-    "description": "Label for the privacy policy section"
+  "emailSupport": "Email support",
+  "@emailSupport": {
+    "description": "Feature in subscription plan"
   },
-  "aboutApp": "About App",
-  "@aboutApp": {
-    "description": "Label for the about app section"
+  "advancedAnalytics": "Advanced analytics",
+  "@advancedAnalytics": {
+    "description": "Feature in subscription plan"
   },
-  "comprehensiveFinanceTrackingApp": "A comprehensive finance tracking application to manage your expenses, budgets, and financial portfolio.",
-  "@comprehensiveFinanceTrackingApp": {
-    "description": "Message describing the purpose of the application"
+  "prioritySupport": "Priority support",
+  "@prioritySupport": {
+    "description": "Feature in subscription plan"
   },
-  "signOut": "Sign Out",
-  "@signOut": {
-    "description": "Label for the sign-out action"
+  "customCategories": "Custom categories",
+  "@customCategories": {
+    "description": "Feature in subscription plan"
   },
-  "supportTheApp": "Support the App",
-  "@supportTheApp": {
-    "description": "Label for supporting the app"
+  "dataExport": "Data export",
+  "@dataExport": {
+    "description": "Feature in subscription plan"
   },
-  "donate": "Donate",
-  "@donate": {
-    "description": "Label for the donate action"
+  "perMonth": "/month",
+  "@perMonth": {
+    "description": "Label for monthly subscription price"
   },
-  "watchAd": "Watch Ad",
-  "@watchAd": {
-    "description": "Label for the watch ad action"
+  "subscribe": "Subscribe",
+  "@subscribe": {
+    "description": "Label for subscribe button"
   },
-  "areYouSureYouWantToSignOut": "Are you sure you want to sign out?",
-  "@areYouSureYouWantToSignOut": {
-    "description": "Confirmation message for signing out"
+  "confirmSubscription": "Confirm Subscription",
+  "@confirmSubscription": {
+    "description": "Title for subscription confirmation dialog"
   },
-  "errorSigningOut": "Error signing out",
-  "@errorSigningOut": {
-    "description": "Message displayed when there is an error signing out"
+  "subscriptionConfirmation": "You are about to subscribe to the plan.",
+  "@subscriptionConfirmation": {
+    "description": "Confirmation message for subscription"
   },
-  "frequentlyAskedQuestions": "Frequently Asked Questions",
-  "@frequentlyAskedQuestions": {
-    "description": "Label for the FAQ section"
+  "amount": "Amount:",
+  "@amount": {
+    "description": "Label for subscription amount"
   },
-  "contactSupport": "Contact Support",
-  "@contactSupport": {
-    "description": "Label for contacting support"
-  },
-  "liveChatSupport": "Live Chat Support",
-  "@liveChatSupport": {
-    "description": "Label for live chat support"
-  },
-  "close": "Close",
-  "@close": {
-    "description": "Label for the close action"
-  },
-  "dataUsage": "Data Usage",
-  "@dataUsage": {
-    "description": "Label for the data usage section"
-  },
-  "scanToDonate": "Scan to Donate",
-  "@scanToDonate": {
-    "description": "Label for the scan to donate action"
-  },
-  "cardDetails": "Card Details",
-  "@cardDetails": {
-    "description": "Label for the card details section"
-  },
-  "number": "Number",
-  "@number": {
-    "description": "Label for the number field"
-  },
-  "balance": "Balance",
-  "@balance": {
-    "description": "Label for the balance field"
-  },
-  "deleteCard": "Delete Card",
-  "@deleteCard": {
-    "description": "Label for the delete card action"
-  },
-  "areYouSureYouWantToDeleteThisCard": "Are you sure you want to delete this card?",
-  "@areYouSureYouWantToDeleteThisCard": {
-    "description": "Confirmation message for deleting a card"
-  },
-  "deleted": "Deleted",
-  "@deleted": {
-    "description": "Label for deleted status"
-  },
-  "cardDeletedSuccessfully": "Card deleted successfully",
-  "@cardDeletedSuccessfully": {
-    "description": "Message displayed when a card is successfully deleted"
-  },
-  "pleaseSelectAnAccount": "Please select an account",
-  "@pleaseSelectAnAccount": {
-    "description": "Message prompting the user to select an account"
-  },
-  "insufficientBalance": "Insufficient balance",
-  "@insufficientBalance": {
-    "description": "Message displayed when the account has insufficient balance"
-  },
-  "noteOptional": "Note (Optional)",
-  "@noteOptional": {
-    "description": "Label for an optional note field"
-  },
-  "transferCompletedSuccessfully": "Transfer completed successfully",
-  "@transferCompletedSuccessfully": {
-    "description": "Message displayed when a transfer is successfully completed"
-  },
-  "welcomeBack": "Welcome Back",
-  "@welcomeBack": {
-    "description": "Greeting message for returning users"
-  },
-  "emailAddress": "Email address",
-  "@emailAddress": {
-    "description": "Label for the email address field"
-  },
-  "pleaseEnterYourEmail": "Please enter your email",
-  "@pleaseEnterYourEmail": {
-    "description": "Message prompting the user to enter their email"
-  },
-  "pleaseEnterAValidEmail": "Please enter a valid email",
-  "@pleaseEnterAValidEmail": {
-    "description": "Message prompting the user to enter a valid email"
-  },
-  "password": "Password",
-  "@password": {
-    "description": "Label for the password field"
-  },
-  "pleaseEnterYourPassword": "Please enter your password",
-  "@pleaseEnterYourPassword": {
-    "description": "Message prompting the user to enter their password"
-  },
-  "passwordMustBeAtLeast6Characters": "Password must be at least 6 characters",
-  "@passwordMustBeAtLeast6Characters": {
-    "description": "Message indicating the password length requirement"
-  },
-  "forgotPassword": "Forgot password?",
-  "@forgotPassword": {
-    "description": "Label for the forgot password action"
-  },
-  "dontHaveAccount": "Don't have account?",
-  "@dontHaveAccount": {
-    "description": "Message prompting the user to sign up if they don't have an account"
-  },
-  "signUp": "Sign up",
-  "@signUp": {
-    "description": "Label for the sign-up action"
-  },
-  "alreadyHaveAnAccount": "Already have an account?",
-  "@alreadyHaveAnAccount": {
-    "description": "Message prompting the user to log in if they already have an account"
-  },
-  "orSignUpWith": "Or Sign Up With",
-  "@orSignUpWith": {
-    "description": "Label for the alternative sign-up options section"
-  },
-  "agreeToTerms": "I agree to Terms & Conditions",
-  "@agreeToTerms": {
-    "description": "Message indicating agreement to terms and conditions"
-  },
-  "createYourAccount": "Create your account",
-  "@createYourAccount": {
-    "description": "Label for the account creation section"
-  },
-  "validationFailed": "Validation Failed",
-  "@validationFailed": {
-    "description": "Message indicating that validation has failed"
-  },
-  "pleaseAgreeToTerms": "Please agree to Terms & Conditions",
-  "@pleaseAgreeToTerms": {
-    "description": "Message prompting the user to agree to terms and conditions"
-  },
-  "typeLabel": "Type",
-  "@typeLabel": {
-    "description": "Label for selecting the type of card or account"
-  },
-
-  "deleteSettlement": "Delete Settlement",
-  "@deleteSettlement": {
-    "description": "Title for the delete settlement dialog"
-  },
-  "confirmDeleteSettlement": "Are you sure you want to delete this settlement?",
-  "@confirmDeleteSettlement": {
-    "description": "Confirmation message for deleting a settlement"
-  },
-  "settlementDeletedSuccessfully": "Settlement deleted successfully",
-  "@settlementDeletedSuccessfully": {
-    "description": "Message displayed when a settlement is successfully deleted"
+  "subscriptionUpdated": "Subscription updated successfully",
+  "@subscriptionUpdated": {
+    "description": "Success message when subscription is updated"
   }
 }

@@ -374,5 +374,26 @@
   "pleaseAgreeToTerms": "कृपया नियम और शर्तों से सहमत हों",
   "deleteSettlement": "निपटान हटाएं",
   "confirmDeleteSettlement": "क्या आप वाकई इस निपटान को हटाना चाहते हैं?",
-  "settlementDeletedSuccessfully": "निपटान सफलतापूर्वक हटा दिया गया"
-} 
+  "settlementDeletedSuccessfully": "निपटान सफलतापूर्वक हटा दिया गया",
+  "currentPlan": "वर्तमान योजना",
+  "daysRemaining": "{days} दिन शेष",
+  "expired": "समाप्त",
+  "availablePlans": "उपलब्ध योजनाएं",
+  "basicPlan": "बेसिक योजना",
+  "basicPlanDescription": "व्यक्तिगत वित्त ट्रैकिंग के लिए उपयुक्त",
+  "premiumPlan": "प्रीमियम योजना",
+  "premiumPlanDescription": "पावर यूजर्स के लिए उन्नत सुविधाएं",
+  "unlimitedTransactions": "असीमित लेन-देन",
+  "basicReports": "बेसिक रिपोर्ट",
+  "emailSupport": "ईमेल सपोर्ट",
+  "advancedAnalytics": "उन्नत विश्लेषण",
+  "prioritySupport": "प्राथमिकता सपोर्ट",
+  "customCategories": "कस्टम श्रेणियां",
+  "dataExport": "डेटा निर्यात",
+  "perMonth": "/माह",
+  "subscribe": "सदस्यता लें",
+  "confirmSubscription": "सदस्यता की पुष्टि करें",
+  "subscriptionConfirmation": "आप योजना की सदस्यता लेने वाले हैं।",
+  "amount": "राशि",
+  "subscriptionUpdated": "सदस्यता सफलतापूर्वक अपडेट की गई"
+}

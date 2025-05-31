@@ -5,11 +5,13 @@ import '../data/repositories/transaction_repository.dart';
 import '../data/models/transaction_model.dart';
 import 'package:collection/collection.dart';
 import '../viewmodels/auth_viewmodel.dart';
+import '../core/services/notification_settings_service.dart';
 
 class TransactionViewModel extends ChangeNotifier {
   final TransactionRepository _repository;
   final AuthViewModel _authViewModel;
   final RecurringTransactionNotificationService? _notificationService;
+  final NotificationSettingsService _settingsService;
 
   List<TransactionModel> _transactions = [];
   bool _isLoading = false;
@@ -30,9 +32,11 @@ class TransactionViewModel extends ChangeNotifier {
 
   TransactionViewModel({
     required AuthViewModel authViewModel,
+    required NotificationSettingsService settingsService,
     TransactionRepository? repository,
     RecurringTransactionNotificationService? notificationService,
   })  : _authViewModel = authViewModel,
+        _settingsService = settingsService,
         _repository = repository ?? TransactionRepository(),
         _notificationService = notificationService {
     _init();
@@ -273,16 +277,15 @@ class TransactionViewModel extends ChangeNotifier {
 
       _transactions.insert(0, newTransaction);
 
-      // Schedule notifications if it's a recurring transaction and notification service is available
-      if (transaction.isRecurring && _notificationService != null) {
+      // Only schedule notifications if bill payment notifications are enabled
+      if (transaction.isRecurring && 
+          _notificationService != null && 
+          _settingsService.billPaymentEnabled) {
         try {
           await _notificationService!
               .scheduleRecurringTransactionNotifications(newTransaction);
         } catch (notificationError) {
-          // Log the notification error but don't fail the entire transaction
           print('Error scheduling notification: $notificationError');
-          // You might want to show a warning to the user that the transaction was added
-          // but notifications couldn't be scheduled
         }
       }
 

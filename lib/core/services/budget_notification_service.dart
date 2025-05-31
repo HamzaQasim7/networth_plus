@@ -26,8 +26,19 @@ class BudgetNotificationService {
   static const double overbudgetThreshold = 110.0; // 110%
 
   BudgetNotificationService() {
-    tz_data.initializeTimeZones();
+    _initializeTimeZones();
     _initializeNotifications();
+  }
+
+  Future<void> _initializeTimeZones() async {
+    try {
+      tz_data.initializeTimeZones();
+      // Set the local timezone
+      final String timeZoneName = DateTime.now().timeZoneName;
+      tz.setLocalLocation(tz.getLocation(timeZoneName));
+    } catch (e) {
+      print('Error initializing timezones: $e');
+    }
   }
 
   Future<void> _initializeNotifications() async {
@@ -159,12 +170,12 @@ class BudgetNotificationService {
               contentTitle: '⚠️ Budget Warning - ${budget.category}',
             ),
             actions: [
-              AndroidNotificationAction(
+              const AndroidNotificationAction(
                 'view_budget',
                 'View Budget',
                 icon: DrawableResourceAndroidBitmap('@drawable/ic_budget'),
               ),
-              AndroidNotificationAction(
+              const AndroidNotificationAction(
                 'view_transactions',
                 'View Expenses',
                 icon:
@@ -231,12 +242,12 @@ class BudgetNotificationService {
               contentTitle: '🚨 Budget Limit Reached - ${budget.category}',
             ),
             actions: [
-              AndroidNotificationAction(
+              const AndroidNotificationAction(
                 'review_budget',
                 'Review Budget',
                 icon: DrawableResourceAndroidBitmap('@drawable/ic_review'),
               ),
-              AndroidNotificationAction(
+              const AndroidNotificationAction(
                 'adjust_budget',
                 'Adjust Budget',
                 icon: DrawableResourceAndroidBitmap('@drawable/ic_edit'),
@@ -280,10 +291,20 @@ class BudgetNotificationService {
   Future<void> _sendOverbudgetAlert(
       BudgetModel budget, double currentSpent, double percentage) async {
     try {
-      final notificationId =
-          _generateBudgetNotificationId(budget.id, 'overbudget');
-      final overspent = currentSpent - budget.amount;
+      print('🚨 Starting overbudget alert notification...');
+      print('📊 Budget Details:');
+      print('  - Category: ${budget.category}');
+      print('  - Amount: ${_formatCurrency(budget.amount)}');
+      print('  - Current Spent: ${_formatCurrency(currentSpent)}');
+      print('  - Percentage: ${percentage.toStringAsFixed(1)}%');
 
+      final notificationId = _generateBudgetNotificationId(budget.id, 'overbudget');
+      print('🔔 Generated notification ID: $notificationId');
+
+      final overspent = currentSpent - budget.amount;
+      print('💰 Overspent amount: ${_formatCurrency(overspent)}');
+
+      print('📤 Sending notification...');
       await _localNotifications.show(
         notificationId,
         '💸 Budget Exceeded',
@@ -303,12 +324,12 @@ class BudgetNotificationService {
               contentTitle: '💸 Budget Exceeded - ${budget.category}',
             ),
             actions: [
-              AndroidNotificationAction(
+              const AndroidNotificationAction(
                 'emergency_review',
                 'Emergency Review',
                 icon: DrawableResourceAndroidBitmap('@drawable/ic_emergency'),
               ),
-              AndroidNotificationAction(
+              const AndroidNotificationAction(
                 'stop_spending',
                 'Spending Freeze',
                 icon: DrawableResourceAndroidBitmap('@drawable/ic_freeze'),
@@ -330,8 +351,9 @@ class BudgetNotificationService {
           'action': 'view_budget_exceeded'
         }),
       );
+      print('✅ Overbudget notification sent successfully');
 
-      // Store notification
+      print('💾 Storing notification in database...');
       await _storeBudgetNotification(
         'Budget Exceeded',
         '${budget.category}: ${_formatCurrency(overspent)} over budget',
@@ -345,72 +367,110 @@ class BudgetNotificationService {
           'overspent': overspent,
         },
       );
-    } catch (e) {
-      print('Error sending overbudget alert: $e');
+      print('✅ Notification stored successfully');
+    } catch (e, stackTrace) {
+      print('❌ Error sending overbudget alert: $e');
+      print('📚 Stack trace: $stackTrace');
     }
   }
 
   // Schedule monthly budget summary notification
   Future<void> scheduleMonthlyBudgetSummary(List<BudgetModel> budgets) async {
     try {
+      print('📅 Starting monthly budget summary scheduling...');
+      
       final userId = _auth.currentUser?.uid;
-      if (userId == null) return;
+      if (userId == null) {
+        print('❌ User not authenticated, cannot schedule notification');
+        return;
+      }
+      print('👤 User ID: $userId');
 
-      // Schedule for the last day of the month at 6 PM
-      final now = DateTime.now();
+      // Get current time in local timezone
+      final now = tz.TZDateTime.now(tz.local);
+      print('⏰ Current time: ${now.toString()}');
+      
+      // Calculate the last day of the current month
       final lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
-      final summaryTime = DateTime(
+      print('📅 Last day of current month: ${lastDayOfMonth.toString()}');
+      
+      // Create the scheduled time (6 PM on the last day of the month)
+      late tz.TZDateTime scheduledDate;
+      
+      // Create initial scheduled date
+      scheduledDate = tz.TZDateTime(
+        tz.local,
         lastDayOfMonth.year,
         lastDayOfMonth.month,
         lastDayOfMonth.day,
         18, // 6 PM
         0,
       );
+      print('📅 Initial scheduled date: ${scheduledDate.toString()}');
 
-      // Only schedule if the date is in the future
-      if (summaryTime.isAfter(DateTime.now())) {
-        final notificationId = _generateBudgetNotificationId(
-            'monthly_summary', now.month.toString());
+      // If the scheduled date is in the past, schedule for next month
+      if (scheduledDate.isBefore(now)) {
+        print('⚠️ Initial scheduled date is in the past, adjusting to next month');
+        final nextMonth = DateTime(now.year, now.month + 1, 1);
+        final nextMonthLastDay = DateTime(nextMonth.year, nextMonth.month + 1, 0);
+        print('📅 Next month last day: ${nextMonthLastDay.toString()}');
+        
+        scheduledDate = tz.TZDateTime(
+          tz.local,
+          nextMonthLastDay.year,
+          nextMonthLastDay.month,
+          nextMonthLastDay.day,
+          18, // 6 PM
+          0,
+        );
+        print('✅ Adjusted scheduled date: ${scheduledDate.toString()}');
+      }
 
-        await _localNotifications.zonedSchedule(
-          notificationId,
-          '📊 Monthly Budget Summary',
-          'Your budget performance summary for ${_getMonthName(now.month)} is ready',
-          tz.TZDateTime.from(summaryTime, tz.local),
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              'budget_reports',
-              'Budget Reports',
-              channelDescription: 'Monthly budget performance reports',
-              importance: Importance.defaultImportance,
-              priority: Priority.defaultPriority,
-              icon: '@mipmap/launcher_icon',
-              color: const Color(0xFF2196F3), // Blue for reports
-              styleInformation: const BigTextStyleInformation(
-                'Review your monthly budget performance and get insights for better financial planning.',
-                contentTitle: '📊 Monthly Budget Summary',
-              ),
-            ),
-            iOS: DarwinNotificationDetails(
-              categoryIdentifier: 'BUDGET_SUMMARY',
-              threadIdentifier: 'budget_summary_${now.month}',
-              subtitle: 'Monthly Report',
+      final notificationId = _generateBudgetNotificationId(
+          'monthly_summary', now.month.toString());
+      print('🔔 Generated notification ID: $notificationId');
+
+      print('📤 Scheduling notification...');
+      await _localNotifications.zonedSchedule(
+        notificationId,
+        '📊 Monthly Budget Summary',
+        'Your budget performance summary for ${_getMonthName(scheduledDate.month)} is ready',
+        scheduledDate,
+        NotificationDetails(
+          android: const AndroidNotificationDetails(
+            'budget_reports',
+            'Budget Reports',
+            channelDescription: 'Monthly budget performance reports',
+            importance: Importance.defaultImportance,
+            priority: Priority.defaultPriority,
+            icon: '@mipmap/launcher_icon',
+            color: Color(0xFF2196F3),
+            styleInformation: BigTextStyleInformation(
+              'Review your monthly budget performance and get insights for better financial planning.',
+              contentTitle: '📊 Monthly Budget Summary',
             ),
           ),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-          uiLocalNotificationDateInterpretation:
-              UILocalNotificationDateInterpretation.absoluteTime,
-          payload: jsonEncode({
-            'type': 'monthly_budget_summary',
-            'month': now.month,
-            'year': now.year,
-            'screen': 'budget_summary',
-            'action': 'view_monthly_summary'
-          }),
-        );
-      }
-    } catch (e) {
-      print('Error scheduling monthly budget summary: $e');
+          iOS: DarwinNotificationDetails(
+            categoryIdentifier: 'BUDGET_SUMMARY',
+            threadIdentifier: 'budget_summary_${scheduledDate.month}',
+            subtitle: 'Monthly Report',
+          ),
+        ),
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        payload: jsonEncode({
+          'type': 'monthly_budget_summary',
+          'month': scheduledDate.month,
+          'year': scheduledDate.year,
+          'screen': 'budget_summary',
+          'action': 'view_monthly_summary'
+        }),
+      );
+      print('✅ Notification scheduled successfully for ${scheduledDate.toString()}');
+    } catch (e, stackTrace) {
+      print('❌ Error scheduling monthly budget summary: $e');
+      print('📚 Stack trace: $stackTrace');
     }
   }
 
@@ -418,8 +478,19 @@ class BudgetNotificationService {
   Future<void> sendBudgetUpdateNotification(
       BudgetModel budget, String action) async {
     try {
+      print('📝 Starting budget update notification...');
+      
       final userId = _auth.currentUser?.uid;
-      if (userId == null) return;
+      if (userId == null) {
+        print('❌ User not authenticated, cannot send notification');
+        return;
+      }
+      print('👤 User ID: $userId');
+
+      print('📊 Budget Details:');
+      print('  - Category: ${budget.category}');
+      print('  - Amount: ${_formatCurrency(budget.amount)}');
+      print('  - Action: $action');
 
       String title;
       String body;
@@ -428,8 +499,7 @@ class BudgetNotificationService {
       switch (action.toLowerCase()) {
         case 'created':
           title = '✅ Budget Created';
-          body =
-              'New budget for ${budget.category}: ${_formatCurrency(budget.amount)}';
+          body = 'New budget for ${budget.category}: ${_formatCurrency(budget.amount)}';
           type = 'budget_created';
           break;
         case 'updated':
@@ -443,18 +513,24 @@ class BudgetNotificationService {
           type = 'budget_deleted';
           break;
         default:
+          print('⚠️ Invalid action type: $action');
           return;
       }
+      print('📋 Notification content prepared:');
+      print('  - Title: $title');
+      print('  - Body: $body');
+      print('  - Type: $type');
 
-      const notificationId =
-          888888; // Unique ID for immediate budget notifications
+      const notificationId = 888888;
+      print('🔔 Using notification ID: $notificationId');
 
+      print('📤 Sending notification...');
       await _localNotifications.show(
         notificationId,
         title,
         body,
         NotificationDetails(
-          android: AndroidNotificationDetails(
+          android: const AndroidNotificationDetails(
             'budget_reminders',
             'Budget Reminders',
             channelDescription:
@@ -462,7 +538,7 @@ class BudgetNotificationService {
             importance: Importance.defaultImportance,
             priority: Priority.defaultPriority,
             icon: '@mipmap/launcher_icon',
-            color: const Color(0xFF4CAF50), // Green for updates
+            color: Color(0xFF4CAF50), // Green for updates
           ),
           iOS: DarwinNotificationDetails(
             categoryIdentifier: 'BUDGET_UPDATE',
@@ -478,8 +554,9 @@ class BudgetNotificationService {
           'action': 'view_budget_update'
         }),
       );
+      print('✅ Budget update notification sent successfully');
 
-      // Store notification
+      print('💾 Storing notification in database...');
       await _storeBudgetNotification(
         title.replaceAll(RegExp(r'[^\w\s]'), ''), // Remove emojis for storage
         body,
@@ -491,37 +568,62 @@ class BudgetNotificationService {
           'action': action,
         },
       );
-    } catch (e) {
-      print('Error sending budget update notification: $e');
+      print('✅ Notification stored successfully');
+    } catch (e, stackTrace) {
+      print('❌ Error sending budget update notification: $e');
+      print('📚 Stack trace: $stackTrace');
     }
   }
 
   // Send weekly budget check-in notification
   Future<void> scheduleWeeklyBudgetCheckIn() async {
     try {
+      print('📅 Starting weekly budget check-in scheduling...');
+      
       final userId = _auth.currentUser?.uid;
-      if (userId == null) return;
+      if (userId == null) {
+        print('❌ User not authenticated, cannot schedule notification');
+        return;
+      }
+      print('👤 User ID: $userId');
 
-      // Schedule for every Sunday at 7 PM
-      final now = DateTime.now();
+      // Get current time in local timezone
+      final now = tz.TZDateTime.now(tz.local);
+      print('⏰ Current time: ${now.toString()}');
+      
+      // Calculate next Sunday
       final daysUntilSunday = 7 - now.weekday;
       final nextSunday = now.add(Duration(days: daysUntilSunday));
-      final checkInTime = DateTime(
+      print('📅 Next Sunday: ${nextSunday.toString()}');
+      
+      // Create the scheduled time (7 PM on next Sunday)
+      var scheduledDate = tz.TZDateTime(
+        tz.local,
         nextSunday.year,
         nextSunday.month,
         nextSunday.day,
         19, // 7 PM
         0,
       );
+      print('📅 Initial scheduled date: ${scheduledDate.toString()}');
+
+      // If the scheduled date is in the past, schedule for next week
+      if (scheduledDate.isBefore(now)) {
+        print('⚠️ Initial scheduled date is in the past, adjusting to next week');
+        scheduledDate = scheduledDate.add(const Duration(days: 7));
+        print('✅ Adjusted scheduled date: ${scheduledDate.toString()}');
+      }
 
       const notificationId = 777777;
+      print('🔔 Using notification ID: $notificationId');
 
+      print('📤 Scheduling notification...');
       await _localNotifications.zonedSchedule(
         notificationId,
         '📈 Weekly Budget Check-in',
         'How are your budgets doing this week?',
-        tz.TZDateTime.from(checkInTime, tz.local),
-        NotificationDetails(
+        scheduledDate,
+        const NotificationDetails(
           android: AndroidNotificationDetails(
             'budget_reminders',
             'Budget Reminders',
@@ -530,8 +632,8 @@ class BudgetNotificationService {
             importance: Importance.defaultImportance,
             priority: Priority.defaultPriority,
             icon: '@mipmap/launcher_icon',
-            color: const Color(0xFF9C27B0), // Purple for check-ins
-            styleInformation: const BigTextStyleInformation(
+            color: Color(0xFF9C27B0),
+            styleInformation: BigTextStyleInformation(
               'Take a moment to review your spending this week and stay on track with your financial goals.',
               contentTitle: '📈 Weekly Budget Check-in',
             ),
@@ -551,8 +653,10 @@ class BudgetNotificationService {
           'action': 'weekly_review'
         }),
       );
-    } catch (e) {
-      print('Error scheduling weekly budget check-in: $e');
+      print('✅ Weekly check-in notification scheduled successfully for ${scheduledDate.toString()}');
+    } catch (e, stackTrace) {
+      print('❌ Error scheduling weekly budget check-in: $e');
+      print('📚 Stack trace: $stackTrace');
     }
   }
 
@@ -594,6 +698,13 @@ class BudgetNotificationService {
     Map<String, dynamic> data,
   ) async {
     try {
+      print('💾 Starting budget notification storage...');
+      print('📋 Notification details:');
+      print('  - Title: $title');
+      print('  - Body: $body');
+      print('  - Type: $type');
+      print('  - Data: $data');
+
       final notification = AppNotification(
         id: '',
         title: title,
@@ -604,9 +715,12 @@ class BudgetNotificationService {
         data: data,
       );
 
+      print('📤 Storing notification...');
       await _storageService.storeNotification(notification);
-    } catch (e) {
-      print('Error storing budget notification: $e');
+      print('✅ Notification stored successfully');
+    } catch (e, stackTrace) {
+      print('❌ Error storing budget notification: $e');
+      print('📚 Stack trace: $stackTrace');
     }
   }
 
@@ -640,18 +754,26 @@ class BudgetNotificationService {
   // Cancel all budget notifications for a specific budget
   Future<void> cancelBudgetNotifications(String budgetId) async {
     try {
-      final warningNotificationId =
-          _generateBudgetNotificationId(budgetId, 'warning');
-      final criticalNotificationId =
-          _generateBudgetNotificationId(budgetId, 'critical');
-      final overbudgetNotificationId =
-          _generateBudgetNotificationId(budgetId, 'overbudget');
+      print('🗑️ Starting budget notifications cancellation...');
+      print('📊 Budget ID: $budgetId');
 
+      final warningNotificationId = _generateBudgetNotificationId(budgetId, 'warning');
+      final criticalNotificationId = _generateBudgetNotificationId(budgetId, 'critical');
+      final overbudgetNotificationId = _generateBudgetNotificationId(budgetId, 'overbudget');
+
+      print('🔔 Generated notification IDs:');
+      print('  - Warning: $warningNotificationId');
+      print('  - Critical: $criticalNotificationId');
+      print('  - Overbudget: $overbudgetNotificationId');
+
+      print('📤 Cancelling notifications...');
       await _localNotifications.cancel(warningNotificationId);
       await _localNotifications.cancel(criticalNotificationId);
       await _localNotifications.cancel(overbudgetNotificationId);
-    } catch (e) {
-      print('Error cancelling budget notifications: $e');
+      print('✅ All budget notifications cancelled successfully');
+    } catch (e, stackTrace) {
+      print('❌ Error cancelling budget notifications: $e');
+      print('📚 Stack trace: $stackTrace');
     }
   }
 

@@ -11,11 +11,15 @@ import '../data/models/budget_model.dart';
 import '../data/repositories/budget_repository.dart';
 import 'auth_viewmodel.dart';
 import 'transaction_viewmodel.dart';
+import '../core/services/budget_notification_service.dart';
+import '../core/services/notification_settings_service.dart';
 
 class BudgetViewModel extends ChangeNotifier {
   final BudgetRepository _repository;
   final AuthViewModel _authViewModel;
   final TransactionViewModel _transactionViewModel;
+  final BudgetNotificationService _notificationService;
+  final NotificationSettingsService _settingsService;
 
   List<BudgetModel> _budgets = [];
   bool _isLoading = false;
@@ -27,10 +31,14 @@ class BudgetViewModel extends ChangeNotifier {
   BudgetViewModel({
     required AuthViewModel authViewModel,
     required TransactionViewModel transactionViewModel,
+    required NotificationSettingsService settingsService,
     BudgetRepository? repository,
+    BudgetNotificationService? notificationService,
   })  : _authViewModel = authViewModel,
         _transactionViewModel = transactionViewModel,
-        _repository = repository ?? BudgetRepository() {
+        _settingsService = settingsService,
+        _repository = repository ?? BudgetRepository(),
+        _notificationService = notificationService ?? BudgetNotificationService() {
     _init();
   }
 
@@ -162,6 +170,19 @@ class BudgetViewModel extends ChangeNotifier {
       }
 
       await _repository.addBudget(budget);
+      
+      // Only send notifications if budget limits notifications are enabled
+      if (_settingsService.budgetLimitsEnabled) {
+        await _notificationService.sendBudgetUpdateNotification(budget, 'created');
+        
+        final now = DateTime.now();
+        if (budget.startDate.isAfter(now) || 
+            (budget.startDate.year == now.year && budget.startDate.month == now.month)) {
+          await _notificationService.scheduleMonthlyBudgetSummary([budget]);
+          await _notificationService.scheduleWeeklyBudgetCheckIn();
+        }
+      }
+      
       return true;
     } catch (e) {
       console('Budget creation error: $e', type: DebugType.error);
@@ -182,6 +203,14 @@ class BudgetViewModel extends ChangeNotifier {
       notifyListeners();
 
       await _repository.updateBudget(budget);
+      
+      // Send notification for budget update
+      await _notificationService.sendBudgetUpdateNotification(budget, 'updated');
+      
+      // Check budget status and send appropriate alerts
+      final currentSpent = getSpentForBudget(budget);
+      await _notificationService.checkBudgetStatus(budget, currentSpent);
+      
       return true;
     } catch (e) {
       console('Budget update error: $e', type: DebugType.error);
@@ -209,6 +238,12 @@ class BudgetViewModel extends ChangeNotifier {
 
       // Remove from local state
       _budgets.removeWhere((b) => b.id == budgetId);
+
+      // Send notification for budget deletion
+      await _notificationService.sendBudgetUpdateNotification(budget, 'deleted');
+      
+      // Cancel all notifications for this budget
+      await _notificationService.cancelBudgetNotifications(budgetId);
 
       notifyListeners();
       return true;
@@ -379,5 +414,17 @@ class BudgetViewModel extends ChangeNotifier {
   // Add this method to check if a category has an active budget
   bool hasBudgetForCategory(String category) {
     return filteredBudgets.any((b) => b.category == category && b.isActive);
+  }
+
+  // Add method to check budget status and send notifications
+  Future<void> checkBudgetStatusAndNotify() async {
+    if (_disposed || !_settingsService.budgetLimitsEnabled) return;
+    
+    for (final budget in filteredBudgets) {
+      if (budget.isActive) {
+        final currentSpent = getSpentForBudget(budget);
+        await _notificationService.checkBudgetStatus(budget, currentSpent);
+      }
+    }
   }
 }

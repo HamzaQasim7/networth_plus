@@ -61,6 +61,7 @@ dependencies:
   permission_handler: ^11.0.1
   csv: ^5.1.1
   share_plus: ^7.2.1
+  timeago: ^3.6.0
 
 dev_dependencies:
   flutter_test:
@@ -79,7 +80,7 @@ flutter_intl:   # dart run intl_utils:generate
   arb_dir: lib/l10n # The directory of ARB resource bundle files
   output_dir: lib/generated # The directory of generated localization files
 
-  # App Icon Configuration   flutter pub run flutter_launcher_icons, dart run flutter_launcher_icons:generate -o
+  # App Icon Configuration    dart run flutter_launcher_icons:generate -o
 flutter_launcher_icons:
   android: "assets/icons/app_logo.jpg"
 

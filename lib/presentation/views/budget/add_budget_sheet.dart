@@ -3,6 +3,7 @@ import 'package:finance_tracker/core/services/local_notification_service.dart';
 import 'package:finance_tracker/core/utils/motion_toast.dart';
 import 'package:finance_tracker/data/models/budget_model.dart';
 import 'package:finance_tracker/presentation/views/budget/widgets/budget_components.dart';
+import 'package:finance_tracker/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -444,11 +445,8 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
         title: const Text('Add Collaborator'),
         content: SizedBox(
           width: double.maxFinite,
-          child: TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Enter email or name',
-              border: OutlineInputBorder(),
-            ),
+          child: CustomTextField(
+            labelText: 'Enter name',
             onFieldSubmitted: (value) {
               if (value.isNotEmpty) {
                 setState(() {
@@ -501,7 +499,6 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
     }
 
     final viewModel = Provider.of<BudgetViewModel>(context, listen: false);
-    final notificationService = ScheduledNotificationService();
 
     if (viewModel.isLoading) {
       return;
@@ -568,48 +565,6 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
               viewModel.error ?? 'Failed to save budget. Please try again.',
         );
         return;
-      }
-
-      // Schedule notifications for budget alerts
-      if (success) {
-        // Cancel existing notifications if editing
-        if (widget.existingBudget != null) {
-          await notificationService.cancelNotification(widget.existingBudget!.hashCode);
-        }
-
-        // Schedule new notifications for each alert threshold
-        for (final alert in _alerts) {
-          if (alert == 'exceeded') {
-            // Schedule notification for when budget is exceeded
-            await notificationService.scheduleBudgetAlert(
-              id: budget.hashCode + 100, // Offset to avoid conflicts
-              category: budget.category,
-              amount: budget.amount,
-              threshold: 100,
-              scheduledDate: budget.startDate,
-            );
-          } else {
-            // Schedule notifications for percentage thresholds
-            final threshold = int.tryParse(alert.replaceAll('%', ''));
-            if (threshold != null) {
-              await notificationService.scheduleBudgetAlert(
-                id: budget.hashCode + threshold, // Unique ID for each threshold
-                category: budget.category,
-                amount: budget.amount * (threshold / 100),
-                threshold: threshold.toDouble(),
-                scheduledDate: budget.startDate,
-              );
-            }
-          }
-        }
-
-        // Schedule monthly summary notification
-        if (_isRecurring) {
-          await notificationService.scheduleMonthlyBudgetSummary(
-            id: budget.hashCode + 1000, // Offset for summary notification
-            scheduledDate: budget.endDate,
-          );
-        }
       }
 
       if (mounted && success) {
@@ -786,8 +741,7 @@ class _AddBudgetSheetState extends State<AddBudgetSheet> {
       _category = category['title'] as String;
       _categoryIcon = category['icon'] as IconData;
       _categoryIconCode = _categoryIcon.codePoint.toString();
-      _categoryIconFontFamily =
-          _categoryIcon.fontFamily ?? 'FontAwesomeSolid'; // <-- NEW
+      _categoryIconFontFamily = _categoryIcon.fontFamily ?? 'FontAwesomeSolid';
     });
   }
 

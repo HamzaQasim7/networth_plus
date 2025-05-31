@@ -128,7 +128,7 @@ class BudgetModel {
       category: category ?? this.category,
       amount: amount ?? this.amount,
       spent: spent ?? this.spent,
-      icon: categoryData?['icon'] ?? icon ?? this.icon,
+      icon: icon ?? this.icon,
       iconFontFamily: iconFontFamily ?? this.iconFontFamily,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,

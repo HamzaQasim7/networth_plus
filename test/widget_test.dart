@@ -5,17 +5,22 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:finance_tracker/core/services/notification_settings_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:finance_tracker/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     final prefs = await SharedPreferences.getInstance();
-
-    await tester.pumpWidget( MyApp(prefs: prefs));
+    final NotificationSettingsService notificationSettingsService =
+        NotificationSettingsService(prefs);
+    await tester.pumpWidget(MyApp(
+        prefs: prefs,
+        notificationSettingsService: notificationSettingsService));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

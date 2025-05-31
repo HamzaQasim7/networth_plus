@@ -29,8 +29,7 @@ class BudgetNotificationService {
       final data = doc.data();
 
       _firestore
-          .collection('users')
-          .doc(userId)
+         
           .collection('transactions')
           .where('category', isEqualTo: categoryId)
           .snapshots()
@@ -55,8 +54,7 @@ class BudgetNotificationService {
     final firstDayOfMonth = DateTime(now.year, now.month, 1);
 
     final transactionsSnapshot = await _firestore
-        .collection('users')
-        .doc(userId)
+      
         .collection('transactions')
         .where('category', isEqualTo: categoryId)
         .where('date',

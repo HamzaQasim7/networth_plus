@@ -756,12 +756,12 @@ class AppLocalizations {
     );
   }
 
-  /// `Amount`
+  /// `Amount:`
   String get amount {
     return Intl.message(
-      'Amount',
+      'Amount:',
       name: 'amount',
-      desc: 'Label for entering or displaying an amount',
+      desc: 'Label for subscription amount',
       args: [],
     );
   }
@@ -1408,10 +1408,10 @@ class AppLocalizations {
     );
   }
 
-  /// `Remaining`
+  /// `remaining`
   String get remaining {
     return Intl.message(
-      'Remaining',
+      'remaining',
       name: 'remaining',
       desc: 'Label for remaining amount',
       args: [],
@@ -1914,7 +1914,7 @@ class AppLocalizations {
     return Intl.message(
       'Name',
       name: 'name',
-      desc: 'Label for the name field',
+      desc: 'Label for name field',
       args: [],
     );
   }
@@ -2577,12 +2577,12 @@ class AppLocalizations {
     );
   }
 
-  /// `Interest Rate (%)`
+  /// `Interest Rate`
   String get interestRate {
     return Intl.message(
-      'Interest Rate (%)',
+      'Interest Rate',
       name: 'interestRate',
-      desc: 'Label for entering the interest rate',
+      desc: 'Label for interest rate',
       args: [],
     );
   }
@@ -2903,7 +2903,7 @@ class AppLocalizations {
     return Intl.message(
       'Income & Expense Analysis',
       name: 'incomeAndExpenseAnalysis',
-      desc: 'Label for the income and expense analysis section',
+      desc: 'Title for the income and expense analysis screen',
       args: [],
     );
   }
@@ -2924,7 +2924,7 @@ class AppLocalizations {
     return Intl.message(
       'Budget vs Actual',
       name: 'budgetVsActual',
-      desc: 'Label for the budget vs actual performance section',
+      desc: 'Title for the budget vs actual screen',
       args: [],
     );
   }
@@ -2944,7 +2944,7 @@ class AppLocalizations {
     return Intl.message(
       'Download Reports',
       name: 'downloadReports',
-      desc: 'Button text for downloading financial reports',
+      desc: 'Title for the download reports screen',
       args: [],
     );
   }
@@ -3105,7 +3105,7 @@ class AppLocalizations {
     return Intl.message(
       'Savings Goals',
       name: 'savingsGoals',
-      desc: 'Label for the savings goals section',
+      desc: 'Title for the savings goals screen',
       args: [],
     );
   }
@@ -3125,17 +3125,257 @@ class AppLocalizations {
     return Intl.message(
       'Debt Repayment Plan',
       name: 'debtRepaymentPlan',
-      desc: 'Label for the debt repayment plan section',
+      desc: 'Title for the debt repayment plan screen',
       args: [],
     );
   }
 
-  /// `Manage and track debt payments`
-  String get manageAndTrackDebtPayments {
+  /// `Debt Summary`
+  String get debtSummary {
     return Intl.message(
-      'Manage and track debt payments',
-      name: 'manageAndTrackDebtPayments',
-      desc: 'Message prompting the user to manage and track debt payments',
+      'Debt Summary',
+      name: 'debtSummary',
+      desc: 'Title for debt summary section',
+      args: [],
+    );
+  }
+
+  /// `Total Debt`
+  String get totalDebt {
+    return Intl.message(
+      'Total Debt',
+      name: 'totalDebt',
+      desc: 'Label for total debt amount',
+      args: [],
+    );
+  }
+
+  /// `Monthly Payment:`
+  String get monthlyPayment {
+    return Intl.message(
+      'Monthly Payment:',
+      name: 'monthlyPayment',
+      desc: 'Label for monthly payment result',
+      args: [],
+    );
+  }
+
+  /// `Avg Interest`
+  String get avgInterest {
+    return Intl.message(
+      'Avg Interest',
+      name: 'avgInterest',
+      desc: 'Label for average interest rate',
+      args: [],
+    );
+  }
+
+  /// `Active Debts`
+  String get activeDebts {
+    return Intl.message(
+      'Active Debts',
+      name: 'activeDebts',
+      desc: 'Title for active debts section',
+      args: [],
+    );
+  }
+
+  /// `No active debts`
+  String get noActiveDebts {
+    return Intl.message(
+      'No active debts',
+      name: 'noActiveDebts',
+      desc: 'Message shown when there are no active debts',
+      args: [],
+    );
+  }
+
+  /// ` paid`
+  String get paid {
+    return Intl.message(
+      ' paid',
+      name: 'paid',
+      desc: 'Label for paid percentage',
+      args: [],
+    );
+  }
+
+  /// `Debt Analysis`
+  String get debtAnalysis {
+    return Intl.message(
+      'Debt Analysis',
+      name: 'debtAnalysis',
+      desc: 'Title for debt analysis section',
+      args: [],
+    );
+  }
+
+  /// `Recommended Payoff Strategy`
+  String get recommendedPayoffStrategy {
+    return Intl.message(
+      'Recommended Payoff Strategy',
+      name: 'recommendedPayoffStrategy',
+      desc: 'Title for recommended payoff strategy',
+      args: [],
+    );
+  }
+
+  /// `Debt Avalanche Method: Pay off debts in order of highest to lowest interest rate while maintaining minimum payments on all debts.`
+  String get debtAvalancheMethod {
+    return Intl.message(
+      'Debt Avalanche Method: Pay off debts in order of highest to lowest interest rate while maintaining minimum payments on all debts.',
+      name: 'debtAvalancheMethod',
+      desc: 'Description of the debt avalanche method',
+      args: [],
+    );
+  }
+
+  /// `Priority Order:`
+  String get priorityOrder {
+    return Intl.message(
+      'Priority Order:',
+      name: 'priorityOrder',
+      desc: 'Label for priority order list',
+      args: [],
+    );
+  }
+
+  /// `Add New Debt`
+  String get addNewDebt {
+    return Intl.message(
+      'Add New Debt',
+      name: 'addNewDebt',
+      desc: 'Title for add new debt dialog',
+      args: [],
+    );
+  }
+
+  /// `Debt Name`
+  String get debtName {
+    return Intl.message(
+      'Debt Name',
+      name: 'debtName',
+      desc: 'Label for debt name field',
+      args: [],
+    );
+  }
+
+  /// `Debt Type`
+  String get debtType {
+    return Intl.message(
+      'Debt Type',
+      name: 'debtType',
+      desc: 'Label for debt type field',
+      args: [],
+    );
+  }
+
+  /// `Total Amount`
+  String get totalAmount {
+    return Intl.message(
+      'Total Amount',
+      name: 'totalAmount',
+      desc: 'Label for total amount field',
+      args: [],
+    );
+  }
+
+  /// `Interest Rate`
+  String get interestRatePercent {
+    return Intl.message(
+      'Interest Rate',
+      name: 'interestRatePercent',
+      desc: 'Label for interest rate field',
+      args: [],
+    );
+  }
+
+  /// `Minimum Monthly Payment`
+  String get minimumMonthlyPayment {
+    return Intl.message(
+      'Minimum Monthly Payment',
+      name: 'minimumMonthlyPayment',
+      desc: 'Label for minimum monthly payment field',
+      args: [],
+    );
+  }
+
+  /// `Add Debt`
+  String get addDebt {
+    return Intl.message(
+      'Add Debt',
+      name: 'addDebt',
+      desc: 'Label for add debt button',
+      args: [],
+    );
+  }
+
+  /// `Edit Debt`
+  String get editDebt {
+    return Intl.message(
+      'Edit Debt',
+      name: 'editDebt',
+      desc: 'Title for edit debt dialog',
+      args: [],
+    );
+  }
+
+  /// `Save Changes`
+  String get saveChanges {
+    return Intl.message(
+      'Save Changes',
+      name: 'saveChanges',
+      desc: 'Label for save changes button',
+      args: [],
+    );
+  }
+
+  /// `Add Payment`
+  String get addPayment {
+    return Intl.message(
+      'Add Payment',
+      name: 'addPayment',
+      desc: 'Title for add payment dialog',
+      args: [],
+    );
+  }
+
+  /// `Current Balance:`
+  String get currentBalance {
+    return Intl.message(
+      'Current Balance:',
+      name: 'currentBalance',
+      desc: 'Label for current balance',
+      args: [],
+    );
+  }
+
+  /// `Payment Amount`
+  String get paymentAmount {
+    return Intl.message(
+      'Payment Amount',
+      name: 'paymentAmount',
+      desc: 'Label for payment amount field',
+      args: [],
+    );
+  }
+
+  /// `Delete Debt`
+  String get deleteDebt {
+    return Intl.message(
+      'Delete Debt',
+      name: 'deleteDebt',
+      desc: 'Title for delete debt confirmation dialog',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete? This action cannot be undone.`
+  String get deleteDebtConfirmation {
+    return Intl.message(
+      'Are you sure you want to delete? This action cannot be undone.',
+      name: 'deleteDebtConfirmation',
+      desc: 'Confirmation message for deleting a debt',
       args: [],
     );
   }
@@ -3145,17 +3385,178 @@ class AppLocalizations {
     return Intl.message(
       'Retirement Planning',
       name: 'retirementPlanning',
-      desc: 'Label for the retirement planning section',
+      desc: 'Title for the retirement planning screen',
       args: [],
     );
   }
 
-  /// `Plan for your retirement`
-  String get planForYourRetirement {
+  /// `Create Retirement Plan`
+  String get createRetirementPlan {
     return Intl.message(
-      'Plan for your retirement',
-      name: 'planForYourRetirement',
-      desc: 'Message encouraging the user to plan for their retirement',
+      'Create Retirement Plan',
+      name: 'createRetirementPlan',
+      desc: 'Button text for creating a new retirement plan',
+      args: [],
+    );
+  }
+
+  /// `Retirement Summary`
+  String get retirementSummary {
+    return Intl.message(
+      'Retirement Summary',
+      name: 'retirementSummary',
+      desc: 'Title for retirement summary section',
+      args: [],
+    );
+  }
+
+  /// `Current Age`
+  String get currentAge {
+    return Intl.message(
+      'Current Age',
+      name: 'currentAge',
+      desc: 'Label for current age',
+      args: [],
+    );
+  }
+
+  /// `Retirement Age`
+  String get retirementAge {
+    return Intl.message(
+      'Retirement Age',
+      name: 'retirementAge',
+      desc: 'Label for retirement age',
+      args: [],
+    );
+  }
+
+  /// `Years Until Retirement`
+  String get yearsUntilRetirement {
+    return Intl.message(
+      'Years Until Retirement',
+      name: 'yearsUntilRetirement',
+      desc: 'Label for years until retirement',
+      args: [],
+    );
+  }
+
+  /// `Current Savings`
+  String get currentSavings {
+    return Intl.message(
+      'Current Savings',
+      name: 'currentSavings',
+      desc: 'Label for current savings amount',
+      args: [],
+    );
+  }
+
+  /// `Monthly Contribution`
+  String get monthlyContribution {
+    return Intl.message(
+      'Monthly Contribution',
+      name: 'monthlyContribution',
+      desc: 'Label for monthly contribution amount',
+      args: [],
+    );
+  }
+
+  /// `Retirement Projections`
+  String get retirementProjections {
+    return Intl.message(
+      'Retirement Projections',
+      name: 'retirementProjections',
+      desc: 'Title for retirement projections section',
+      args: [],
+    );
+  }
+
+  /// `Projected Retirement Savings`
+  String get projectedRetirementSavings {
+    return Intl.message(
+      'Projected Retirement Savings',
+      name: 'projectedRetirementSavings',
+      desc: 'Label for projected retirement savings',
+      args: [],
+    );
+  }
+
+  /// `Monthly Retirement Income`
+  String get monthlyRetirementIncome {
+    return Intl.message(
+      'Monthly Retirement Income',
+      name: 'monthlyRetirementIncome',
+      desc: 'Label for monthly retirement income',
+      args: [],
+    );
+  }
+
+  /// `Desired Monthly Income`
+  String get desiredMonthlyIncome {
+    return Intl.message(
+      'Desired Monthly Income',
+      name: 'desiredMonthlyIncome',
+      desc: 'Label for desired monthly income',
+      args: [],
+    );
+  }
+
+  /// `Funding Progress:`
+  String get fundingProgress {
+    return Intl.message(
+      'Funding Progress:',
+      name: 'fundingProgress',
+      desc: 'Label for funding progress percentage',
+      args: [],
+    );
+  }
+
+  /// `Consider increasing your monthly contribution to reach your retirement goal.`
+  String get recommendationIncreaseContribution {
+    return Intl.message(
+      'Consider increasing your monthly contribution to reach your retirement goal.',
+      name: 'recommendationIncreaseContribution',
+      desc: 'Recommendation to increase monthly contribution',
+      args: [],
+    );
+  }
+
+  /// `Your expected return seems conservative. Consider diversifying your investments.`
+  String get recommendationDiversifyInvestments {
+    return Intl.message(
+      'Your expected return seems conservative. Consider diversifying your investments.',
+      name: 'recommendationDiversifyInvestments',
+      desc: 'Recommendation to diversify investments',
+      args: [],
+    );
+  }
+
+  /// `Your current savings rate might be too low. Aim to save at least 10-15% of your income.`
+  String get recommendationIncreaseSavingsRate {
+    return Intl.message(
+      'Your current savings rate might be too low. Aim to save at least 10-15% of your income.',
+      name: 'recommendationIncreaseSavingsRate',
+      desc: 'Recommendation to increase savings rate',
+      args: [],
+    );
+  }
+
+  /// `Early retirement requires more savings. Make sure your plan accounts for a longer retirement period.`
+  String get recommendationEarlyRetirement {
+    return Intl.message(
+      'Early retirement requires more savings. Make sure your plan accounts for a longer retirement period.',
+      name: 'recommendationEarlyRetirement',
+      desc: 'Recommendation for early retirement planning',
+      args: [],
+    );
+  }
+
+  /// `You're on track with your retirement goals!`
+  String get recommendationOnTrack {
+    return Intl.message(
+      'You\'re on track with your retirement goals!',
+      name: 'recommendationOnTrack',
+      desc:
+          'Message indicating the user is on track with their retirement goals',
       args: [],
     );
   }
@@ -3165,28 +3566,367 @@ class AppLocalizations {
     return Intl.message(
       'Financial Calculator',
       name: 'financialCalculator',
-      desc: 'Label for the financial calculator section',
+      desc: 'Title for the financial calculator screen',
       args: [],
     );
   }
 
-  /// `Calculate loans, investments & more`
-  String get calculateLoansInvestmentsAndMore {
+  /// `Loan Calculator`
+  String get loanCalculator {
     return Intl.message(
-      'Calculate loans, investments & more',
-      name: 'calculateLoansInvestmentsAndMore',
-      desc:
-          'Message prompting the user to use the financial calculator for various calculations',
+      'Loan Calculator',
+      name: 'loanCalculator',
+      desc: 'Title for loan calculator',
       args: [],
     );
   }
 
-  /// `Account Settings`
-  String get accountSettings {
+  /// `Calculate loan payments and total interest`
+  String get loanCalculatorDescription {
     return Intl.message(
-      'Account Settings',
-      name: 'accountSettings',
-      desc: 'Label for the account settings section',
+      'Calculate loan payments and total interest',
+      name: 'loanCalculatorDescription',
+      desc: 'Description for loan calculator',
+      args: [],
+    );
+  }
+
+  /// `Investment Calculator`
+  String get investmentCalculator {
+    return Intl.message(
+      'Investment Calculator',
+      name: 'investmentCalculator',
+      desc: 'Title for investment calculator',
+      args: [],
+    );
+  }
+
+  /// `Calculate investment growth and returns`
+  String get investmentCalculatorDescription {
+    return Intl.message(
+      'Calculate investment growth and returns',
+      name: 'investmentCalculatorDescription',
+      desc: 'Description for investment calculator',
+      args: [],
+    );
+  }
+
+  /// `Savings Goal Calculator`
+  String get savingsGoalCalculator {
+    return Intl.message(
+      'Savings Goal Calculator',
+      name: 'savingsGoalCalculator',
+      desc: 'Title for savings goal calculator',
+      args: [],
+    );
+  }
+
+  /// `Calculate monthly savings needed`
+  String get savingsGoalCalculatorDescription {
+    return Intl.message(
+      'Calculate monthly savings needed',
+      name: 'savingsGoalCalculatorDescription',
+      desc: 'Description for savings goal calculator',
+      args: [],
+    );
+  }
+
+  /// `Mortgage Calculator`
+  String get mortgageCalculator {
+    return Intl.message(
+      'Mortgage Calculator',
+      name: 'mortgageCalculator',
+      desc: 'Title for mortgage calculator',
+      args: [],
+    );
+  }
+
+  /// `Calculate mortgage payments and amortization`
+  String get mortgageCalculatorDescription {
+    return Intl.message(
+      'Calculate mortgage payments and amortization',
+      name: 'mortgageCalculatorDescription',
+      desc: 'Description for mortgage calculator',
+      args: [],
+    );
+  }
+
+  /// `Loan Amount`
+  String get loanAmount {
+    return Intl.message(
+      'Loan Amount',
+      name: 'loanAmount',
+      desc: 'Label for loan amount field',
+      args: [],
+    );
+  }
+
+  /// `Annual Interest Rate (%)`
+  String get annualInterestRate {
+    return Intl.message(
+      'Annual Interest Rate (%)',
+      name: 'annualInterestRate',
+      desc: 'Label for annual interest rate field',
+      args: [],
+    );
+  }
+
+  /// `Loan Term (months)`
+  String get loanTerm {
+    return Intl.message(
+      'Loan Term (months)',
+      name: 'loanTerm',
+      desc: 'Label for loan term field',
+      args: [],
+    );
+  }
+
+  /// `Calculate`
+  String get calculate {
+    return Intl.message(
+      'Calculate',
+      name: 'calculate',
+      desc: 'Label for calculate button',
+      args: [],
+    );
+  }
+
+  /// `Loan Calculation Results`
+  String get loanCalculationResults {
+    return Intl.message(
+      'Loan Calculation Results',
+      name: 'loanCalculationResults',
+      desc: 'Title for loan calculation results',
+      args: [],
+    );
+  }
+
+  /// `Total Interest:`
+  String get totalInterest {
+    return Intl.message(
+      'Total Interest:',
+      name: 'totalInterest',
+      desc: 'Label for total interest result',
+      args: [],
+    );
+  }
+
+  /// `Total Payment:`
+  String get totalPayment {
+    return Intl.message(
+      'Total Payment:',
+      name: 'totalPayment',
+      desc: 'Label for total payment result',
+      args: [],
+    );
+  }
+
+  /// `Initial Investment`
+  String get initialInvestment {
+    return Intl.message(
+      'Initial Investment',
+      name: 'initialInvestment',
+      desc: 'Label for initial investment field',
+      args: [],
+    );
+  }
+
+  /// `Annual Return Rate`
+  String get annualReturnRate {
+    return Intl.message(
+      'Annual Return Rate',
+      name: 'annualReturnRate',
+      desc: 'Label for annual return rate field',
+      args: [],
+    );
+  }
+
+  /// `Investment Period (years)`
+  String get investmentPeriod {
+    return Intl.message(
+      'Investment Period (years)',
+      name: 'investmentPeriod',
+      desc: 'Label for investment period field',
+      args: [],
+    );
+  }
+
+  /// `Investment Calculation Results`
+  String get investmentCalculationResults {
+    return Intl.message(
+      'Investment Calculation Results',
+      name: 'investmentCalculationResults',
+      desc: 'Title for investment calculation results',
+      args: [],
+    );
+  }
+
+  /// `Future Value:`
+  String get futureValue {
+    return Intl.message(
+      'Future Value:',
+      name: 'futureValue',
+      desc: 'Label for future value result',
+      args: [],
+    );
+  }
+
+  /// `Total Contributions:`
+  String get totalContributions {
+    return Intl.message(
+      'Total Contributions:',
+      name: 'totalContributions',
+      desc: 'Label for total contributions result',
+      args: [],
+    );
+  }
+
+  /// `Total Earnings:`
+  String get totalEarnings {
+    return Intl.message(
+      'Total Earnings:',
+      name: 'totalEarnings',
+      desc: 'Label for total earnings result',
+      args: [],
+    );
+  }
+
+  /// `Goal Amount`
+  String get goalAmount {
+    return Intl.message(
+      'Goal Amount',
+      name: 'goalAmount',
+      desc: 'Label for goal amount field',
+      args: [],
+    );
+  }
+
+  /// `Time to Goal (months)`
+  String get timeToGoal {
+    return Intl.message(
+      'Time to Goal (months)',
+      name: 'timeToGoal',
+      desc: 'Label for time to goal field',
+      args: [],
+    );
+  }
+
+  /// `Initial Savings`
+  String get initialSavings {
+    return Intl.message(
+      'Initial Savings',
+      name: 'initialSavings',
+      desc: 'Label for initial savings field',
+      args: [],
+    );
+  }
+
+  /// `Savings Goal Calculation Results`
+  String get savingsGoalCalculationResults {
+    return Intl.message(
+      'Savings Goal Calculation Results',
+      name: 'savingsGoalCalculationResults',
+      desc: 'Title for savings goal calculation results',
+      args: [],
+    );
+  }
+
+  /// `Required Monthly Savings:`
+  String get requiredMonthlySavings {
+    return Intl.message(
+      'Required Monthly Savings:',
+      name: 'requiredMonthlySavings',
+      desc: 'Label for required monthly savings result',
+      args: [],
+    );
+  }
+
+  /// `Total Savings Needed:`
+  String get totalSavingsNeeded {
+    return Intl.message(
+      'Total Savings Needed:',
+      name: 'totalSavingsNeeded',
+      desc: 'Label for total savings needed result',
+      args: [],
+    );
+  }
+
+  /// `Time to Goal:`
+  String get timeToGoalResult {
+    return Intl.message(
+      'Time to Goal:',
+      name: 'timeToGoalResult',
+      desc: 'Label for time to goal result',
+      args: [],
+    );
+  }
+
+  /// `Home Price`
+  String get homePrice {
+    return Intl.message(
+      'Home Price',
+      name: 'homePrice',
+      desc: 'Label for home price field',
+      args: [],
+    );
+  }
+
+  /// `Down Payment`
+  String get downPayment {
+    return Intl.message(
+      'Down Payment',
+      name: 'downPayment',
+      desc: 'Label for down payment field',
+      args: [],
+    );
+  }
+
+  /// `Loan Term (years)`
+  String get loanTermYears {
+    return Intl.message(
+      'Loan Term (years)',
+      name: 'loanTermYears',
+      desc: 'Label for loan term in years field',
+      args: [],
+    );
+  }
+
+  /// `Mortgage Calculation Results`
+  String get mortgageCalculationResults {
+    return Intl.message(
+      'Mortgage Calculation Results',
+      name: 'mortgageCalculationResults',
+      desc: 'Title for mortgage calculation results',
+      args: [],
+    );
+  }
+
+  /// `Total Cost:`
+  String get totalCost {
+    return Intl.message(
+      'Total Cost:',
+      name: 'totalCost',
+      desc: 'Label for total cost result',
+      args: [],
+    );
+  }
+
+  /// `Down Payment:`
+  String get downPaymentPercentage {
+    return Intl.message(
+      'Down Payment:',
+      name: 'downPaymentPercentage',
+      desc: 'Label for down payment percentage result',
+      args: [],
+    );
+  }
+
+  /// `OK`
+  String get ok {
+    return Intl.message(
+      'OK',
+      name: 'ok',
+      desc: 'Label for OK button',
       args: [],
     );
   }
@@ -3196,17 +3936,137 @@ class AppLocalizations {
     return Intl.message(
       'Profile',
       name: 'profile',
-      desc: 'Label for the profile section',
+      desc: 'Title for the profile screen',
       args: [],
     );
   }
 
-  /// `Manage personal information`
-  String get managePersonalInformation {
+  /// `Profile not available`
+  String get profileNotAvailable {
     return Intl.message(
-      'Manage personal information',
-      name: 'managePersonalInformation',
-      desc: 'Message prompting the user to manage their personal information',
+      'Profile not available',
+      name: 'profileNotAvailable',
+      desc: 'Message shown when profile is not available',
+      args: [],
+    );
+  }
+
+  /// `No Name`
+  String get noName {
+    return Intl.message(
+      'No Name',
+      name: 'noName',
+      desc: 'Default text when user name is not set',
+      args: [],
+    );
+  }
+
+  /// `Personal Information`
+  String get personalInformation {
+    return Intl.message(
+      'Personal Information',
+      name: 'personalInformation',
+      desc: 'Title for personal information section',
+      args: [],
+    );
+  }
+
+  /// `Phone`
+  String get phone {
+    return Intl.message(
+      'Phone',
+      name: 'phone',
+      desc: 'Label for phone number',
+      args: [],
+    );
+  }
+
+  /// `Not set`
+  String get notSet {
+    return Intl.message(
+      'Not set',
+      name: 'notSet',
+      desc: 'Text shown when a field is not set',
+      args: [],
+    );
+  }
+
+  /// `Date of Birth`
+  String get dateOfBirth {
+    return Intl.message(
+      'Date of Birth',
+      name: 'dateOfBirth',
+      desc: 'Label for date of birth',
+      args: [],
+    );
+  }
+
+  /// `Financial Information`
+  String get financialInformation {
+    return Intl.message(
+      'Financial Information',
+      name: 'financialInformation',
+      desc: 'Title for financial information section',
+      args: [],
+    );
+  }
+
+  /// `Monthly Income`
+  String get monthlyIncome {
+    return Intl.message(
+      'Monthly Income',
+      name: 'monthlyIncome',
+      desc: 'Label for monthly income',
+      args: [],
+    );
+  }
+
+  /// `Preferred Currency`
+  String get preferredCurrency {
+    return Intl.message(
+      'Preferred Currency',
+      name: 'preferredCurrency',
+      desc: 'Label for preferred currency',
+      args: [],
+    );
+  }
+
+  /// `Edit Profile`
+  String get editProfile {
+    return Intl.message(
+      'Edit Profile',
+      name: 'editProfile',
+      desc: 'Title for edit profile dialog',
+      args: [],
+    );
+  }
+
+  /// `Phone Number`
+  String get phoneNumber {
+    return Intl.message(
+      'Phone Number',
+      name: 'phoneNumber',
+      desc: 'Label for phone number field',
+      args: [],
+    );
+  }
+
+  /// `Occupation`
+  String get occupation {
+    return Intl.message(
+      'Occupation',
+      name: 'occupation',
+      desc: 'Label for occupation field',
+      args: [],
+    );
+  }
+
+  /// `Please enter your name`
+  String get pleaseEnterName {
+    return Intl.message(
+      'Please enter your name',
+      name: 'pleaseEnterName',
+      desc: 'Validation message for name field',
       args: [],
     );
   }
@@ -3216,570 +4076,207 @@ class AppLocalizations {
     return Intl.message(
       'Subscription Plan',
       name: 'subscriptionPlan',
-      desc: 'Label for the subscription plan section',
+      desc: 'Title for the subscription plan screen',
       args: [],
     );
   }
 
-  /// `Manage your subscription`
-  String get manageYourSubscription {
+  /// `Current Plan`
+  String get currentPlan {
     return Intl.message(
-      'Manage your subscription',
-      name: 'manageYourSubscription',
-      desc: 'Message prompting the user to manage their subscription',
+      'Current Plan',
+      name: 'currentPlan',
+      desc: 'Title for current plan section',
       args: [],
     );
   }
 
-  /// `Security`
-  String get security {
+  /// `days remaining`
+  String get daysRemaining {
     return Intl.message(
-      'Security',
-      name: 'security',
-      desc: 'Label for the security section',
+      'days remaining',
+      name: 'daysRemaining',
+      desc: 'Label for days remaining in subscription',
       args: [],
     );
   }
 
-  /// `App lock, biometrics & backup`
-  String get appLockBiometricsAndBackup {
+  /// `Expired`
+  String get expired {
     return Intl.message(
-      'App lock, biometrics & backup',
-      name: 'appLockBiometricsAndBackup',
-      desc:
-          'Message describing security features like app lock, biometrics, and backup',
+      'Expired',
+      name: 'expired',
+      desc: 'Label for expired subscription',
       args: [],
     );
   }
 
-  /// `Data Backup & Sync`
-  String get dataBackupAndSync {
+  /// `Available Plans`
+  String get availablePlans {
     return Intl.message(
-      'Data Backup & Sync',
-      name: 'dataBackupAndSync',
-      desc: 'Label for the data backup and sync section',
+      'Available Plans',
+      name: 'availablePlans',
+      desc: 'Title for available plans section',
       args: [],
     );
   }
 
-  /// `Manage your data across devices`
-  String get manageYourDataAcrossDevices {
+  /// `Basic Plan`
+  String get basicPlan {
     return Intl.message(
-      'Manage your data across devices',
-      name: 'manageYourDataAcrossDevices',
-      desc: 'Message prompting the user to manage their data across devices',
+      'Basic Plan',
+      name: 'basicPlan',
+      desc: 'Title for basic subscription plan',
       args: [],
     );
   }
 
-  /// `More`
-  String get more {
+  /// `Perfect for personal finance tracking`
+  String get basicPlanDescription {
     return Intl.message(
-      'More',
-      name: 'more',
-      desc: 'Label for the more section',
+      'Perfect for personal finance tracking',
+      name: 'basicPlanDescription',
+      desc: 'Description for basic subscription plan',
       args: [],
     );
   }
 
-  /// `Help & Support`
-  String get helpAndSupport {
+  /// `Premium Plan`
+  String get premiumPlan {
     return Intl.message(
-      'Help & Support',
-      name: 'helpAndSupport',
-      desc: 'Label for the help and support section',
+      'Premium Plan',
+      name: 'premiumPlan',
+      desc: 'Title for premium subscription plan',
       args: [],
     );
   }
 
-  /// `FAQ, Contact & Support`
-  String get faqContactAndSupport {
+  /// `Advanced features for power users`
+  String get premiumPlanDescription {
     return Intl.message(
-      'FAQ, Contact & Support',
-      name: 'faqContactAndSupport',
-      desc: 'Message describing FAQ, contact, and support options',
+      'Advanced features for power users',
+      name: 'premiumPlanDescription',
+      desc: 'Description for premium subscription plan',
       args: [],
     );
   }
 
-  /// `Terms & Privacy`
-  String get termsAndPrivacy {
+  /// `Unlimited transactions`
+  String get unlimitedTransactions {
     return Intl.message(
-      'Terms & Privacy',
-      name: 'termsAndPrivacy',
-      desc: 'Label for the terms and privacy section',
+      'Unlimited transactions',
+      name: 'unlimitedTransactions',
+      desc: 'Feature in subscription plan',
       args: [],
     );
   }
 
-  /// `Terms of Service`
-  String get termsOfService {
+  /// `Basic reports`
+  String get basicReports {
     return Intl.message(
-      'Terms of Service',
-      name: 'termsOfService',
-      desc: 'Label for the terms of service section',
+      'Basic reports',
+      name: 'basicReports',
+      desc: 'Feature in subscription plan',
       args: [],
     );
   }
 
-  /// `Privacy Policy`
-  String get privacyPolicy {
+  /// `Email support`
+  String get emailSupport {
     return Intl.message(
-      'Privacy Policy',
-      name: 'privacyPolicy',
-      desc: 'Label for the privacy policy section',
+      'Email support',
+      name: 'emailSupport',
+      desc: 'Feature in subscription plan',
       args: [],
     );
   }
 
-  /// `About App`
-  String get aboutApp {
+  /// `Advanced analytics`
+  String get advancedAnalytics {
     return Intl.message(
-      'About App',
-      name: 'aboutApp',
-      desc: 'Label for the about app section',
+      'Advanced analytics',
+      name: 'advancedAnalytics',
+      desc: 'Feature in subscription plan',
       args: [],
     );
   }
 
-  /// `A comprehensive finance tracking application to manage your expenses, budgets, and financial portfolio.`
-  String get comprehensiveFinanceTrackingApp {
+  /// `Priority support`
+  String get prioritySupport {
     return Intl.message(
-      'A comprehensive finance tracking application to manage your expenses, budgets, and financial portfolio.',
-      name: 'comprehensiveFinanceTrackingApp',
-      desc: 'Message describing the purpose of the application',
+      'Priority support',
+      name: 'prioritySupport',
+      desc: 'Feature in subscription plan',
       args: [],
     );
   }
 
-  /// `Sign Out`
-  String get signOut {
+  /// `Custom categories`
+  String get customCategories {
     return Intl.message(
-      'Sign Out',
-      name: 'signOut',
-      desc: 'Label for the sign-out action',
+      'Custom categories',
+      name: 'customCategories',
+      desc: 'Feature in subscription plan',
       args: [],
     );
   }
 
-  /// `Support the App`
-  String get supportTheApp {
+  /// `Data export`
+  String get dataExport {
     return Intl.message(
-      'Support the App',
-      name: 'supportTheApp',
-      desc: 'Label for supporting the app',
+      'Data export',
+      name: 'dataExport',
+      desc: 'Feature in subscription plan',
       args: [],
     );
   }
 
-  /// `Donate`
-  String get donate {
+  /// `/month`
+  String get perMonth {
     return Intl.message(
-      'Donate',
-      name: 'donate',
-      desc: 'Label for the donate action',
+      '/month',
+      name: 'perMonth',
+      desc: 'Label for monthly subscription price',
       args: [],
     );
   }
 
-  /// `Watch Ad`
-  String get watchAd {
+  /// `Subscribe`
+  String get subscribe {
     return Intl.message(
-      'Watch Ad',
-      name: 'watchAd',
-      desc: 'Label for the watch ad action',
+      'Subscribe',
+      name: 'subscribe',
+      desc: 'Label for subscribe button',
       args: [],
     );
   }
 
-  /// `Are you sure you want to sign out?`
-  String get areYouSureYouWantToSignOut {
+  /// `Confirm Subscription`
+  String get confirmSubscription {
     return Intl.message(
-      'Are you sure you want to sign out?',
-      name: 'areYouSureYouWantToSignOut',
-      desc: 'Confirmation message for signing out',
+      'Confirm Subscription',
+      name: 'confirmSubscription',
+      desc: 'Title for subscription confirmation dialog',
       args: [],
     );
   }
 
-  /// `Error signing out`
-  String get errorSigningOut {
+  /// `You are about to subscribe to the plan.`
+  String get subscriptionConfirmation {
     return Intl.message(
-      'Error signing out',
-      name: 'errorSigningOut',
-      desc: 'Message displayed when there is an error signing out',
+      'You are about to subscribe to the plan.',
+      name: 'subscriptionConfirmation',
+      desc: 'Confirmation message for subscription',
       args: [],
     );
   }
 
-  /// `Frequently Asked Questions`
-  String get frequentlyAskedQuestions {
+  /// `Subscription updated successfully`
+  String get subscriptionUpdated {
     return Intl.message(
-      'Frequently Asked Questions',
-      name: 'frequentlyAskedQuestions',
-      desc: 'Label for the FAQ section',
-      args: [],
-    );
-  }
-
-  /// `Contact Support`
-  String get contactSupport {
-    return Intl.message(
-      'Contact Support',
-      name: 'contactSupport',
-      desc: 'Label for contacting support',
-      args: [],
-    );
-  }
-
-  /// `Live Chat Support`
-  String get liveChatSupport {
-    return Intl.message(
-      'Live Chat Support',
-      name: 'liveChatSupport',
-      desc: 'Label for live chat support',
-      args: [],
-    );
-  }
-
-  /// `Close`
-  String get close {
-    return Intl.message(
-      'Close',
-      name: 'close',
-      desc: 'Label for the close action',
-      args: [],
-    );
-  }
-
-  /// `Data Usage`
-  String get dataUsage {
-    return Intl.message(
-      'Data Usage',
-      name: 'dataUsage',
-      desc: 'Label for the data usage section',
-      args: [],
-    );
-  }
-
-  /// `Scan to Donate`
-  String get scanToDonate {
-    return Intl.message(
-      'Scan to Donate',
-      name: 'scanToDonate',
-      desc: 'Label for the scan to donate action',
-      args: [],
-    );
-  }
-
-  /// `Card Details`
-  String get cardDetails {
-    return Intl.message(
-      'Card Details',
-      name: 'cardDetails',
-      desc: 'Label for the card details section',
-      args: [],
-    );
-  }
-
-  /// `Number`
-  String get number {
-    return Intl.message(
-      'Number',
-      name: 'number',
-      desc: 'Label for the number field',
-      args: [],
-    );
-  }
-
-  /// `Balance`
-  String get balance {
-    return Intl.message(
-      'Balance',
-      name: 'balance',
-      desc: 'Label for the balance field',
-      args: [],
-    );
-  }
-
-  /// `Delete Card`
-  String get deleteCard {
-    return Intl.message(
-      'Delete Card',
-      name: 'deleteCard',
-      desc: 'Label for the delete card action',
-      args: [],
-    );
-  }
-
-  /// `Are you sure you want to delete this card?`
-  String get areYouSureYouWantToDeleteThisCard {
-    return Intl.message(
-      'Are you sure you want to delete this card?',
-      name: 'areYouSureYouWantToDeleteThisCard',
-      desc: 'Confirmation message for deleting a card',
-      args: [],
-    );
-  }
-
-  /// `Deleted`
-  String get deleted {
-    return Intl.message(
-      'Deleted',
-      name: 'deleted',
-      desc: 'Label for deleted status',
-      args: [],
-    );
-  }
-
-  /// `Card deleted successfully`
-  String get cardDeletedSuccessfully {
-    return Intl.message(
-      'Card deleted successfully',
-      name: 'cardDeletedSuccessfully',
-      desc: 'Message displayed when a card is successfully deleted',
-      args: [],
-    );
-  }
-
-  /// `Please select an account`
-  String get pleaseSelectAnAccount {
-    return Intl.message(
-      'Please select an account',
-      name: 'pleaseSelectAnAccount',
-      desc: 'Message prompting the user to select an account',
-      args: [],
-    );
-  }
-
-  /// `Insufficient balance`
-  String get insufficientBalance {
-    return Intl.message(
-      'Insufficient balance',
-      name: 'insufficientBalance',
-      desc: 'Message displayed when the account has insufficient balance',
-      args: [],
-    );
-  }
-
-  /// `Note (Optional)`
-  String get noteOptional {
-    return Intl.message(
-      'Note (Optional)',
-      name: 'noteOptional',
-      desc: 'Label for an optional note field',
-      args: [],
-    );
-  }
-
-  /// `Transfer completed successfully`
-  String get transferCompletedSuccessfully {
-    return Intl.message(
-      'Transfer completed successfully',
-      name: 'transferCompletedSuccessfully',
-      desc: 'Message displayed when a transfer is successfully completed',
-      args: [],
-    );
-  }
-
-  /// `Welcome Back`
-  String get welcomeBack {
-    return Intl.message(
-      'Welcome Back',
-      name: 'welcomeBack',
-      desc: 'Greeting message for returning users',
-      args: [],
-    );
-  }
-
-  /// `Email address`
-  String get emailAddress {
-    return Intl.message(
-      'Email address',
-      name: 'emailAddress',
-      desc: 'Label for the email address field',
-      args: [],
-    );
-  }
-
-  /// `Please enter your email`
-  String get pleaseEnterYourEmail {
-    return Intl.message(
-      'Please enter your email',
-      name: 'pleaseEnterYourEmail',
-      desc: 'Message prompting the user to enter their email',
-      args: [],
-    );
-  }
-
-  /// `Please enter a valid email`
-  String get pleaseEnterAValidEmail {
-    return Intl.message(
-      'Please enter a valid email',
-      name: 'pleaseEnterAValidEmail',
-      desc: 'Message prompting the user to enter a valid email',
-      args: [],
-    );
-  }
-
-  /// `Password`
-  String get password {
-    return Intl.message(
-      'Password',
-      name: 'password',
-      desc: 'Label for the password field',
-      args: [],
-    );
-  }
-
-  /// `Please enter your password`
-  String get pleaseEnterYourPassword {
-    return Intl.message(
-      'Please enter your password',
-      name: 'pleaseEnterYourPassword',
-      desc: 'Message prompting the user to enter their password',
-      args: [],
-    );
-  }
-
-  /// `Password must be at least 6 characters`
-  String get passwordMustBeAtLeast6Characters {
-    return Intl.message(
-      'Password must be at least 6 characters',
-      name: 'passwordMustBeAtLeast6Characters',
-      desc: 'Message indicating the password length requirement',
-      args: [],
-    );
-  }
-
-  /// `Forgot password?`
-  String get forgotPassword {
-    return Intl.message(
-      'Forgot password?',
-      name: 'forgotPassword',
-      desc: 'Label for the forgot password action',
-      args: [],
-    );
-  }
-
-  /// `Don't have account?`
-  String get dontHaveAccount {
-    return Intl.message(
-      'Don\'t have account?',
-      name: 'dontHaveAccount',
-      desc:
-          'Message prompting the user to sign up if they don\'t have an account',
-      args: [],
-    );
-  }
-
-  /// `Sign up`
-  String get signUp {
-    return Intl.message(
-      'Sign up',
-      name: 'signUp',
-      desc: 'Label for the sign-up action',
-      args: [],
-    );
-  }
-
-  /// `Already have an account?`
-  String get alreadyHaveAnAccount {
-    return Intl.message(
-      'Already have an account?',
-      name: 'alreadyHaveAnAccount',
-      desc:
-          'Message prompting the user to log in if they already have an account',
-      args: [],
-    );
-  }
-
-  /// `Or Sign Up With`
-  String get orSignUpWith {
-    return Intl.message(
-      'Or Sign Up With',
-      name: 'orSignUpWith',
-      desc: 'Label for the alternative sign-up options section',
-      args: [],
-    );
-  }
-
-  /// `I agree to Terms & Conditions`
-  String get agreeToTerms {
-    return Intl.message(
-      'I agree to Terms & Conditions',
-      name: 'agreeToTerms',
-      desc: 'Message indicating agreement to terms and conditions',
-      args: [],
-    );
-  }
-
-  /// `Create your account`
-  String get createYourAccount {
-    return Intl.message(
-      'Create your account',
-      name: 'createYourAccount',
-      desc: 'Label for the account creation section',
-      args: [],
-    );
-  }
-
-  /// `Validation Failed`
-  String get validationFailed {
-    return Intl.message(
-      'Validation Failed',
-      name: 'validationFailed',
-      desc: 'Message indicating that validation has failed',
-      args: [],
-    );
-  }
-
-  /// `Please agree to Terms & Conditions`
-  String get pleaseAgreeToTerms {
-    return Intl.message(
-      'Please agree to Terms & Conditions',
-      name: 'pleaseAgreeToTerms',
-      desc: 'Message prompting the user to agree to terms and conditions',
-      args: [],
-    );
-  }
-
-  /// `Type`
-  String get typeLabel {
-    return Intl.message(
-      'Type',
-      name: 'typeLabel',
-      desc: 'Label for selecting the type of card or account',
-      args: [],
-    );
-  }
-
-  /// `Delete Settlement`
-  String get deleteSettlement {
-    return Intl.message(
-      'Delete Settlement',
-      name: 'deleteSettlement',
-      desc: 'Title for the delete settlement dialog',
-      args: [],
-    );
-  }
-
-  /// `Are you sure you want to delete this settlement?`
-  String get confirmDeleteSettlement {
-    return Intl.message(
-      'Are you sure you want to delete this settlement?',
-      name: 'confirmDeleteSettlement',
-      desc: 'Confirmation message for deleting a settlement',
-      args: [],
-    );
-  }
-
-  /// `Settlement deleted successfully`
-  String get settlementDeletedSuccessfully {
-    return Intl.message(
-      'Settlement deleted successfully',
-      name: 'settlementDeletedSuccessfully',
-      desc: 'Message displayed when a settlement is successfully deleted',
+      'Subscription updated successfully',
+      name: 'subscriptionUpdated',
+      desc: 'Success message when subscription is updated',
       args: [],
     );
   }

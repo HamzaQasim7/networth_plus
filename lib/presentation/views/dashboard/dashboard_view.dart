@@ -101,21 +101,21 @@ class _DashboardViewContentState extends State<DashboardViewContent> {
                     ),
                     const SizedBox(width: 12),
                     Text(localisation.notificationsTitle),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Text(
-                        '3',
-                        style: TextStyle(
-                          color: isDarkMode ? Colors.black : Colors.white,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
+                    // const SizedBox(width: 8),
+                    // Container(
+                    //   padding: const EdgeInsets.all(6),
+                    //   decoration: BoxDecoration(
+                    //     color: Theme.of(context).colorScheme.primary,
+                    //     shape: BoxShape.circle,
+                    //   ),
+                    //   child: Text(
+                    //     '3',
+                    //     style: TextStyle(
+                    //       color: isDarkMode ? Colors.black : Colors.white,
+                    //       fontSize: 12,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
